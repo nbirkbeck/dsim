@@ -1,0 +1,30 @@
+syntax = "proto2";
+package dsim;
+
+message Point {
+  optional double x = 1;
+  optional double y = 2;
+}
+
+message RoadSegment {
+  optional string name = 1;
+  optional double speed_limit = 2;
+  repeated Point points = 3;
+}
+
+message ParkingSpot {
+  optional Point position = 3;
+}
+
+message ParkingLot {
+  optional string name = 1;
+  optional Point position = 2;
+  optional double width = 3;
+  optional double height = 4;
+  repeated ParkingSpot parking_spots = 5;
+}
+
+message Level {
+  repeated ParkingLot parking_lot = 1;
+  repeated RoadSegment road_segment = 2;
+}

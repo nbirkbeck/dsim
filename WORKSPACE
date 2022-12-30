@@ -1,0 +1,56 @@
+load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
+
+http_archive(
+    name = "com_google_protobuf",
+    sha256 = "9b4ee22c250fe31b16f1a24d61467e40780a3fbb9b91c3b65be2a376ed913a1a",
+    strip_prefix = "protobuf-3.13.0",
+    urls = [
+        "https://github.com/protocolbuffers/protobuf/archive/v3.13.0.tar.gz",
+    ],
+)
+
+load("@com_google_protobuf//:protobuf_deps.bzl", "protobuf_deps")
+
+protobuf_deps()
+
+
+http_archive(
+    name = "bazel_pkg_config",
+    strip_prefix = "bazel_pkg_config-master",
+    urls = ["https://github.com/cherrry/bazel_pkg_config/archive/master.zip"],
+)
+
+load("@bazel_pkg_config//:pkg_config.bzl", "pkg_config")
+
+pkg_config(
+    name = "freetype2",
+)
+
+pkg_config(
+    name = "nimage",
+)
+
+pkg_config(
+    name = "nmath",
+)
+
+pkg_config(
+    name = "nmisc",
+)
+
+pkg_config(
+    name = "libglog",
+)
+
+pkg_config(
+    name = "gflags",
+)
+
+pkg_config(
+    name = "gtest",
+)
+
+pkg_config(
+    name = "freetype2",
+)
+
