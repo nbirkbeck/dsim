@@ -266,7 +266,8 @@ PlanTravel(const dsim::Level& level,
       end_index = prev_info[index].second;
       start_index = prev_info[index].second;
     } else if (segment) {
-      start_index = prev_info[index].second; // std::min(start_index, prev_info[index].second);
+      start_index = prev_info[index].second;
+      // std::min(start_index, prev_info[index].second);
       //end_index = std::max(end_index, prev_info[index].second);
     } else {
       segment = prev_info[index].first;
@@ -307,14 +308,100 @@ PlanTravel(const dsim::Level& level,
   return stages;
 }
 
+class Car {
+public:
+  Car(dsim::Level& level, int id, int start, int end) : level_(level), car_id_(id), start_(start), end_(end) {
+    auto plan = PlanTravel(level, level.parking_lot(start), 0,
+                           level.parking_lot(end));
+    stage_ = plan[1];
+  }
+
+  void Step(double dt) {
+    distance_to_travel += 40 * dt;
+
+    if (segment_index_ < (int)stage_.segments.size()) {
+      const auto* segment = &stage_.segments[segment_index_];
+      bool set = false;
+      while (!set &&
+             (sub_index_ + segment->start_index) % segment->road_segment->points_size() != segment->end_index &&
+             segment_index_ < (int)stage_.segments.size()) {
+        int i1 = (segment->start_index + sub_index_) % segment->road_segment->points_size() ;
+        int i2 = (segment->start_index + sub_index_ + 1) % segment->road_segment->points_size();
+        const auto& p1 = segment->road_segment->points(i1);
+        const auto& p2 = segment->road_segment->points(i2);
+
+        // This is a special hack for a loop.
+        const double d = Distance(p2, p1);
+        if (d == 0) {
+          sub_index_++;
+          continue;
+        }
+        if (distance_to_travel < d) {
+          pos_ = Interpolate(p1, p2, distance_to_travel / d);
+          set = true;
+          break;
+        } else {
+          distance_to_travel -= d;
+          pos_ = p2;
+          sub_index_++;
+
+          if ((sub_index_ + segment->start_index) % segment->road_segment->points_size() == segment->end_index) {
+            sub_index_ = 0;
+            segment_index_++;
+
+            if (segment_index_ < (int)stage_.segments.size()) {
+              segment = &stage_.segments[segment_index_];
+            } else {
+              segment = nullptr;
+              break;
+            }
+          }
+        }
+      }        
+    } else {
+      start_ = (start_ + 1) % 4;
+      if (start_ == end_) {
+        start_++;
+      }
+      auto plan = PlanTravel(level_, level_.parking_lot(end_), 0,
+                             level_.parking_lot(start_));
+      std::swap(start_, end_);
+      LOG(INFO) << "Planning from:" << start_ << " to " << end_;
+
+        
+      stage_ = plan[1];
+      segment_index_ = 0;
+      sub_index_ = 0;
+    }
+  }
+
+  const dsim::Point& pos() const {
+    return pos_;
+  }
+
+  dsim::Level& level_;
+
+  Stage stage_;
+  int car_id_ = 0;
+  int segment_index_ = 0;
+  int sub_index_ = 0;
+  double distance_to_travel = 0;
+
+  int start_, end_;
+  dsim::Point pos_;
+};
 
 class LevelWindow: public GLWindow {
 public:
-  LevelWindow(dsim::Level& level,
-              Stage& stage) : level_(level), stage_(stage) {
+  LevelWindow(dsim::Level& level) : level_(level)  {
     cpos.z = 100;
     farPlane = 1000;
     setRefreshRate(60);
+
+    for (int i = 0; i < 4; ++i) {
+      cars_.push_back(Car(level, i, i, (i + 1) % 4));
+    }
+
   }
   
   void drawScene() {
@@ -346,63 +433,26 @@ public:
     glColor3f(0, 1, 0);
     glPointSize(3);
     glBegin(GL_POINTS);
-    glVertex2f(car_.x(), car_.y());
+    for (const auto& car: cars_) {
+      glVertex2f(car.pos().x(), car.pos().y());
+    };
     glEnd();
     
   }
 
   void refresh() {
     static nacb::Timer timer;
-    distance_to_travel += 10 * (double)timer; // 1.0/600.0;
+    const double dt = (double)timer;
     timer.reset();
-    
-    if (segment_index_ < (int)stage_.segments.size()) {
-      const auto* segment = &stage_.segments[segment_index_];
-      bool set = false;
-      while (!set &&
-             sub_index_ + segment->start_index < segment->end_index &&
-             segment_index_ < (int)stage_.segments.size()) {
-        int i1 = segment->start_index + sub_index_;
-        int i2 = segment->start_index + sub_index_ + 1;
-        const auto& p1 = segment->road_segment->points(i1);
-        const auto& p2 = segment->road_segment->points(i2);
-        
-        double d = Distance(p2, p1);
-        if (distance_to_travel < d) {
-          car_ = Interpolate(p1, p2, distance_to_travel / d);
-          set = true;
-          //distance_to_travel = 0;
-          break;
-        } else {
-          distance_to_travel -= d;
-          car_ = p2;
-          sub_index_++;
-          if (sub_index_ + segment->start_index == segment->end_index) {
-            sub_index_ = 0;
-            segment_index_++;
-          }
-        }
-      }        
-    } else {
-      // Stage is complete.
-      auto plan = PlanTravel(level_, level_.parking_lot(1), 0,
-                             level_.parking_lot(2));
-      stage_ = plan[1];
-      segment_index_ = 0;
-      sub_index_ = 0;
+    for (auto& car: cars_) {
+      car.Step(dt);
     }
     
     GLWindow::refresh();
   }
 
   dsim::Level& level_;
-
-  Stage stage_;
-  int segment_index_ = 0;
-  int sub_index_ = 0;
-
-  dsim::Point car_;
-  double distance_to_travel = 0;
+  std::vector<Car> cars_;
 };
 
 int main(int ac, char* av[]) {
@@ -426,10 +476,7 @@ int main(int ac, char* av[]) {
     }
   }
 
-  auto plan = PlanTravel(level, level.parking_lot(0), 0,
-                         level.parking_lot(1));
-
-  LevelWindow level_window(level, plan[1]);
+  LevelWindow level_window(level);
 
   level_window.loop(1);
   return 0;
