@@ -99,6 +99,7 @@ bool FindSegmentOnRectangle(const dsim::Level& level,
                             const dsim::RoadSegment** segment,
                             int* index, int direction) {
   for (const auto& road_segment : level.road_segment()) {
+    if (road_segment.points_size() == 1) continue;
     const int i0 = (direction == 0) ? 0 : road_segment.points_size() - 1;
     const int i1 = (direction == 0) ? 1 : road_segment.points_size();
     for (int i = i0; i < i1; ++i) {
@@ -310,14 +311,66 @@ PlanTravel(const dsim::Level& level,
 
 class Car {
 public:
-  Car(dsim::Level& level, int id, int start, int end) : level_(level), car_id_(id), start_(start), end_(end) {
+  Car(dsim::Level& level, int id, int start, int end) :
+      level_(level), car_id_(id), start_(start), end_(end) {
     auto plan = PlanTravel(level, level.parking_lot(start), 0,
                            level.parking_lot(end));
     stage_ = plan[1];
+
+    max_speed_ = 8;
+    BuildStaticAccelerationPolicy();
+  }
+
+  void BuildStaticAccelerationPolicy() {
+    // Loop through segments
+    double distance = 0;
+    std::vector<std::pair<double, int> > accel;
+    accel.push_back(std::pair<double, int>(0, 1));
+    for (int si = 0; si < (int)stage_.segments.size(); ++si) {
+      const auto& segment = stage_.segments[si];
+      double segment_distance = 0;
+      for (int i = 0; (segment.start_index + i)  % segment.road_segment->points_size() != segment.end_index; ++i) {
+        int i1 = (segment.start_index + i) % segment.road_segment->points_size() ;
+        int i2 = (segment.start_index + i + 1) % segment.road_segment->points_size();
+        const auto& p1 = segment.road_segment->points(i1);
+        const auto& p2 = segment.road_segment->points(i2);
+        segment_distance += Distance(p1, p2);
+      }
+      accel.push_back(std::pair<double, int>(distance + segment_distance - 2, -1));
+      accel.push_back(std::pair<double, int>(distance + segment_distance - 0.1, 1));
+      distance += segment_distance;
+    }
+    for (const auto& a : accel) {
+      LOG(INFO) << a.first << " " << a.second;
+    }
+    accel_ = accel;
   }
 
   void Step(double dt) {
-    distance_to_travel += 40 * dt;
+    // Acceleration / deceleration
+    // Need to decelerate when approaching a stop (or when getting too close to another)
+    int accel = 1;
+    for (int i = 0; i < (int)accel_.size(); ++i) {
+      if (distance_travelled_so_far_ >= accel_[i].first &&
+          ((i == (int)accel_.size() - 1) ||
+           distance_travelled_so_far_ < accel_[i + 1].first)) {
+        accel = accel_[i].second;
+        break;
+      }
+    }
+    if (accel > 0) {
+      speed_ += 2.0 * dt;
+      if (speed_ >= max_speed_) {
+        speed_ = max_speed_;
+      }
+    } else {
+      speed_ -= 8.0 * dt;
+      if (speed_ <= 1.0) {
+        speed_ = 1.0;
+      }
+    }
+    distance_travelled_so_far_ += speed_ * dt;
+    distance_to_travel += speed_ * dt;
 
     if (segment_index_ < (int)stage_.segments.size()) {
       const auto* segment = &stage_.segments[segment_index_];
@@ -330,7 +383,7 @@ public:
         const auto& p1 = segment->road_segment->points(i1);
         const auto& p2 = segment->road_segment->points(i2);
 
-        // This is a special hack for a loop.
+        // This is a special hack for a loopped segment
         const double d = Distance(p2, p1);
         if (d == 0) {
           sub_index_++;
@@ -359,9 +412,9 @@ public:
         }
       }        
     } else {
-      start_ = (start_ + 1) % 4;
+      start_ = rand() % 4;
       if (start_ == end_) {
-        start_++;
+        start_ = (start_ + 1) % 4;
       }
       auto plan = PlanTravel(level_, level_.parking_lot(end_), 0,
                              level_.parking_lot(start_));
@@ -370,8 +423,12 @@ public:
 
         
       stage_ = plan[1];
+
       segment_index_ = 0;
       sub_index_ = 0;
+      distance_travelled_so_far_ = 0;
+      distance_to_travel = 0;
+      BuildStaticAccelerationPolicy();
     }
   }
 
@@ -382,11 +439,17 @@ public:
   dsim::Level& level_;
 
   Stage stage_;
+  std::vector<std::pair<double, int> > accel_;
+  
   int car_id_ = 0;
   int segment_index_ = 0;
   int sub_index_ = 0;
   double distance_to_travel = 0;
-
+  double distance_travelled_so_far_ = 0;
+  
+  double speed_;
+  double max_speed_;
+  
   int start_, end_;
   dsim::Point pos_;
 };
@@ -399,7 +462,7 @@ public:
     setRefreshRate(60);
 
     for (int i = 0; i < 4; ++i) {
-      cars_.push_back(Car(level, i, i, (i + 1) % 4));
+      cars_.push_back(Car(level, i, i % 4, (i + 1) % 4));
     }
 
   }
