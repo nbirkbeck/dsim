@@ -19,6 +19,8 @@
 
 DEFINE_string(filename, "", "Path to input filename");
 
+class Car;
+
 class Proto {
 public:
   template <class T>
@@ -42,6 +44,58 @@ public:
   }
 };
 
+class RoadSegment;
+
+class IntersectionControl {
+public:
+  IntersectionControl(const dsim::IntersectionControl& control) :
+    type(control.type()),
+    name(control.name()),
+    pos(control.position().x(), control.position().y()),
+    dir(control.dir().x(), control.dir().y()),
+    time(control.time()) {
+  }
+  bool IsDirectional() const {
+    if (type == dsim::IntersectionControl::STOP) return true;
+    if (type == dsim::IntersectionControl::YIELD) return true;
+    return false;
+  }
+  bool IsEnforcedDirection(const nacb::Vec2d& test) const {
+    return dir.dot(test) >= 0.999 * test.len();
+  }
+  bool IsStopSign() const {
+    return type == dsim::IntersectionControl::STOP;
+  }
+  bool IsLight() const {
+    return type == dsim::IntersectionControl::LIGHTS;
+  }
+  bool IsGreen(RoadSegment* segment) const {
+    for (int j = 0; j < (int)incoming_segments.size(); ++j) {
+      if (segment == incoming_segments[j].first) {
+        return parity == j;
+      }
+    }
+    return false;
+  }
+  void Step(double dt) {
+    elapsed += dt;
+    if (elapsed >= time) {
+      parity = (parity + 1) % incoming_segments.size();
+      elapsed = 0;
+    }
+  }
+
+  std::vector<std::pair<RoadSegment*, int>> incoming_segments;
+  
+  dsim::IntersectionControl::Type type;
+  std::string name;
+  nacb::Vec2d pos;
+  nacb::Vec2d dir;
+  double time;
+  int parity = false;
+  double elapsed = 0;
+};
+
 class RoadSegment {
 public:
   RoadSegment(const dsim::RoadSegment& seg):
@@ -50,10 +104,11 @@ public:
     for (const auto& p: seg.points()) {
       points.push_back(nacb::Vec2d(p.x(), p.y()));
     }
+    cars.resize(seg.points().size());
+    
     if (speed_limit <= 0) speed_limit = 8;
     ResetSpeedEstimate();
   }
-
 
   void AddSpeedEstimate( double sp) {
     avg_speed += sp;
@@ -65,6 +120,21 @@ public:
     num_avg_speed = 1;
   }
 
+  void SetIntersections(std::vector<IntersectionControl>& isects) {
+    for (int j = 0; j <(int)isects.size(); ++j) {
+      for (int i = 1; i < (int)points.size(); ++i) {
+        if ((points[i] - isects[j].pos).len() < 1e-6) {
+          const auto& dir = points[i] - points[i - 1];
+          if (!isects[j].IsDirectional() ||
+              isects[j].IsEnforcedDirection(dir)) {
+            intersections[i] = &isects[j];
+          }
+          isects[j].incoming_segments.push_back(std::pair<RoadSegment*, int>(this, i - 1));
+        }
+      }
+    }
+  }
+
   double GetAverageSpeed() const {
     return avg_speed / num_avg_speed;
   }
@@ -72,7 +142,9 @@ public:
   std::string name;
   double speed_limit;
   std::vector<nacb::Vec2d> points;
-
+  std::unordered_map<int, IntersectionControl*> intersections;
+  std::vector<std::set<const Car*> > cars;
+  
   double avg_speed = 0;
   int num_avg_speed = 0;
 };
@@ -104,6 +176,40 @@ public:
   std::vector<ParkingSpot> parking_spots;
 };
 
+class Stats {
+public:
+  struct Info {
+    double total_time = 0;
+    int num_observations = 0;
+  };
+
+  void AddObservation(const ParkingLot* src,
+                      const ParkingLot* dest,
+                      double elapsed_time) {
+    Info& info = data[src->name][dest->name];
+    info.total_time += elapsed_time;
+    info.num_observations++;
+  }
+
+  void Print() {
+    double average_time = 0;
+    int num_pairs = 0;
+    std::cout << "------------------------------------------------------------\n";
+    for (const auto& src: data) {
+      for (const auto& dest: src.second) {
+        const double estimate = dest.second.total_time / std::max(1, dest.second.num_observations);
+        std::cout << src.first << " " << dest.first << " " << estimate << std::endl;
+        average_time += estimate;
+        num_pairs++;
+      }
+    }
+    if (num_pairs)
+      std::cout << average_time / num_pairs << "(" << num_pairs << ")\n";
+  }
+
+  std::unordered_map<std::string, std::unordered_map<std::string, Info> > data;
+};
+
 class Level {
 public:
   Level(const dsim::Level& level) {
@@ -113,9 +219,17 @@ public:
     for (const auto& seg : level.road_segment()) {
       road_segments.push_back(RoadSegment(seg));
     }
+    for (const auto& isect : level.intersection_control()) {
+      intersections.push_back(IntersectionControl(isect));
+    }
+    for (auto& seg : road_segments) {
+      seg.SetIntersections(intersections);
+    }
   }
+  Stats stats;
   std::vector<ParkingLot> parking_lots;
   std::vector<RoadSegment> road_segments;
+  std::vector<IntersectionControl> intersections;
 };
 
 
@@ -142,7 +256,6 @@ struct Stage {
     int end_index = 0;
     Segment(RoadSegment* s = nullptr,
             int si=0, int ei=0): road_segment(s), start_index(si), end_index(ei) {
-
     }
   };
 
@@ -151,6 +264,7 @@ struct Stage {
   Type type;
   nacb::Vec2d point;
   std::vector<Segment> segments;
+  const ParkingLot* parking_lot;
 };
 
 bool IsNear(const double x, const double y) {
@@ -341,8 +455,9 @@ PlanTravel(Level& level,
       }
       const auto& ai = adj_info[top][i];
       const double edge_speed = ai.first->GetAverageSpeed();
-      LOG(INFO) << edge_speed;
-        
+      if (edge_speed <= 1e-4) {
+        LOG(INFO) << "Edge speed is zero";
+      }
       const double e = (pos[c] - pos[top]).len() / edge_speed;
       const double hval = (pos[c] - pos[a]).len() / kMaxSpeed;
       h[c] = hval;
@@ -413,7 +528,7 @@ PlanTravel(Level& level,
   stages.push_back(Stage(Stage::EXIT_PARKING_LOT));
   stages.back().point = (src_parking_lot.pos + 
                          src_parking_lot.parking_spots[parking_space].pos);
-                            
+  stages.back().parking_lot = &src_parking_lot;                            
   stages.back().segments.push_back(Stage::Segment{exit_segment, exit_index, exit_index});
 
   stages.push_back(Stage(Stage::ROAD_TRAVEL));
@@ -421,6 +536,7 @@ PlanTravel(Level& level,
   
   stages.push_back(Stage(Stage::FIND_PARKING_SPOT));
   stages.back().segments.push_back(Stage::Segment{enter_segment, enter_index, enter_index});
+  stages.back().parking_lot = &dest_parking_lot;
   stages.back().point = (dest_parking_lot.pos +
                          dest_parking_lot.parking_spots[dest_parking_spot].pos);
   
@@ -430,7 +546,7 @@ PlanTravel(Level& level,
 class Car {
 public:
   Car(Level& level, int id, int start, int end) :
-      level_(level), car_id_(id), start_(start), end_(end) {
+    level_(level), car_id_(id), start_(start), end_(end), travel_time_(0) {
     plan_ = PlanTravel(level, level.parking_lots[start], id % level.parking_lots[start].parking_spots.size(),
                        level.parking_lots[end], id % level.parking_lots[end].parking_spots.size());
     stage_index_ = 0;
@@ -456,21 +572,22 @@ public:
         const auto& p2 = segment.road_segment->points[i2];
         segment_distance += (p1 - p2).len();
       }
-      accel.push_back(std::pair<double, int>(distance + segment_distance - 2, -1));
+      accel.push_back(std::pair<double, int>(distance + segment_distance - 1.5, -1));
       accel.push_back(std::pair<double, int>(distance + segment_distance - 0.1, 1));
       distance += segment_distance;
     }
-    for (const auto& a : accel) {
-      LOG(INFO) << a.first << " " << a.second;
-    }
     accel_ = accel;
   }
-
+  RoadSegment* road_segment() const {
+    if (stage_index_ == 1 && stage_index_ < (int)plan_.size()) {
+      return plan_[stage_index_].segments[segment_index_].road_segment;
+    }
+    return nullptr;
+  }
+  
   void Step(std::vector<Car>& cars,
             double dt) {
     breaking_ = false;
-    // Acceleration / deceleration
-    // Need to decelerate when approaching a stop (or when getting too close to another)
     if (wait_ > 0) {
       wait_ -= dt;
       if (wait_ < 0) {
@@ -490,13 +607,16 @@ public:
         distance_travelled_so_far_ = 0;
         distance_to_travel = 0;
         wait_ = 0;
+        upcoming_intersection_ = nullptr;
         
         BuildStaticAccelerationPolicy();
       } else {
         return;
       }
     }
-    int accel = 1;
+    // Acceleration / deceleration
+    // Need to decelerate when approaching a stop (or when getting too close to another)
+    double accel = 1;
     for (int i = 0; i < (int)accel_.size(); ++i) {
       if (distance_travelled_so_far_ >= accel_[i].first &&
           ((i == (int)accel_.size() - 1) ||
@@ -506,21 +626,95 @@ public:
       }
     }
 
+    if (upcoming_intersection_) {
+      const auto d_pos = (upcoming_intersection_->pos - pos_);
+      const double d = d_pos.len();
+      const bool should_slow_down =
+        upcoming_intersection_->IsStopSign() ||
+        (upcoming_intersection_->IsLight() &&
+         !upcoming_intersection_->IsGreen(road_segment()));
+
+      if (should_slow_down) {
+        if (d < 0.5) accel = -8;
+        else if (d < 1) accel = -4;
+        else if (d < 2) accel = -2;
+        if (speed_ <= 1 && d >= 1.0) {
+          accel = 1.0;
+        }
+      }
+      if (upcoming_intersection_->IsStopSign()) {
+        // If we've stopped and we're close enough. If there are no cars, then go.
+        if (speed_ <= 0.01 && d <= 1.5) {
+          auto* segment = &plan_[stage_index_].segments[segment_index_];
+          const RoadSegment* my_road_segment = segment->road_segment;
+          bool has_car = false;
+          for (const auto& incoming_segs : upcoming_intersection_->incoming_segments) {
+            if (incoming_segs.first == my_road_segment) continue;
+            if (incoming_segs.first->cars[incoming_segs.second].size()) has_car = true;
+          }
+          if (!has_car) {
+            ignore_intersections_.insert(upcoming_intersection_);
+          }
+        }
+      }
+    }
+
+    // Primitive collision avoidance
     const auto dpos = (pos_ -  last_pos_);
     const double dpos_len = dpos.len();
     for (const auto& car: cars) {
       if (&car == this) continue;
+      if (//!upcoming_intersection_ &&
+          car.upcoming_intersection_ &&
+          road_segment() != car.road_segment()) continue;
       const auto d_car = (car.pos_ - pos_);
       const double d = d_car.len();
 
-      if (d > 3.5) continue;
-      if (d_car.dot(dpos) > 0.71 * d * dpos_len) {
-        if (d < 2) {
-          accel += -32;
-        } else {
+      if (d > 3.0) continue;
+      if (d_car.dot(dpos) > 0.70 * d * dpos_len) {
+        if (d < 1) {
           accel += -16;
+        } else if (d < 2) {
+          accel += -8;
+        } else {
+          accel += -2;
         }
-        breaking_ = true;
+        //breaking_ = true;
+      }
+    }
+    if (false) {
+      static int stopping = 0;
+      static double time_to_stop = 0;
+      static double distance_to_stop = 0;
+      if (car_id_ == 0) {
+        //speed_ -= 8 * dt * 2 / t;
+        if (speed_ >= 9 && !stopping) {
+          LOG(INFO) << "speed:" << speed_;
+          stopping = 1;
+          // a(t) = -8
+          // v(t) = -8 * t + speed
+          // p(t) = -4 * t^2 + speed*t
+
+          double t = -(1 - speed_) / 8.0 + 1.0/60.0;
+          time_to_stop = t;
+          distance_to_stop = speed_ * t - 4 * t * t;
+        }
+        if (stopping == 1) {
+          double t = time_to_stop;
+          double distance_to_stop_n = speed_ * t - 4 * t * t;
+
+          accel = -1;
+          LOG(INFO) << car_id_ << " speed:" << speed_ << " "
+                    << time_to_stop << " " << distance_to_stop
+                    << " " << distance_to_stop_n << "\n";
+          time_to_stop -= dt;
+          distance_to_stop -= speed_ * dt;
+        }
+        if (speed_ <= 1.01 && stopping) {
+          stopping++;
+        }
+        //8 x ^ 2  = sqrt(speed / 8)
+        //LOG(INFO) << stopping_time
       }
     }
     
@@ -540,6 +734,7 @@ public:
       }
     }
 
+    travel_time_ += dt;
     distance_travelled_so_far_ += speed_ * dt;
     distance_to_travel += speed_ * dt;
     last_pos_ = pos_;
@@ -560,6 +755,11 @@ public:
       const double d = (p1 - plan_[stage_index_].point).len();
       pos_ = Interpolate(p1, plan_[stage_index_].point, std::min(d, distance_to_travel) / d);
       if (distance_to_travel >= d) {
+        /// Now we've completed the journey
+        level_.stats.AddObservation(plan_[0].parking_lot,
+                                    plan_[2].parking_lot,
+                                    travel_time_);
+        travel_time_ = 0;
         distance_travelled_so_far_ = 0;
         distance_to_travel = 0;
         stage_index_ = 0;
@@ -571,6 +771,10 @@ public:
       if (segment_index_ < (int)stage.segments.size()) {
         auto* segment = &stage.segments[segment_index_];
         bool set = false;
+
+        upcoming_intersection_ = nullptr;
+        segment->road_segment->cars[(segment->start_index + sub_index_) % segment->road_segment->points.size()].erase(this);
+        
         while (!set &&
                (sub_index_ + segment->start_index) % segment->road_segment->points.size() != segment->end_index &&
                segment_index_ < (int)stage.segments.size()) {
@@ -578,22 +782,29 @@ public:
           int i2 = (segment->start_index + sub_index_ + 1) % segment->road_segment->points.size();
           const auto& p1 = segment->road_segment->points[i1];
           const auto& p2 = segment->road_segment->points[i2];
-
-          // This is a special hack for a looped segment
-          const double d = (p2 - p1).len();
-          if (d == 0) {
-            sub_index_++;
-            continue;
+          if (segment->road_segment->intersections[i2]) {
+            if (!ignore_intersections_.count(segment->road_segment->intersections[i2])) {
+              upcoming_intersection_ = segment->road_segment->intersections[i2];
+            }
+            breaking_ = true;
           }
-          if (distance_to_travel < d) {
+          const double d = (p2 - p1).len();
+          if (d > 0 && distance_to_travel < d) {
             pos_ = Interpolate(p1, p2, distance_to_travel / d);
             set = true;
+
+            segment->road_segment->cars[i1].insert(this);
             segment->road_segment->AddSpeedEstimate((pos_ - last_pos_).len());
             break;
           } else {
             distance_to_travel -= d;
             pos_ = p2;
+            ignore_intersections_.clear();
             sub_index_++;
+            // This is a special hack for a looped segment
+            if (d == 0) {
+              continue;
+            }
 
             if ((sub_index_ + segment->start_index) % segment->road_segment->points.size() == segment->end_index) {
               sub_index_ = 0;
@@ -637,9 +848,13 @@ public:
   double wait_ = 0;
   
   int start_, end_;
+  double travel_time_ = 0;
+
   nacb::Vec2d pos_;
   nacb::Vec2d last_pos_;
   bool breaking_ = false;
+  IntersectionControl* upcoming_intersection_ = nullptr;
+  std::set<IntersectionControl*> ignore_intersections_;
 };
 
 class LevelWindow: public GLWindow {
@@ -654,11 +869,10 @@ public:
         cars_.push_back(Car(level, i, (i) % 7, ((i) + 1) % 7));
       }
     } else {
-      for (int i = 0; i < 4 * 7; ++i) {
-        cars_.push_back(Car(level, i, (i/4) % 7, ((i/4) + 1) % 7));
-      }
-      for (int i = 0; i < 16; ++i) {
-        cars_.push_back(Car(level, i, 7, ((i/4) + 1) % 7));
+      for (int i = 0; i < (int)level.parking_lots.size(); ++i) {
+        for (int j = 0; j < (int)level.parking_lots[i].parking_spots.size(); ++j) {
+          cars_.push_back(Car(level, cars_.size(), i, (i + 1 + rand()) % level.parking_lots.size()));
+        }
       }
     }
 
@@ -669,7 +883,13 @@ public:
     }
     return true;
   }
+
   void drawScene() {
+    static int count = 0;
+    if (count % 100 == 0) {
+      level_.stats.Print();
+    }
+    ++count;
     for (int i = 0; i < (int)level_.parking_lots.size(); ++i) {
       const auto& lot = level_.parking_lots[i];
 
@@ -707,7 +927,7 @@ public:
     glBegin(GL_POINTS);
     for (const auto& car: cars_) {
       glColor3f(0, 1, 0);
-      if (car.breaking_ && 0) {
+      if (car.breaking_) {
         glColor3f(0, 0, 1);
       }
 
@@ -721,10 +941,14 @@ public:
     static nacb::Timer timer;
     const double dt = (double)timer;
     timer.reset();
-    for (auto& car: cars_) {
-      car.Step(cars_, dt);
+    if (dt > 0) {
+      for (auto& car: cars_) {
+        car.Step(cars_, dt);
+      }
+      for (auto& isect: level_.intersections) {
+        isect.Step(dt);
+      }
     }
-    
     GLWindow::refresh();
   }
 
