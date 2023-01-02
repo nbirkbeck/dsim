@@ -1,6 +1,9 @@
-#include "utigl/glwindow.h"
-
+#include <GL/glew.h>
 #include <GL/gl.h>
+
+#include "utigl/glwindow.h"
+#include "utigl/ffont.h"
+
 
 #include <gflags/gflags.h>
 #include <glog/logging.h>
@@ -10,6 +13,7 @@
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 #include <google/protobuf/text_format.h>
 #include <vector>
+#include <deque>
 #include <unordered_map>
 #include <nmisc/heap.h>
 #include <nmisc/timer.h>
@@ -98,6 +102,20 @@ public:
 
 class RoadSegment {
 public:
+  static constexpr int kMaxDeckSize = 10;
+  struct SpeedEstimateEntry {
+    int t = 0;
+    double avg_speed = 0;
+    double num_avg_speed = 0;
+    SpeedEstimateEntry(int time = 0): t(time) {}
+
+    bool operator==(const SpeedEstimateEntry& other) const {
+      return t == other.t && avg_speed == other.avg_speed;
+    }
+    bool operator!=(const SpeedEstimateEntry& other) const {
+      return !((*this) == (other));
+    }
+  };
   RoadSegment(const dsim::RoadSegment& seg):
     name(seg.name()),
     speed_limit(seg.speed_limit()) {
@@ -107,17 +125,30 @@ public:
     cars.resize(seg.points().size());
     
     if (speed_limit <= 0) speed_limit = 8;
-    ResetSpeedEstimate();
+    
+    UpdateSpeedEstimate();
   }
 
-  void AddSpeedEstimate( double sp) {
-    avg_speed += sp;
-    num_avg_speed++;
+  void AddSpeedEstimate(double t, double sp) {
+    if (deck.size() > kMaxDeckSize) {
+      LOG(INFO) << "Popping from the deck!\n";
+      deck.pop_front();
+    }
+    if (deck.empty() || int(t) != deck.back().t) {
+      deck.push_back(SpeedEstimateEntry(int(t)));
+    }
+    deck.back().avg_speed += sp;
+    deck.back().num_avg_speed++;
   }
 
-  void ResetSpeedEstimate() {
-    avg_speed = speed_limit;
-    num_avg_speed = 1;
+  void UpdateSpeedEstimate() {
+    double num_avg_speed = 1.0/8.0;
+    avg_speed = num_avg_speed * speed_limit;
+    for (const auto& entry : deck) {
+      avg_speed += entry.avg_speed;
+      num_avg_speed += entry.num_avg_speed;
+    }
+    avg_speed /= num_avg_speed;
   }
 
   void SetIntersections(std::vector<IntersectionControl>& isects) {
@@ -135,8 +166,12 @@ public:
     }
   }
 
-  double GetAverageSpeed() const {
-    return avg_speed / num_avg_speed;
+  double GetAverageSpeed() {
+    if (deck.empty() || deck.back() != last_updated) {
+      UpdateSpeedEstimate();
+      if (deck.size()) last_updated = deck.back();
+    }
+    return avg_speed;
   }
   
   std::string name;
@@ -144,9 +179,10 @@ public:
   std::vector<nacb::Vec2d> points;
   std::unordered_map<int, IntersectionControl*> intersections;
   std::vector<std::set<const Car*> > cars;
-  
+
+  SpeedEstimateEntry last_updated;
+  std::deque<SpeedEstimateEntry> deck;
   double avg_speed = 0;
-  int num_avg_speed = 0;
 };
 
 class ParkingSpot {
@@ -571,6 +607,7 @@ public:
   }
   
   void Step(std::vector<Car>& cars,
+            double t_abs,
             double dt) {
     breaking_ = false;
     if (wait_ > 0) {
@@ -586,7 +623,7 @@ public:
                            level_.parking_lots[start_], car_id_ % level_.parking_lots[start_].parking_spots.size());
         std::swap(start_, end_);
         LOG(INFO) << "Planning from:" << start_ << " to " << end_;
-
+        
         stage_index_ = 0;
         segment_index_ = 0;
         sub_index_ = 0;
@@ -780,7 +817,7 @@ public:
             set = true;
 
             segment->road_segment->cars[i1].insert(this);
-            segment->road_segment->AddSpeedEstimate((pos_ - last_pos_).len());
+            segment->road_segment->AddSpeedEstimate(t_abs, (pos_ - last_pos_).len() / dt);
             break;
           } else {
             distance_to_travel -= d;
@@ -862,7 +899,10 @@ public:
       }
     }
 
+    ffont_ = FFont("/usr/share/fonts/bitstream-vera/Vera.ttf", 12);
+    ffont_.setScale(0.5, 0.5);
   }
+
   bool keyboard(unsigned char c, int x, int y) {
     if (c == ' ') {
       cars_[0].speed_ = 0;
@@ -901,12 +941,23 @@ public:
 
     for (int i = 0; i < (int)level_.road_segments.size(); ++i) {
       const auto& segment = level_.road_segments[i];
+
       glColor3f(1, 0, 0);
       glBegin(GL_LINE_STRIP);
       for (const auto& co : segment.points) {
         glVertex2f(co.x, co.y);
       }
       glEnd();
+
+      glColor3f(1, 1, 1);
+      glEnable(GL_TEXTURE_2D);
+      const double speed = level_.road_segments[i].GetAverageSpeed();
+      const nacb::Vec2d co = (segment.points[0] + segment.points[1]) * 0.5;
+      char str[1024];
+      snprintf(str, sizeof(str), "%3.2f", speed);
+      ffont_.drawString(str, co.x, co.y - 0.1);
+      glDisable(GL_TEXTURE_2D);
+      
     }
 
     glPointSize(3);
@@ -924,22 +975,25 @@ public:
   }
 
   void refresh() {
+    static double t = 0;
     static nacb::Timer timer;
     const double dt = (double)timer;
     timer.reset();
     if (dt > 0) {
       for (auto& car: cars_) {
-        car.Step(cars_, dt);
+        car.Step(cars_, t, dt);
       }
       for (auto& isect: level_.intersections) {
         isect.Step(dt);
       }
+      t += dt;
     }
     GLWindow::refresh();
   }
 
   Level& level_;
   std::vector<Car> cars_;
+  FFont ffont_;
 };
 
 int main(int ac, char* av[]) {
@@ -965,7 +1019,8 @@ int main(int ac, char* av[]) {
   }
 
   LevelWindow level_window(level);
-
+  glewInit();
+  
   level_window.loop(1);
   return 0;
 }
