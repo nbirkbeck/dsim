@@ -44,11 +44,12 @@ def get_mesh_data(mesh_data, mat=None):
         vertices = []
         print(mat)
         for v in mesh_data.vertices:
-            vout = mat * v.co
+            vout = mat @ v.co
+            print(v, vout)
             vertices.append((vout.x, vout.y, v.co.z))
     else:
         vertices = [(v.co.x, v.co.y, v.co.z) for v in mesh_data.vertices]
-    tris = [{"v": (p.vertices[0], p.vertices[1], p.vertices[2])} for p in mesh_data.polygons]
+    tris = [{"v": (p.vertices[0], p.vertices[1], -p.vertices[2])} for p in mesh_data.polygons]
 
     material = {}
     if mesh_data.materials:
@@ -85,7 +86,8 @@ for o in objects:
             print("spline %d %d" % (len(sp.points), len(sp.bezier_points)))
             seg = RoadSegment(o.name + ".%03d" % i) 
             for p in sp.points:
-                seg.points.append((p.co[0], p.co[1]))
+                co = o.matrix_world @ p.co
+                seg.points.append((co[0], co[1]))
             for bp in sp.bezier_points:
                 print(bp.co)
             exported_objects.append(seg)
@@ -98,20 +100,26 @@ for o in objects:
         obj['rot'] = math.atan2(-o.matrix_world[0][1], o.matrix_world[0][0])
         
         # Get the mesh data
-        mesh = get_mesh_data(o.data)
+        mesh = get_mesh_data(o.data, o.matrix_world)
         verts = mesh['verts']
         mn = (0, 0)
         mx = (0, 0)
         for v in verts:
             print(v)
+            v = (v[0] - o.location[0], v[1] - o.location[1])
             mn = (min(mn[0], v[0]), min(mn[1], v[1]))
-            mx = (max(mx[0], v[0]), max(mn[1], v[1]))
+            mx = (max(mx[0], v[0]), max(mx[1], v[1]))
         w = mx[0] - mn[0]
         h = mx[1] - mn[1]
         print('dims:', w, h)
         clocs = []
         for c in o.children:
-            clocs.append((c.location[0] - o.location[0], c.location[1] - o.location[1]))
+            print(c.matrix_parent_inverse)
+            print(c.matrix_local)
+            co = o.matrix_world @ c.matrix_local
+            clocs.append((co[0][3] - o.location[0],  co[1][3] - o.location[1]))
+#            print(dir(c))
+#            clocs.append((c.location[0] - o.location[0], c.location[1] - o.location[1]))
         
         obj = ParkingLot(o.name, (o.location[0], o.location[1]), w, h, clocs)
         print(obj)
