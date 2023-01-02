@@ -226,6 +226,19 @@ public:
       seg.SetIntersections(intersections);
     }
   }
+  int PickRandomParkingLot() {
+    double r = (double)rand() / RAND_MAX;
+    int num_spots = 0;
+    for (int i = 0; i < parking_lots.size(); ++i) {
+      num_spots += parking_lots[i].parking_spots.size();
+    }
+    double val = 0;
+    for (int i = 0; i < parking_lots.size(); ++i) {
+      val += (double)parking_lots[i].parking_spots.size() / num_spots;
+      if (val > r) return i;
+    }
+    return (int)parking_lots.size() - 1;
+  }
   Stats stats;
   std::vector<ParkingLot> parking_lots;
   std::vector<RoadSegment> road_segments;
@@ -334,35 +347,6 @@ struct PointHash {
   }
 };
 
-dsim::Point Add(const dsim::Point& p1, const dsim::Point p2) {
-  dsim::Point p;
-  p.set_x(p1.x() + p2.x());
-  p.set_y(p1.y() + p2.y());
-  return p;
-}
-
-dsim::Point Sub(const dsim::Point& p1, const dsim::Point p2) {
-  dsim::Point p;
-  p.set_x(p1.x() - p2.x());
-  p.set_y(p1.y() - p2.y());
-  return p;
-}
-
-double Distance(const dsim::Point& p1, const dsim::Point p2) {
-  const double dx = p1.x() - p2.x();
-  const double dy = p1.y() - p2.y();
-  return sqrt(dx * dx + dy * dy);
-}
-
-dsim::Point Interpolate(const dsim::Point& p1, const dsim::Point p2, double t) {
-  dsim::Point p;
-  const double dx = p2.x() - p1.x();
-  const double dy = p2.y() - p1.y();
-  p.set_x(p1.x() + dx * t);
-  p.set_y(p1.y() + dy * t);
-  return p;
-}
-
 nacb::Vec2d Interpolate(const nacb::Vec2d& p1, const nacb::Vec2d& p2, double t) {
   return p1 * (1.0 - t) + p2 * t;
 }
@@ -457,6 +441,7 @@ PlanTravel(Level& level,
       const double edge_speed = ai.first->GetAverageSpeed();
       if (edge_speed <= 1e-4) {
         LOG(INFO) << "Edge speed is zero";
+        
       }
       const double e = (pos[c] - pos[top]).len() / edge_speed;
       const double hval = (pos[c] - pos[a]).len() / kMaxSpeed;
@@ -572,7 +557,7 @@ public:
         const auto& p2 = segment.road_segment->points[i2];
         segment_distance += (p1 - p2).len();
       }
-      accel.push_back(std::pair<double, int>(distance + segment_distance - 1.5, -1));
+      accel.push_back(std::pair<double, int>(distance + segment_distance - 1.9, -1));
       accel.push_back(std::pair<double, int>(distance + segment_distance - 0.1, 1));
       distance += segment_distance;
     }
@@ -592,12 +577,13 @@ public:
       wait_ -= dt;
       if (wait_ < 0) {
         /// Make new plan
-        start_ = int(0.99999 * level_.parking_lots.size() * rand()  / RAND_MAX);
-        if (start_ == end_) {
-          start_ = (start_ + 1) % level_.parking_lots.size();
+        start_ = level_.PickRandomParkingLot(); // int(0.99999 * level_.parking_lots.size() * rand()  / RAND_MAX);
+        while (start_ == end_) {
+          start_ = level_.PickRandomParkingLot(); // int(0.99999 * level_.parking_lots.size() * rand()  / RAND_MAX);
+          //start_ = (start_ + 1) % level_.parking_lots.size();
         }
-        plan_ = PlanTravel(level_, level_.parking_lots[end_], car_id_ % 4,
-                           level_.parking_lots[start_], car_id_ % 4);
+        plan_ = PlanTravel(level_, level_.parking_lots[end_], car_id_ % level_.parking_lots[end_].parking_spots.size(),
+                           level_.parking_lots[start_], car_id_ % level_.parking_lots[start_].parking_spots.size());
         std::swap(start_, end_);
         LOG(INFO) << "Planning from:" << start_ << " to " << end_;
 
@@ -670,7 +656,7 @@ public:
       const auto d_car = (car.pos_ - pos_);
       const double d = d_car.len();
 
-      if (d > 3.0) continue;
+      if (d / std::min(std::max(speed_, 1.0), 4.0) > 1.0) continue;
       if (d_car.dot(dpos) > 0.70 * d * dpos_len) {
         if (d < 1) {
           accel += -16;
