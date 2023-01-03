@@ -19,9 +19,11 @@
 #include <nmisc/timer.h>
 #include <nmath/vec3.h>
 #include <nmath/vec2.h>
+#include <nappear/mesh.h>
 #include "level.pb.h"
 
 DEFINE_string(filename, "", "Path to input filename");
+DEFINE_string(car_mesh, "", "Path to car mesh");
 
 class Car;
 
@@ -131,7 +133,6 @@ public:
 
   void AddSpeedEstimate(double t, double sp) {
     if (deck.size() > kMaxDeckSize) {
-      LOG(INFO) << "Popping from the deck!\n";
       deck.pop_front();
     }
     if (deck.empty() || int(t) != deck.back().t) {
@@ -227,6 +228,19 @@ public:
     info.num_observations++;
   }
 
+  double GetAverageTripTime() {
+    double average_time = 0;
+    int num_pairs = 0;
+    for (const auto& src: data) {
+      for (const auto& dest: src.second) {
+        const double estimate = dest.second.total_time / std::max(1, dest.second.num_observations);
+        average_time += estimate;
+        num_pairs++;
+      }
+    }
+    return average_time / num_pairs;
+  }
+
   void Print() {
     double average_time = 0;
     int num_pairs = 0;
@@ -306,10 +320,56 @@ struct Stage {
     Segment(RoadSegment* s = nullptr,
             int si=0, int ei=0): road_segment(s), start_index(si), end_index(ei) {
     }
+    void GetPoints(int index,
+                   nacb::Vec2d* p1,
+                   nacb::Vec2d* p2) const {
+      const int i1 = (start_index + index) % road_segment->points.size();
+      const int i2 = (start_index + index + 1) % road_segment->points.size();
+      *p1 = road_segment->points[i1];
+      *p2 = road_segment->points[i2];
+    }
+    const nacb::Vec2d& GetPoint(int index, int* point_index = nullptr) const {
+      const int i = (start_index + index) % road_segment->points.size();
+      if (point_index) *point_index = i;
+      return road_segment->points[i];
+    }
+    bool IsLastIndex(int sub_index) const {
+      return end_index == (start_index + sub_index) % road_segment->points.size();
+    }
   };
 
   Stage(Type t = NONE): type(t) {}
 
+  bool GetPreviousPoint(int segment_index, int sub_index, nacb::Vec2d* p0) {
+    if (segment_index == 0 && sub_index == 0) return false;
+    if (sub_index == 0) {
+      const Segment& prev_segment = segments[segment_index - 1];
+      *p0 = prev_segment.road_segment->points[prev_segment.end_index - 1];
+    } else {
+      const Segment& prev_segment = segments[segment_index];
+      *p0 = prev_segment.GetPoint(sub_index - 1);
+    }
+    return true;
+  }
+    
+  bool GetUpcomingPoint(int segment_index, int sub_index, Segment** next_segment, nacb::Vec2d* p3) {
+    if (type != ROAD_TRAVEL) return false;
+    *next_segment = nullptr;
+
+    Segment& segment = segments[segment_index];
+    if (segment.IsLastIndex(sub_index + 1)) {
+      if (segment_index + 1 < segments.size()) {
+        *next_segment = &segments[segment_index + 1];
+        *p3 = (*next_segment)->GetPoint(1); // road_segment->points[((*next_segment)->start_index + 1) % (*next_segment)->road_segment->points.size()];
+        return true;
+      }
+    } else {
+      *p3 = segment.GetPoint(sub_index + 2);
+      return true;
+    }
+    return false;
+  }
+  
   Type type;
   nacb::Vec2d point;
   std::vector<Segment> segments;
@@ -573,37 +633,37 @@ public:
     stage_index_ = 0;
     pos_ = (level.parking_lots[start].parking_spots[0].pos + level.parking_lots[start].pos);
       
-    max_speed_ = 6 + 4.0 * rand() / RAND_MAX;
-    BuildStaticAccelerationPolicy();
+    max_speed_ = 12 + 4.0 * rand() / RAND_MAX;
     //wait_ = 1.5 * rand() / RAND_MAX;
   }
 
-  void BuildStaticAccelerationPolicy() {
-    // Loop through segments
-    double distance = 0;
-    std::vector<std::pair<double, int> > accel;
-    accel.push_back(std::pair<double, int>(0, 1));
-    for (int si = 0; si < (int)plan_[1].segments.size(); ++si) {
-      const auto& segment = plan_[1].segments[si];
-      double segment_distance = 0;
-      for (int i = 0; (segment.start_index + i)  % (int)segment.road_segment->points.size() != segment.end_index; ++i) {
-        int i1 = (segment.start_index + i) % (int)segment.road_segment->points.size() ;
-        int i2 = (segment.start_index + i + 1) % (int)segment.road_segment->points.size();
-        const auto& p1 = segment.road_segment->points[i1];
-        const auto& p2 = segment.road_segment->points[i2];
-        segment_distance += (p1 - p2).len();
-      }
-      accel.push_back(std::pair<double, int>(distance + segment_distance - 1.9, -1));
-      accel.push_back(std::pair<double, int>(distance + segment_distance - 0.1, 1));
-      distance += segment_distance;
-    }
-    accel_ = accel;
-  }
   RoadSegment* road_segment() const {
     if (stage_index_ == 1 && stage_index_ < (int)plan_.size()) {
-      return plan_[stage_index_].segments[segment_index_].road_segment;
+      if (segment_index_ < plan_[stage_index_].segments.size()) {
+        return plan_[stage_index_].segments[segment_index_].road_segment;
+      }
     }
     return nullptr;
+  }
+
+  void BuildNewPlan() {
+    /// Make new plan
+    start_ = level_.PickRandomParkingLot();
+    while (start_ == end_) {
+      start_ = level_.PickRandomParkingLot();
+    }
+    plan_ = PlanTravel(level_, level_.parking_lots[end_], car_id_ % level_.parking_lots[end_].parking_spots.size(),
+                       level_.parking_lots[start_], car_id_ % level_.parking_lots[start_].parking_spots.size());
+    std::swap(start_, end_);
+    LOG(INFO) << "Planning from:" << start_ << " to " << end_;
+        
+    stage_index_ = 0;
+    segment_index_ = 0;
+    sub_index_ = 0;
+    distance_travelled_so_far_ = 0;
+    distance_to_travel = 0;
+    wait_ = 0;
+    upcoming_intersection_ = nullptr;
   }
   
   void Step(std::vector<Car>& cars,
@@ -613,26 +673,7 @@ public:
     if (wait_ > 0) {
       wait_ -= dt;
       if (wait_ < 0) {
-        /// Make new plan
-        start_ = level_.PickRandomParkingLot(); // int(0.99999 * level_.parking_lots.size() * rand()  / RAND_MAX);
-        while (start_ == end_) {
-          start_ = level_.PickRandomParkingLot(); // int(0.99999 * level_.parking_lots.size() * rand()  / RAND_MAX);
-          //start_ = (start_ + 1) % level_.parking_lots.size();
-        }
-        plan_ = PlanTravel(level_, level_.parking_lots[end_], car_id_ % level_.parking_lots[end_].parking_spots.size(),
-                           level_.parking_lots[start_], car_id_ % level_.parking_lots[start_].parking_spots.size());
-        std::swap(start_, end_);
-        LOG(INFO) << "Planning from:" << start_ << " to " << end_;
-        
-        stage_index_ = 0;
-        segment_index_ = 0;
-        sub_index_ = 0;
-        distance_travelled_so_far_ = 0;
-        distance_to_travel = 0;
-        wait_ = 0;
-        upcoming_intersection_ = nullptr;
-        
-        BuildStaticAccelerationPolicy();
+        BuildNewPlan();
       } else {
         return;
       }
@@ -640,15 +681,49 @@ public:
     // Acceleration / deceleration
     // Need to decelerate when approaching a stop (or when getting too close to another)
     double accel = 1;
-    for (int i = 0; i < (int)accel_.size(); ++i) {
-      if (distance_travelled_so_far_ >= accel_[i].first &&
-          ((i == (int)accel_.size() - 1) ||
-           distance_travelled_so_far_ < accel_[i + 1].first)) {
-        accel = accel_[i].second;
-        break;
+    RoadSegment* rs = road_segment();
+    if (rs) {
+      Stage& stage = plan_[stage_index_];      
+      auto* segment = &stage.segments[segment_index_];
+      nacb::Vec2d p1, p2, p3;
+      segment->GetPoints(sub_index_, &p1, &p2);
+      
+      Stage::Segment* next_segment = nullptr;
+      double max_upcoming_speed = rs->speed_limit;
+      if (stage.GetUpcomingPoint(segment_index_, sub_index_, &next_segment, &p3)) {
+        if (next_segment) {
+          max_upcoming_speed = next_segment->road_segment->speed_limit;
+        }
+        nacb::Vec2d d1 = (p2 - p1);
+        nacb::Vec2d d2 = (p3 - p2);
+        d1.normalize();
+        d2.normalize();
+
+        if (d1.dot(d2) <= 1e-4) {
+          const double kMaxCornerSpeed = 2.5;
+          max_upcoming_speed = std::min(max_upcoming_speed, kMaxCornerSpeed);
+        }
+        double speed_to_shed = speed_ - max_upcoming_speed;
+        if (speed_to_shed > 0) {
+          const double distance_to_corner = (p2 - pos_).len();
+          const double time_to_corner = distance_to_corner / std::max(0.1, speed_);
+          const double deceleration_rate = 8;
+          const double time_to_shed_speed = speed_to_shed / deceleration_rate;
+          if (time_to_corner <= time_to_shed_speed) {
+            accel = -1;
+            if (time_to_corner < 0.5 * time_to_shed_speed) {
+              accel = -4;
+              breaking_ = true;
+            }
+            if (time_to_corner < 0.75 * time_to_shed_speed) {
+              accel = -2;
+            }
+          }
+        }
       }
     }
 
+    // Intersecton handling
     if (upcoming_intersection_) {
       const auto d_pos = (upcoming_intersection_->pos - pos_);
       const double d = d_pos.len();
@@ -685,6 +760,10 @@ public:
     // Primitive collision avoidance
     const auto dpos = (pos_ -  last_pos_);
     const double dpos_len = dpos.len();
+    if (dpos_len > 0) {
+      angle_ = atan2(sin(angle_) * 0.5 + 0.5 * dpos.y / dpos_len,
+                     cos(angle_) * 0.5 + 0.5 * dpos.x / dpos_len);
+    }
     for (const auto& car: cars) {
       if (&car == this) continue;
       if (//!upcoming_intersection_ &&
@@ -702,50 +781,20 @@ public:
         } else {
           accel += -2;
         }
-        //breaking_ = true;
       }
     }
-    if (false) {
-      static int stopping = 0;
-      static double time_to_stop = 0;
-      static double distance_to_stop = 0;
-      if (car_id_ == 0) {
-        //speed_ -= 8 * dt * 2 / t;
-        if (speed_ >= 9 && !stopping) {
-          LOG(INFO) << "speed:" << speed_;
-          stopping = 1;
-          // a(t) = -8
-          // v(t) = -8 * t + speed
-          // p(t) = -4 * t^2 + speed*t
-
-          double t = -(1 - speed_) / 8.0 + 1.0/60.0;
-          time_to_stop = t;
-          distance_to_stop = speed_ * t - 4 * t * t;
-        }
-        if (stopping == 1) {
-          double t = time_to_stop;
-          double distance_to_stop_n = speed_ * t - 4 * t * t;
-
-          accel = -1;
-          LOG(INFO) << car_id_ << " speed:" << speed_ << " "
-                    << time_to_stop << " " << distance_to_stop
-                    << " " << distance_to_stop_n << "\n";
-          time_to_stop -= dt;
-          distance_to_stop -= speed_ * dt;
-        }
-        if (speed_ <= 1.01 && stopping) {
-          stopping++;
-        }
-        //8 x ^ 2  = sqrt(speed / 8)
-        //LOG(INFO) << stopping_time
-      }
+    const RoadSegment* my_road_segment = road_segment();
+    double speed_limit = my_road_segment ? my_road_segment->speed_limit : 2;
+    if (speed_ > speed_limit) {
+      accel = -2; // speed_ = my_road_segment->speed_limit;
     }
-    
+
     if (accel > 0) {
-      speed_ += 4.0 * dt;
+      speed_ += accel * 4.0 * dt;
       if (speed_ >= max_speed_) {
         speed_ = max_speed_;
       }
+
     } else {
       speed_ += accel * 8.0 * dt;
       if (accel == -1) {
@@ -801,26 +850,65 @@ public:
         while (!set &&
                (sub_index_ + segment->start_index) % segment->road_segment->points.size() != segment->end_index &&
                segment_index_ < (int)stage.segments.size()) {
-          int i1 = (segment->start_index + sub_index_) % segment->road_segment->points.size() ;
-          int i2 = (segment->start_index + sub_index_ + 1) % segment->road_segment->points.size();
-          const auto& p1 = segment->road_segment->points[i1];
-          const auto& p2 = segment->road_segment->points[i2];
+          int i1, i2;
+          nacb::Vec2d p1 = segment->GetPoint(sub_index_, &i1);
+          const nacb::Vec2d& p2 = segment->GetPoint(sub_index_ + 1, &i2);
           if (segment->road_segment->intersections[i2]) {
             if (!ignore_intersections_.count(segment->road_segment->intersections[i2])) {
               upcoming_intersection_ = segment->road_segment->intersections[i2];
             }
-            breaking_ = true;
           }
+          // This is a hack.
+          const double rounding_dot_thresh = 0.72;
           const double d = (p2 - p1).len();
-          if (d > 0 && distance_to_travel < d) {
-            pos_ = Interpolate(p1, p2, distance_to_travel / d);
+          bool will_round = false;
+          if (true) {
+            Stage::Segment* next_segment;
+            nacb::Vec2d p3;
+            if (stage.GetUpcomingPoint(segment_index_, sub_index_, &next_segment, &p3)) {
+              nacb::Vec2d b = (p3 - p2);
+              nacb::Vec2d a = (p2 - p1);
+              b.normalize();
+              a.normalize();
+              if (b.dot(a) <= rounding_dot_thresh) will_round = true;
+            }
+          }
+          
+          if (d > 0 && distance_to_travel < (d + 0.6 * will_round)) {
+            nacb::Vec2d p0, p3;
+            Stage::Segment* next_segment;
+            double rounding_dist = 1.0;
+            double rounding_t = (distance_to_travel - (d - rounding_dist)) / (rounding_dist + 0.6 * will_round);
+            if (stage.GetPreviousPoint(segment_index_, sub_index_, &p0)) {
+              nacb::Vec2d a = (p1 - p0);
+              a.normalize();
+              if (a.dot((p2 - p1)) <= rounding_dot_thresh * d) {
+                p1 = p1 + (p2 - p1) * (rounding_dist / d);
+              }
+            }
+            if (rounding_t >= 0 &&
+                stage.GetUpcomingPoint(segment_index_, sub_index_, &next_segment, &p3)) {
+              nacb::Vec2d b = (p3 - p2);
+              nacb::Vec2d a = (p2 - p1);
+              b.normalize();
+              a.normalize();
+              if (b.dot(a) <= rounding_dot_thresh) {
+                a = Interpolate(p1, p2, (d - rounding_dist + rounding_t * rounding_dist) / d);
+                b = p2 + b * rounding_t * rounding_dist;
+                pos_ = Interpolate(a, b, rounding_t);
+                set = true;
+              }
+            }
+            if (!set) {
+              pos_ = Interpolate(p1, p2, distance_to_travel / d);
+            }
             set = true;
 
             segment->road_segment->cars[i1].insert(this);
             segment->road_segment->AddSpeedEstimate(t_abs, (pos_ - last_pos_).len() / dt);
             break;
           } else {
-            distance_to_travel -= d;
+            distance_to_travel -= (d + 0.6 * will_round);
             pos_ = p2;
             ignore_intersections_.clear();
             sub_index_++;
@@ -875,6 +963,8 @@ public:
 
   nacb::Vec2d pos_;
   nacb::Vec2d last_pos_;
+  float angle_ = 0;
+  
   bool breaking_ = false;
   IntersectionControl* upcoming_intersection_ = nullptr;
   std::set<IntersectionControl*> ignore_intersections_;
@@ -901,11 +991,18 @@ public:
 
     ffont_ = FFont("/usr/share/fonts/bitstream-vera/Vera.ttf", 12);
     ffont_.setScale(0.5, 0.5);
+    car_mesh_.readObj(FLAGS_car_mesh.c_str());
+    car_mesh_.initNormals(true);
+    car_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
+    car_mesh_.initNormals(true);
   }
 
   bool keyboard(unsigned char c, int x, int y) {
     if (c == ' ') {
       cars_[0].speed_ = 0;
+    }
+    if (c == 'f') {
+      follow_ = !follow_;
     }
     return true;
   }
@@ -916,6 +1013,22 @@ public:
       level_.stats.Print();
     }
     ++count;
+
+    if (follow_) {
+      auto& car = cars_[0];
+      glMatrixMode(GL_MODELVIEW);
+      glLoadIdentity();
+      double r = car.angle_;
+
+      glRotatef(15, 1, 0, 0);
+      glTranslatef(0, -1.0, -1.0);
+      glRotatef(90, -1, 0, 0);
+      glRotatef(-180 * r / M_PI + 90, 0, 0, 1);
+      glTranslatef(-car.pos().x, -car.pos().y, 0);
+    }
+
+    
+    
     for (int i = 0; i < (int)level_.parking_lots.size(); ++i) {
       const auto& lot = level_.parking_lots[i];
 
@@ -971,7 +1084,51 @@ public:
       glVertex2f(car.pos().x, car.pos().y);
     };
     glEnd();
+
+    glDisable(GL_TEXTURE_2D);
+    glEnable(GL_LIGHTING);
+    glEnable(GL_COLOR_MATERIAL);
+    glEnable(GL_LIGHT0);
+    glColorMaterial(GL_FRONT_AND_BACK, GL_AMBIENT_AND_DIFFUSE);
+    glDisable(GL_CULL_FACE);
+    glEnable(GL_DEPTH_TEST);
     
+    float pos[4] = {0, 0, 1, 0};
+    float white[4] = {1, 1, 1, 1};
+    float black[4] = {0, 0, 0, 1};
+    glLightfv(GL_LIGHT0, GL_POSITION, pos);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
+    glLightfv(GL_LIGHT0, GL_AMBIENT, black);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+    glLightModelfv(GL_LIGHT_MODEL_TWO_SIDE, white);
+    GLenum err = glGetError();
+    if (err != GL_NO_ERROR) {
+      LOG(INFO) << err;
+    }
+    for (const auto& car: cars_) {
+      glColor3f(0.5, 0.5, 0.5);
+      glPushMatrix();
+      double r = car.angle_;
+       
+      glTranslatef(car.pos().x, car.pos().y, 0);
+      glRotatef(180 * r / M_PI, 0, 0, 1);
+      car_mesh_.draw();
+      glPopMatrix();
+    }
+    glDisable(GL_LIGHTING);
+
+    glColor3f(1, 1, 1);
+    glEnable(GL_TEXTURE_2D);
+    double average_trip_time = level_.stats.GetAverageTripTime();
+    glMatrixMode(GL_MODELVIEW);
+    glPushMatrix();
+    glLoadIdentity();
+    glTranslatef(0, 0, -20);
+    char str[1024];
+    snprintf(str, sizeof(str), "ATT: %f", average_trip_time);
+    ffont_.drawString(str, -8.f, -6.f);
+    glPopMatrix();
+    glDisable(GL_TEXTURE_2D);
   }
 
   void refresh() {
@@ -994,6 +1151,8 @@ public:
   Level& level_;
   std::vector<Car> cars_;
   FFont ffont_;
+  bool follow_ = false;
+  nappear::Mesh car_mesh_;
 };
 
 int main(int ac, char* av[]) {
