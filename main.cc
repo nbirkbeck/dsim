@@ -19,11 +19,12 @@
 #include <nmisc/timer.h>
 #include <nmath/vec3.h>
 #include <nmath/vec2.h>
+#include <nimage/image.h>
 #include <nappear/mesh.h>
 #include "level.pb.h"
 
 DEFINE_string(filename, "", "Path to input filename");
-DEFINE_string(car_mesh, "", "Path to car mesh");
+DEFINE_string(model_dir, "", "Path to models");
 
 class Car;
 
@@ -49,6 +50,11 @@ public:
     return true;
   }
 };
+
+nacb::Vec2d Interpolate(const nacb::Vec2d& p1, const nacb::Vec2d& p2, double t) {
+  return p1 * (1.0 - t) + p2 * t;
+}
+
 
 class RoadSegment;
 
@@ -279,11 +285,11 @@ public:
   int PickRandomParkingLot() {
     double r = (double)rand() / RAND_MAX;
     int num_spots = 0;
-    for (int i = 0; i < parking_lots.size(); ++i) {
+    for (int i = 0; i < (int)parking_lots.size(); ++i) {
       num_spots += parking_lots[i].parking_spots.size();
     }
     double val = 0;
-    for (int i = 0; i < parking_lots.size(); ++i) {
+    for (int i = 0; i < (int)parking_lots.size(); ++i) {
       val += (double)parking_lots[i].parking_spots.size() / num_spots;
       if (val > r) return i;
     }
@@ -305,6 +311,24 @@ public:
 //
 // Simplifications: start with no collision detection.
 
+double EstimateCurveLength(const nacb::Vec2d& a,
+                           const nacb::Vec2d& b,
+                           const nacb::Vec2d& c) {
+  nacb::Vec2d prev;
+  double len = 0;
+  for (int i = 0; i <= 10; ++i) {
+    double t = double(i) / 10;
+    nacb::Vec2d point = Interpolate(Interpolate(a, b, t), Interpolate(b, c, t), t);
+    if (i) {
+      len += (point - prev).len();
+    }
+    prev = point;
+  }
+  return len;
+}
+
+static constexpr double kRoundingDist = 0.9;
+
 struct Stage {
   enum Type {
      NONE=0,
@@ -314,31 +338,124 @@ struct Stage {
   };
 
   struct Segment {
+    struct Info {
+      bool smooth_start = false;
+      bool smooth_end = false;
+      nacb::Vec2d modified_start;
+      nacb::Vec2d anchors[2];
+      double segment_length = 0;
+      double curve_length = 0;
+    };
+    
     RoadSegment* road_segment = nullptr;
     int start_index = 0;
     int end_index = 0;
+    std::vector<Info> info;
+    
     Segment(RoadSegment* s = nullptr,
             int si=0, int ei=0): road_segment(s), start_index(si), end_index(ei) {
+      if (s) {
+        const int len = (end_index - start_index + 2 * (int)road_segment->points.size()) % (int)road_segment->points.size();
+        info.resize(len + 1);
+      }
     }
+    double GetTotalLength(int index) const {
+      return (info[index].smooth_end ?
+              info[index].segment_length + (info[index].curve_length - kRoundingDist) :
+              info[index].segment_length);
+    }
+      
     void GetPoints(int index,
                    nacb::Vec2d* p1,
                    nacb::Vec2d* p2) const {
-      const int i1 = (start_index + index) % road_segment->points.size();
-      const int i2 = (start_index + index + 1) % road_segment->points.size();
+      const int i1 = (start_index + index) % (int)road_segment->points.size();
+      const int i2 = (start_index + index + 1) % (int)road_segment->points.size();
       *p1 = road_segment->points[i1];
       *p2 = road_segment->points[i2];
     }
     const nacb::Vec2d& GetPoint(int index, int* point_index = nullptr) const {
-      const int i = (start_index + index) % road_segment->points.size();
+      const int i = (start_index + index) % (int)road_segment->points.size();
       if (point_index) *point_index = i;
       return road_segment->points[i];
     }
     bool IsLastIndex(int sub_index) const {
-      return end_index == (start_index + sub_index) % road_segment->points.size();
+      return end_index == (start_index + sub_index) % (int)road_segment->points.size();
     }
+
+    bool GetInterpolatedPoint(int index,
+                              double* distance_to_travel,
+                              nacb::Vec2d* pos) {
+      const double total_curve_length = GetTotalLength(index);
+      if (*distance_to_travel > total_curve_length) {
+        *distance_to_travel -= total_curve_length;
+        return false;
+      }
+      nacb::Vec2d p1, p2;
+      GetPoints(index, &p1, &p2);
+      
+      const double rounding_start = info[index].segment_length - kRoundingDist;
+      const double rounding_t = (*distance_to_travel - rounding_start) /
+        (info[index].curve_length);
+      if (info[index].smooth_start) {
+        p1 = info[index].modified_start;
+      }
+      if (info[index].smooth_end && rounding_t >= 0) {
+        const nacb::Vec2d a = Interpolate(info[index].anchors[0], p2,  rounding_t); // (d - rounding_dist + rounding_t * rounding_dist) / d);
+        const nacb::Vec2d b = Interpolate(p2, info[index].anchors[1],  rounding_t); // (d - rounding_dist + rounding_t * rounding_dist) / d);
+        *pos = Interpolate(a, b, rounding_t);
+      } else {
+        *pos = Interpolate(p1, p2, *distance_to_travel / info[index].segment_length);
+      }
+      return true;
+    }
+
   };
 
-  Stage(Type t = NONE): type(t) {}
+  Stage(Type t = NONE, const std::vector<Segment>& segs = {}): type(t), segments(segs) {
+    if (type == ROAD_TRAVEL) BuildCurveInfo();
+    LOG(INFO) << "segments_size:" << (int)(segments.size()) << " <-";
+  }
+
+  void BuildCurveInfo() {
+    const double kSmoothThreshold = 0.95;
+    bool prev_smooth = false;
+    nacb::Vec2d last_end;
+    for (int i = 0; i < (int)segments.size(); ++i) {
+      for (int j = 0; !segments[i].IsLastIndex(j); ++j) {
+        
+        nacb::Vec2d p1, p2, d1;
+        segments[i].GetPoints(j, &p1, &p2);
+        d1 = (p2 - p1);
+        double d1_len = d1.normalize();
+        segments[i].info[j].segment_length = d1_len;
+        if (prev_smooth) {
+          segments[i].info[j].segment_length = (p2 - last_end).len();
+          segments[i].info[j].smooth_start = prev_smooth;
+          segments[i].info[j].modified_start = last_end;
+        }
+        
+        prev_smooth = false;
+        Segment* next_segment = nullptr;
+        nacb::Vec2d p3;
+        if (GetUpcomingPoint(i, j, &next_segment, &p3)) {
+          nacb::Vec2d d2 = p3 - p2;
+          const double d2_len = d2.normalize();
+          if (d2_len >= 1 &&
+              d1_len >= 1 &&
+              d1.dot(d2) < kSmoothThreshold) {
+            prev_smooth = true;
+            segments[i].info[j].smooth_end = true;
+            segments[i].info[j].anchors[0] = (p2 - d1 * kRoundingDist);
+            segments[i].info[j].anchors[1] = (p2 + d2 * kRoundingDist);
+            segments[i].info[j].curve_length = EstimateCurveLength(segments[i].info[j].anchors[0],
+                                                                   p2,
+                                                                   segments[i].info[j].anchors[1]);
+            last_end = segments[i].info[j].anchors[1];
+          }
+        }
+      }
+    }
+  }
 
   bool GetPreviousPoint(int segment_index, int sub_index, nacb::Vec2d* p0) {
     if (segment_index == 0 && sub_index == 0) return false;
@@ -360,7 +477,8 @@ struct Stage {
     if (segment.IsLastIndex(sub_index + 1)) {
       if (segment_index + 1 < segments.size()) {
         *next_segment = &segments[segment_index + 1];
-        *p3 = (*next_segment)->GetPoint(1); // road_segment->points[((*next_segment)->start_index + 1) % (*next_segment)->road_segment->points.size()];
+        *p3 = (*next_segment)->GetPoint(1);
+        // road_segment->points[((*next_segment)->start_index + 1) % (*next_segment)->road_segment->points.size()];
         return true;
       }
     } else {
@@ -442,10 +560,6 @@ struct PointHash {
     return Hash(pos);
   }
 };
-
-nacb::Vec2d Interpolate(const nacb::Vec2d& p1, const nacb::Vec2d& p2, double t) {
-  return p1 * (1.0 - t) + p2 * t;
-}
 
 std::vector<Stage>
 PlanTravel(Level& level,
@@ -566,11 +680,7 @@ PlanTravel(Level& level,
   int k = 0;
   while (index >= 0 && k < 1000) {
     if (prev_info[index].first != segment && segment) {
-      Stage::Segment s;
-      s.road_segment = segment;
-      s.start_index = start_index;
-      s.end_index = end_index + 1;
-      segments.push_back(s);
+      segments.push_back(Stage::Segment(segment, start_index, end_index + 1));
 
       segment = prev_info[index].first;
       end_index = prev_info[index].second;
@@ -589,11 +699,7 @@ PlanTravel(Level& level,
     ++k;
   }
   if (segment != nullptr) {
-    Stage::Segment s;
-    s.road_segment = segment;
-    s.start_index = start_index;
-    s.end_index = end_index + 1;
-    segments.push_back(s);
+    segments.push_back(Stage::Segment(segment, start_index, end_index + 1));
   }
 
   std::reverse(segments.begin(), segments.end());
@@ -612,8 +718,7 @@ PlanTravel(Level& level,
   stages.back().parking_lot = &src_parking_lot;                            
   stages.back().segments.push_back(Stage::Segment{exit_segment, exit_index, exit_index});
 
-  stages.push_back(Stage(Stage::ROAD_TRAVEL));
-  stages.back().segments = segments;
+  stages.push_back(Stage(Stage::ROAD_TRAVEL, segments));
   
   stages.push_back(Stage(Stage::FIND_PARKING_SPOT));
   stages.back().segments.push_back(Stage::Segment{enter_segment, enter_index, enter_index});
@@ -669,7 +774,8 @@ public:
   void Step(std::vector<Car>& cars,
             double t_abs,
             double dt) {
-    breaking_ = false;
+    breaking_--;
+    if (breaking_ < 0) breaking_ = 0;
     if (wait_ > 0) {
       wait_ -= dt;
       if (wait_ < 0) {
@@ -713,7 +819,6 @@ public:
             accel = -1;
             if (time_to_corner < 0.5 * time_to_shed_speed) {
               accel = -4;
-              breaking_ = true;
             }
             if (time_to_corner < 0.75 * time_to_shed_speed) {
               accel = -2;
@@ -761,8 +866,11 @@ public:
     const auto dpos = (pos_ -  last_pos_);
     const double dpos_len = dpos.len();
     if (dpos_len > 0) {
-      angle_ = atan2(sin(angle_) * 0.5 + 0.5 * dpos.y / dpos_len,
-                     cos(angle_) * 0.5 + 0.5 * dpos.x / dpos_len);
+      double angle_before = angle_;
+      angle_ = atan2(sin(angle_) * 0.4 + 0.6 * dpos.y / dpos_len,
+                     cos(angle_) * 0.4 + 0.6 * dpos.x / dpos_len);
+      wheel_rot_ = 4 * atan2(sin(angle_ - angle_before),
+                             cos(angle_ - angle_before));
     }
     for (const auto& car: cars) {
       if (&car == this) continue;
@@ -794,7 +902,6 @@ public:
       if (speed_ >= max_speed_) {
         speed_ = max_speed_;
       }
-
     } else {
       speed_ += accel * 8.0 * dt;
       if (accel == -1) {
@@ -804,6 +911,7 @@ public:
       } else {
         if (speed_ < 0) speed_ = 0;
       }
+      breaking_ = std::min(breaking_ + 1, 4);
     }
 
     travel_time_ += dt;
@@ -851,69 +959,26 @@ public:
                (sub_index_ + segment->start_index) % segment->road_segment->points.size() != segment->end_index &&
                segment_index_ < (int)stage.segments.size()) {
           int i1, i2;
-          nacb::Vec2d p1 = segment->GetPoint(sub_index_, &i1);
-          const nacb::Vec2d& p2 = segment->GetPoint(sub_index_ + 1, &i2);
+          segment->GetPoint(sub_index_, &i1);
+          nacb::Vec2d p2 = segment->GetPoint(sub_index_ + 1, &i2);
           if (segment->road_segment->intersections[i2]) {
             if (!ignore_intersections_.count(segment->road_segment->intersections[i2])) {
               upcoming_intersection_ = segment->road_segment->intersections[i2];
             }
           }
-          // This is a hack.
-          const double rounding_dot_thresh = 0.72;
-          const double d = (p2 - p1).len();
-          bool will_round = false;
-          if (true) {
-            Stage::Segment* next_segment;
-            nacb::Vec2d p3;
-            if (stage.GetUpcomingPoint(segment_index_, sub_index_, &next_segment, &p3)) {
-              nacb::Vec2d b = (p3 - p2);
-              nacb::Vec2d a = (p2 - p1);
-              b.normalize();
-              a.normalize();
-              if (b.dot(a) <= rounding_dot_thresh) will_round = true;
-            }
-          }
-          
-          if (d > 0 && distance_to_travel < (d + 0.6 * will_round)) {
-            nacb::Vec2d p0, p3;
-            Stage::Segment* next_segment;
-            double rounding_dist = 1.0;
-            double rounding_t = (distance_to_travel - (d - rounding_dist)) / (rounding_dist + 0.6 * will_round);
-            if (stage.GetPreviousPoint(segment_index_, sub_index_, &p0)) {
-              nacb::Vec2d a = (p1 - p0);
-              a.normalize();
-              if (a.dot((p2 - p1)) <= rounding_dot_thresh * d) {
-                p1 = p1 + (p2 - p1) * (rounding_dist / d);
-              }
-            }
-            if (rounding_t >= 0 &&
-                stage.GetUpcomingPoint(segment_index_, sub_index_, &next_segment, &p3)) {
-              nacb::Vec2d b = (p3 - p2);
-              nacb::Vec2d a = (p2 - p1);
-              b.normalize();
-              a.normalize();
-              if (b.dot(a) <= rounding_dot_thresh) {
-                a = Interpolate(p1, p2, (d - rounding_dist + rounding_t * rounding_dist) / d);
-                b = p2 + b * rounding_t * rounding_dist;
-                pos_ = Interpolate(a, b, rounding_t);
-                set = true;
-              }
-            }
-            if (!set) {
-              pos_ = Interpolate(p1, p2, distance_to_travel / d);
-            }
-            set = true;
-
+          if (segment->GetInterpolatedPoint(sub_index_, &distance_to_travel, &pos_)) {
             segment->road_segment->cars[i1].insert(this);
             segment->road_segment->AddSpeedEstimate(t_abs, (pos_ - last_pos_).len() / dt);
+            set = true;
             break;
           } else {
-            distance_to_travel -= (d + 0.6 * will_round);
+            const bool zero_length =  (segment->info[sub_index_].segment_length == 0);
             pos_ = p2;
             ignore_intersections_.clear();
             sub_index_++;
+
             // This is a special hack for a looped segment
-            if (d == 0) {
+            if (zero_length) {
               continue;
             }
 
@@ -933,8 +998,10 @@ public:
           }
         }
       } else {
+        // What here.
       }
     }
+    wheel_anim_ += speed_ / (2 * M_PI * 0.39 / 4.0) * dt;
   }
 
   const nacb::Vec2d& pos() const {
@@ -964,8 +1031,10 @@ public:
   nacb::Vec2d pos_;
   nacb::Vec2d last_pos_;
   float angle_ = 0;
+  float wheel_rot_ = 0;
+  float wheel_anim_ = 0;
   
-  bool breaking_ = false;
+  int breaking_ = 0;
   IntersectionControl* upcoming_intersection_ = nullptr;
   std::set<IntersectionControl*> ignore_intersections_;
 };
@@ -991,10 +1060,39 @@ public:
 
     ffont_ = FFont("/usr/share/fonts/bitstream-vera/Vera.ttf", 12);
     ffont_.setScale(0.5, 0.5);
-    car_mesh_.readObj(FLAGS_car_mesh.c_str());
-    car_mesh_.initNormals(true);
+    car_mesh_.readObj((FLAGS_model_dir + "/car.obj").c_str());
     car_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
     car_mesh_.initNormals(true);
+
+    wheel_mesh_.readObj((FLAGS_model_dir + "/wheel.obj").c_str());
+    wheel_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
+    wheel_mesh_.initNormals(true);
+
+    drop_shadow_mesh_.readObj((FLAGS_model_dir + "/drop_shadow.obj").c_str());
+    drop_shadow_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
+    drop_shadow_mesh_.initNormals(true);
+
+    stop_sign_mesh_.readObj((FLAGS_model_dir + "/stop_sign.obj").c_str());
+    stop_sign_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
+    stop_sign_mesh_.initNormals(true);
+
+    lights_mesh_.readObj((FLAGS_model_dir + "/lights.obj").c_str());
+    lights_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
+    lights_mesh_.initNormals(true);
+
+    light_mesh_.readObj((FLAGS_model_dir + "/light.obj").c_str());
+    light_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
+    light_mesh_.initNormals(true);
+
+    tail_light_mesh_.readObj((FLAGS_model_dir + "/tail_light.obj").c_str());
+    tail_light_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
+    tail_light_mesh_.initNormals(true);
+    
+    glGenTextures(1, &tex_);
+    nacb::Image8 image;
+    image.read((FLAGS_model_dir + "/car.png").c_str());
+    glBindTexture(GL_TEXTURE_2D, tex_);
+    image.initTexture();
   }
 
   bool keyboard(unsigned char c, int x, int y) {
@@ -1027,7 +1125,52 @@ public:
       glTranslatef(-car.pos().x, -car.pos().y, 0);
     }
 
-    
+    glClearColor(0.5, 0.5, 0.7, 1.0);
+    glColor3f(0.05, 0.1, 0.05);
+    glDepthMask(0);
+    glBegin(GL_QUADS);
+    glVertex2f(-100, -100);
+    glVertex2f( 100, -100);
+    glVertex2f( 100,  100);
+    glVertex2f(-100,  100);
+    glEnd();
+    glDepthMask(1);
+
+    for (int i = 0; i < (int)level_.intersections.size(); ++i) {
+      glPushMatrix();
+      glTranslatef(level_.intersections[i].pos.x,
+                   level_.intersections[i].pos.y,
+                   0);
+      if (level_.intersections[i].IsStopSign()) {
+        glColor3f(1, 0.25, 0.25);
+        const double r = atan2(level_.intersections[i].dir.y,
+                               level_.intersections[i].dir.x);
+        glRotatef(180 * r / M_PI, 0, 0, 1);
+        glTranslatef(-0.5, -0.5, 0);
+        stop_sign_mesh_.draw();
+      } else if (level_.intersections[i].IsLight()) {
+        glColor3f(0.5, 0.5, 0.5);
+        lights_mesh_.draw();
+
+        for (const auto& segment : level_.intersections[i].incoming_segments) {
+          const auto& points = segment.first->points;
+          const nacb::Vec2d& p1 = points[segment.second];
+          const nacb::Vec2d& p2 = points[(segment.second + 1) % points.size()];
+          const nacb::Vec2d dir = p2 - p1;
+          const double r = atan2(dir.y, dir.x);
+          glPushMatrix();
+          glRotatef(180 * r / M_PI, 0, 0, 1);
+          if (level_.intersections[i].IsGreen(segment.first)) {
+            glColor3f(0.1, 1, 0.1);
+          } else {
+            glColor3f(1, 0.1, 0.1);
+          }
+          light_mesh_.draw();
+          glPopMatrix();
+        }
+      }
+      glPopMatrix();
+    }
     
     for (int i = 0; i < (int)level_.parking_lots.size(); ++i) {
       const auto& lot = level_.parking_lots[i];
@@ -1073,19 +1216,18 @@ public:
       
     }
 
-    glPointSize(3);
-    glBegin(GL_POINTS);
-    for (const auto& car: cars_) {
-      glColor3f(0, 1, 0);
-      if (car.breaking_) {
-        glColor3f(0, 0, 1);
+    if (car_mesh_.vert.empty()) {
+      glPointSize(3);
+      glBegin(GL_POINTS);
+      for (const auto& car: cars_) {
+        glColor3f(0, 1, 0);
+        if (car.breaking_ > 1) {
+          glColor3f(0, 0, 1);
+        }
+        glVertex2f(car.pos().x, car.pos().y);
       }
-
-      glVertex2f(car.pos().x, car.pos().y);
-    };
-    glEnd();
-
-    glDisable(GL_TEXTURE_2D);
+      glEnd();
+    }
     glEnable(GL_LIGHTING);
     glEnable(GL_COLOR_MATERIAL);
     glEnable(GL_LIGHT0);
@@ -1109,10 +1251,61 @@ public:
       glColor3f(0.5, 0.5, 0.5);
       glPushMatrix();
       double r = car.angle_;
-       
+
+      glEnable(GL_TEXTURE_2D);
+      glBindTexture(GL_TEXTURE_2D, tex_);
+
+      glColor3f(0.5 + (car.car_id_ % 32) / 64.0,
+                0.75 - (car.car_id_ % 32) / 64.0,
+                0.25 + (car.car_id_ % 33) / 64.0);
       glTranslatef(car.pos().x, car.pos().y, 0);
       glRotatef(180 * r / M_PI, 0, 0, 1);
       car_mesh_.draw();
+
+      glDisable(GL_TEXTURE_2D);
+
+      if (car.breaking_ >= 1) {
+        glDisable(GL_LIGHTING);
+        glColor3f(1.0, 0.0, 0.0);
+        tail_light_mesh_.draw();
+        glEnable(GL_LIGHTING);
+      }
+      
+      glColor3f(0.2, 0.2, 0.2);
+      glPushMatrix();
+      glTranslatef(0.85/4, -1.0/4.0, 0.4/4);
+      r = 0.39 / 4.0 * 2 * M_PI;
+      glRotatef(car.wheel_rot_ * 180.0 / M_PI, 0, 0, 1);
+      glRotatef(car.wheel_anim_ * 180.0 / M_PI, 0, 1, 0);
+      wheel_mesh_.draw();
+      glPopMatrix();
+
+      glPushMatrix();
+      glTranslatef(0.85/4,  1.0/4.0, 0.4/4);
+      glRotatef(car.wheel_rot_ * 180.0 / M_PI, 0, 0, 1);
+      glRotatef(car.wheel_anim_ * 180.0 / M_PI, 0, 1, 0);
+      wheel_mesh_.draw();
+      glPopMatrix();
+
+      glPushMatrix();
+      glTranslatef(-0.85/4,  -1.0/4.0, 0.4/4);
+      glRotatef(car.wheel_anim_ * 180.0 / M_PI, 0, 1, 0);
+      wheel_mesh_.draw();
+      glPopMatrix();
+
+      glPushMatrix();
+      glTranslatef(-0.85/4,  1.0/4.0, 0.4/4);
+      glRotatef(car.wheel_anim_ * 180.0 / M_PI, 0, 1, 0);
+      wheel_mesh_.draw();
+      glPopMatrix();
+
+      glEnable(GL_BLEND);
+      glEnable(GL_TEXTURE_2D);
+      glDisable(GL_LIGHTING);
+      glColor3f(1, 1, 1);
+      drop_shadow_mesh_.draw();
+      glEnable(GL_LIGHTING);
+
       glPopMatrix();
     }
     glDisable(GL_LIGHTING);
@@ -1132,27 +1325,33 @@ public:
   }
 
   void refresh() {
-    static double t = 0;
     static nacb::Timer timer;
     const double dt = (double)timer;
     timer.reset();
     if (dt > 0) {
       for (auto& car: cars_) {
-        car.Step(cars_, t, dt);
+        car.Step(cars_, t_, dt);
       }
       for (auto& isect: level_.intersections) {
         isect.Step(dt);
       }
-      t += dt;
+      t_ += dt;
     }
     GLWindow::refresh();
   }
-
+  double t_ = 0;
   Level& level_;
   std::vector<Car> cars_;
   FFont ffont_;
   bool follow_ = false;
   nappear::Mesh car_mesh_;
+  nappear::Mesh wheel_mesh_;
+  nappear::Mesh drop_shadow_mesh_;
+  nappear::Mesh stop_sign_mesh_;
+  nappear::Mesh lights_mesh_;
+  nappear::Mesh light_mesh_;
+  nappear::Mesh tail_light_mesh_;
+  GLuint tex_ = 0;
 };
 
 int main(int ac, char* av[]) {
