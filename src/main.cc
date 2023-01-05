@@ -146,21 +146,23 @@ public:
     glEnd();
     glLineWidth(1);
 
-    glPointSize(1);
-    glBegin(GL_POINTS);
-    for (int k = 0; k < (int)lot.parking_spots.size(); ++k) {
-      const auto& p = lot.parking_spots[k].pos;
-      glVertex2f(p.x, p.y);
-    }
-    glEnd();
+    glDepthMask(0);
 
     glColor3f(0.2, 0.2, 0.2);
-    glDepthMask(0);
     glBegin(GL_QUADS);
     glVertex2f(-lot.width() / 2, -lot.height() / 2);
     glVertex2f(-lot.width() / 2,  lot.height() / 2);
     glVertex2f( lot.width() / 2,  lot.height() / 2);
     glVertex2f( lot.width() / 2, -lot.height() / 2);
+    glEnd();
+
+    glPointSize(1);
+    glColor3f(1, 1, 1);
+    glBegin(GL_POINTS);
+    for (int k = 0; k < (int)lot.parking_spots.size(); ++k) {
+      const auto& p = lot.parking_spots[k].pos;
+      glVertex2f(p.x, p.y);
+    }
     glEnd();
     glDepthMask(1);
 

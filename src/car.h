@@ -33,7 +33,6 @@ public:
                              level.parking_lots[end], id % level.parking_lots[end].parking_spots.size());
     stage_index_ = 0;
     pos_ = (level.parking_lots[start].parking_spots[0].pos + level.parking_lots[start].pos);
-      
     max_speed_ = RandomParameters::GenerateRandomSpeed();
   }
 
@@ -231,9 +230,6 @@ public:
       wheel_rot_ = 4 * atan2(sin(angle_ - angle_before),
                              cos(angle_ - angle_before));
     }
-    if (car_id_ == 0) {
-      std::cout << (last_pos_ - pos_).len() << " " << speed_  << " " << pos_.x << " " << pos_.y << "\n";
-    }
     travel_time_ += dt;
     distance_travelled_so_far_ += speed_ * dt;
     distance_to_travel += speed_ * dt;
@@ -243,8 +239,20 @@ public:
     if (plan_[stage_index_].type == plan::Stage::EXIT_PARKING_LOT) {
       const auto* segment = &plan_[stage_index_].segments[0];
       const auto& p1 = segment->road_segment->points[segment->start_index];
-      const double d = (plan_[stage_index_].point - p1).len();
-      pos_ = Interpolate(plan_[stage_index_].point, p1, std::min(d, distance_to_travel) / d);
+      nacb::Vec2d dir = p1 - plan_[stage_index_].point;
+      const double d = dir.normalize();
+
+      nacb::Vec2d e1, e2;
+      plan_[(stage_index_ + 1)].segments[0].GetPoints(0, &e1, &e2);
+      nacb::Vec2d offset = e2 - e1;
+      offset.normalize();
+      offset *= std::max(0.3, dir.dot(offset) / 8.0);
+
+      const double t = std::min(d, distance_to_travel) / d;
+      pos_ = CubicBezier(plan_[stage_index_].point,
+                         plan_[stage_index_].point + offset,
+                         p1 - offset, p1, t);
+
       if (distance_to_travel >= d) {
         distance_travelled_so_far_ = 0;
         distance_to_travel = 0;
@@ -253,8 +261,20 @@ public:
     } else if (plan_[stage_index_].type == plan::Stage::FIND_PARKING_SPOT) {
       const auto* segment = &plan_[stage_index_].segments[0];
       const auto& p1 = segment->road_segment->points[segment->start_index];
-      const double d = (p1 - plan_[stage_index_].point).len();
-      pos_ = Interpolate(p1, plan_[stage_index_].point, std::min(d, distance_to_travel) / d);
+      nacb::Vec2d dir = plan_[stage_index_].point - p1;
+      const double d = dir.normalize();
+
+      nacb::Vec2d e1, e2;
+      const auto& prev_segments = plan_[stage_index_ - 1].segments;
+      prev_segments.back().GetPoints(prev_segments.back().end_index - prev_segments.back().start_index - 1 , &e1, &e2);
+      nacb::Vec2d offset = e2 - e1;
+      offset.normalize();
+      offset *= std::max(0.3, dir.dot(offset) / 8.0);
+
+      pos_ = CubicBezier(p1, p1 + offset,
+                         plan_[stage_index_].point - offset,
+                         plan_[stage_index_].point,
+                         std::min(d, distance_to_travel) / d);
       if (distance_to_travel >= d) {
         // Now we've completed the journey, record the time
         level_.stats.AddObservation(plan_[0].parking_lot->name,

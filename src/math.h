@@ -37,6 +37,13 @@ inline bool IsNear(const double x, const double y) {
   return abs(x - y) < 1e-5;
 }
 
+inline nacb::Vec2d CubicBezier(const nacb::Vec2d& p1, const nacb::Vec2d& p2,
+                               const nacb::Vec2d& p3, const nacb::Vec2d& p4,
+                               double t) {
+  const double t1 = (1.0 - t);
+  return p1 * (t1 * t1 * t1) + p2 * (3 * (t1 * t1 * t)) + p3 * (3 * t1 * t * t) + p4 * (t * t * t);
+}
+
 inline nacb::Vec2d Interpolate(const nacb::Vec2d& p1, const nacb::Vec2d& p2, double t) {
   return p1 * (1.0 - t) + p2 * t;
 }
