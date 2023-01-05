@@ -6,7 +6,8 @@ Dependencies:
  * GLog
  * Proto
  * https://github.com/nbirkbeck/nimage
-
+ * And a few of my other internal libraries: nmisc (for updateable heap), nmath 
+(for 2d vector math), and nappear for mesh/rendering.
 
 ## Simulator Overview
 
@@ -16,18 +17,20 @@ map.
 
 ### Level representation
 
-The *level* consists of roadways, parking lots, and traffic controls (e.g., 
+The [level](src/level/level.h) consists of roadways, parking lots, and traffic controls (e.g., 
 stop signs or lights). Cars originate in one of the parking lots, and drive to a random 
-location.
+location. Each of the elements are listed below, but you can get a sense of the state by 
+looking at the proto representation in [src/level.proto](src/level.proto).
 
 #### Roads
 
-* Road's are one-way and consist of a bunch of Road Segments. Each Road Segment
+* Road's are one-way and consist of a bunch of [Road Segments](src/level/road_segment.h). 
+Each Road Segment
 is an ordered array of 2D points and has a speed limit that the Cars will try to obey.
 
 #### Parking lots
 
-* A parking lot is simply a rectangular region with a bunch of parking spots (points)
+* A [Parking Lot](src/level/parking_lot.h) is simply a rectangular region with a bunch of parking spots (points)
 within it. Cars will start at a random parking spot and choose to drive to another
 random parking spot in a parking lot.
 
@@ -95,7 +98,8 @@ A rendering of the above level (in the simulator) looks like the following:
 
 where the annotations on the ground indicate the approximate speed of the segments.
 
-
+The [python/export_level.py](python/export_level.py) script can be used to export the 
+[proto representation](src/level.proto) of the level.
 
 
 

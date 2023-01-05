@@ -36,11 +36,10 @@ class Renderer {
 public:
   void Init() {
     ffont_ = FFont("/usr/share/fonts/bitstream-vera/Vera.ttf", 12);
-    ffont_.setScale(0.5, 0.5);
+    ffont_.setScale(0.25, 0.25);
   }
 
-  virtual void DrawLevel(Level& level,
-                         std::vector<Car>& cars) = 0;
+  virtual void DrawLevel(const nacb::Quaternion& cquat, Level& level, std::vector<Car>& cars) = 0;
 
 protected:
   FFont ffont_;
@@ -135,6 +134,8 @@ public:
 
   void DrawParkingLot(const ParkingLot& lot) {
     glColor3f(1, 1, 1);
+
+    glLineWidth(2);
     glPushMatrix();
     glTranslatef(lot.pos.x,  lot.pos.y, 0);
     glBegin(GL_LINE_LOOP);
@@ -143,6 +144,7 @@ public:
     glVertex2f( lot.width() / 2,  lot.height() / 2);
     glVertex2f( lot.width() / 2, -lot.height() / 2);
     glEnd();
+    glLineWidth(1);
 
     glPointSize(1);
     glBegin(GL_POINTS);
@@ -151,25 +153,116 @@ public:
       glVertex2f(p.x, p.y);
     }
     glEnd();
+
+    glColor3f(0.2, 0.2, 0.2);
+    glDepthMask(0);
+    glBegin(GL_QUADS);
+    glVertex2f(-lot.width() / 2, -lot.height() / 2);
+    glVertex2f(-lot.width() / 2,  lot.height() / 2);
+    glVertex2f( lot.width() / 2,  lot.height() / 2);
+    glVertex2f( lot.width() / 2, -lot.height() / 2);
+    glEnd();
+    glDepthMask(1);
+
+
     glPopMatrix();
+  }
+
+  std::vector<nacb::Vec2d> GetRoadSegmentNormals(RoadSegment& segment) {
+    std::vector<nacb::Vec2d> dirs(segment.points.size(), nacb::Vec2d(0, 0));
+
+    for (int i = 0; i < int(segment.points.size()) - 1; ++i) {
+      const nacb::Vec2d& p1 = segment.points[i];
+      const nacb::Vec2d& p2 = segment.points[i + 1];
+      nacb::Vec2d d = (p2 - p1);
+      d.normalize();
+      d = nacb::Vec2d(-d.y, d.x);
+      dirs[i] += d;
+      if (i > 0) {
+        dirs[i].normalize();
+        dirs[i] *= (1.0 / d.dot(dirs[i]));
+      }
+      dirs[(i + 1)] += d;
+    }
+    return dirs;
+  }
+
+  void DrawRoadSegmentBorder(RoadSegment& segment) {
+    std::vector<nacb::Vec2d> dirs = GetRoadSegmentNormals(segment);
+    
+    glLineWidth(2);
+    glColor3f(1, 1, 1);
+    glDepthMask(0);
+    
+    glBegin(GL_LINE_STRIP);
+    for (int i = 0; i < int(segment.points.size()); ++i) {
+      const nacb::Vec2d& p1 = segment.points[i];
+      glVertex3f(p1.x - dirs[i].x * 0.45, p1.y - dirs[i].y * 0.45, -0.025);
+    }
+    glEnd();
+
+    glBegin(GL_LINE_STRIP);
+    for (int i = 0; i < int(segment.points.size()); ++i) {
+      const nacb::Vec2d& p1 = segment.points[i];
+      glVertex3f(p1.x + dirs[i].x * 0.45, p1.y + dirs[i].y * 0.45, -0.025);
+    }
+    glEnd();
+    glDepthMask(1);
+
+    glLineWidth(1);
   }
 
   void DrawRoadSegment(RoadSegment& segment) {
     glColor3f(1, 0, 0);
-    glBegin(GL_LINE_STRIP);
-    for (const auto& co : segment.points) {
-      glVertex2f(co.x, co.y);
+
+    if (false) {
+      glBegin(GL_LINE_STRIP);
+      for (const auto& co : segment.points) {
+        glVertex2f(co.x, co.y);
+      }
+      glEnd();
+    }
+
+    std::vector<nacb::Vec2d> dirs = GetRoadSegmentNormals(segment);
+
+    glColor3f(0.7, 0.7, 0.7);
+    glDepthMask(0);    
+    glBegin(GL_QUAD_STRIP);
+    for (int i = 0; i < int(segment.points.size()); ++i) {
+      const nacb::Vec2d& p1 = segment.points[i];
+      glVertex2f(p1.x - dirs[i].x * 0.45, p1.y - dirs[i].y * 0.45);
+      glVertex2f(p1.x + dirs[i].x * 0.45, p1.y + dirs[i].y * 0.45);
     }
     glEnd();
+    glDepthMask(1);
+    
+  }
 
-    glColor3f(1, 1, 1);
-    glEnable(GL_TEXTURE_2D);
+  void DrawRoadSegmentSpeed(const nacb::Quaternion& cquat,
+                            RoadSegment& segment) {
     const double speed = segment.GetAverageSpeed();
     const nacb::Vec2d co = (segment.points[0] + segment.points[1]) * 0.5;
     char str[1024];
     snprintf(str, sizeof(str), "%3.2f", speed);
-    ffont_.drawString(str, co.x, co.y - 0.1);
+
+    glPushMatrix();
+    glTranslatef(co.x, co.y - 0.05, 0);
+    cquat.glRotate();
+
     glDisable(GL_TEXTURE_2D);
+    glBegin(GL_LINES);
+    glColor4f(1, 1, 1, 0.1);
+
+    glVertex3f(0, 0, 0);
+    glColor4f(1, 1, 1, 0.8);
+    glVertex3f(0, 0, 0.8);
+    glEnd();
+
+    glEnable(GL_TEXTURE_2D);
+    glTranslatef(0, 0, 1.0);
+    ffont_.drawString(str, 0., 0.);
+    
+    glPopMatrix();
   }
 
   void DrawCar(const Car& car) {
@@ -224,17 +317,29 @@ public:
     wheel_mesh_.draw();
     glPopMatrix();
 
+    glDepthMask(0);
     glEnable(GL_BLEND);
     glEnable(GL_TEXTURE_2D);
     glDisable(GL_LIGHTING);
     glColor3f(1, 1, 1);
     drop_shadow_mesh_.draw();
     glEnable(GL_LIGHTING);
-
+    glDepthMask(1);
+    
     glPopMatrix();
+
+    /*
+    glEnable(GL_FOG);
+    float white[4] = {1, 1, 1, 1};
+    glFogfv(GL_FOG_COLOR, white);
+    glFogf(GL_FOG_DENSITY, 0.001);
+    glFogi(GL_FOG_START, 0.95);
+    glFogi(GL_FOG_END, 1.0);
+    */
   }
 
-  void DrawLevel(Level& level,
+  void DrawLevel(const nacb::Quaternion&  cquat,
+                 Level& level,
                  std::vector<Car>& cars) {
     DrawGroundPlane();
     
@@ -246,6 +351,9 @@ public:
       DrawParkingLot(level.parking_lots[i]);
     }
 
+    for (int i = 0; i < (int)level.road_segments.size(); ++i) {
+      DrawRoadSegmentBorder(level.road_segments[i]);
+    }
     for (int i = 0; i < (int)level.road_segments.size(); ++i) {
       DrawRoadSegment(level.road_segments[i]);
     }
@@ -298,6 +406,14 @@ public:
     snprintf(str, sizeof(str), "ATT: %f", average_trip_time);
     ffont_.drawString(str, -8.f, -6.f);
     glPopMatrix();
+
+    glPushMatrix();
+    for (int i = 0; i < (int)level.road_segments.size(); ++i) {
+      DrawRoadSegmentSpeed(cquat, level.road_segments[i]);
+    }
+    glPopMatrix();
+
+    
     glDisable(GL_TEXTURE_2D);
   }
 
@@ -349,6 +465,7 @@ public:
     }
     ++count;
 
+    nacb::Quaternion q = cquat;
     if (follow_) {
       auto& car = cars_[0];
       glMatrixMode(GL_MODELVIEW);
@@ -360,14 +477,20 @@ public:
       glRotatef(90, -1, 0, 0);
       glRotatef(-180 * r / M_PI + 90, 0, 0, 1);
       glTranslatef(-car.pos().x, -car.pos().y, 0);
+
+      
+      q = nacb::Quaternion::rod(nacb::Vec3d(15.0 * M_PI / 180, 0, 0)) *
+        nacb::Quaternion::rod(nacb::Vec3d(-M_PI/2, 0, 0)) *
+        nacb::Quaternion::rod(nacb::Vec3d(0, 0, -r + M_PI/2));
+      q = q.conj();
     }
 
-    level_renderer_.DrawLevel(level_, cars_);
+    level_renderer_.DrawLevel(q, level_, cars_);
   }
 
   void refresh() {
     static nacb::Timer timer;
-    const double dt = (double)timer;
+    double dt = (double)timer;
     timer.reset();
     if (dt > 0) {
       for (auto& car: cars_) {
