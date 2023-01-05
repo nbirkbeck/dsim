@@ -13,7 +13,6 @@ class Car {
 public:
   static constexpr double kAccelerationRate = 4.0;
   static constexpr double kDecelerationRate = 8.0;
-  static constexpr double kMaxCornerSpeed = 2.5;
   static constexpr double kParkingLotSpeedLimit = 2.0;
   static constexpr double kWheelSize = 0.39 / 4.0;
 
@@ -27,10 +26,10 @@ public:
     }
   };
   
-  Car(Level& level, int id, int start, int end) :
-    level_(level), car_id_(id), start_(start), end_(end), travel_time_(0) {
-    plan_ = plan::PlanTravel(level, level.parking_lots[start], id % level.parking_lots[start].parking_spots.size(),
-                             level.parking_lots[end], id % level.parking_lots[end].parking_spots.size());
+  Car(Level& level, plan::Planner& planner, int id, int start, int end) :
+    level_(level), planner_(planner), car_id_(id), start_(start), end_(end), travel_time_(0) {
+    plan_ = planner.Plan(level.parking_lots[start], id % level.parking_lots[start].parking_spots.size(),
+                         level.parking_lots[end], id % level.parking_lots[end].parking_spots.size());
     stage_index_ = 0;
     pos_ = (level.parking_lots[start].parking_spots[0].pos + level.parking_lots[start].pos);
     max_speed_ = RandomParameters::GenerateRandomSpeed();
@@ -50,10 +49,10 @@ public:
     while (start_ == end_) {
       start_ = level_.PickRandomParkingLot();
     }
-    plan_ = plan::PlanTravel(level_, level_.parking_lots[end_], car_id_ % level_.parking_lots[end_].parking_spots.size(),
-                             level_.parking_lots[start_], car_id_ % level_.parking_lots[start_].parking_spots.size());
+    plan_ = planner_.Plan(level_.parking_lots[end_], car_id_ % level_.parking_lots[end_].parking_spots.size(),
+                          level_.parking_lots[start_], car_id_ % level_.parking_lots[start_].parking_spots.size());
     std::swap(start_, end_);
-        
+
     stage_index_ = 0;
     segment_index_ = 0;
     sub_index_ = 0;
@@ -84,6 +83,7 @@ public:
         d2.normalize();
 
         if (d1.dot(d2) <= 1e-4) {
+          const double kMaxCornerSpeed = 2.5;
           max_upcoming_speed = std::min(max_upcoming_speed, kMaxCornerSpeed);
         }
         const double speed_to_shed = speed_ - max_upcoming_speed;
@@ -186,10 +186,10 @@ public:
     // Need to decelerate when approaching a stop (or when getting too close to another)
     {
       double accel = GetAccelerationForRoad();
-
+      
       UpdateAccelerationForIntersection(accel);
       UpdateAccelerationForCars(cars, dpos, dpos_len, accel);
-
+      
       // TODO(birkbeck): move this into GetAccelerationForRoad()
       RoadSegment* rs = road_segment();
       const double speed_limit = rs ? rs->speed_limit : kParkingLotSpeedLimit;
@@ -310,7 +310,7 @@ public:
             segment->road_segment->cars[i1].insert(this);
             segment->road_segment->AddSpeedEstimate(t_abs, (pos_ - last_pos_).len() / dt);
             break;
-          } 
+          }
           const bool zero_length =  (segment->info[sub_index_].segment_length == 0);
           pos_ = p2;
           ignore_intersections_.clear();
@@ -344,8 +344,9 @@ public:
   const nacb::Vec2d& pos() const {
     return pos_;
   }
-  int car_id_ = 0;
   Level& level_;
+  plan::Planner& planner_;
+  int car_id_ = 0;
 
   // The current plan
   std::vector<plan::Stage> plan_;

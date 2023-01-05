@@ -15,6 +15,8 @@ cc_library(
  deps = [
    "//:level_proto_cc",
    ":trip_stats",
+   "@com_google_absl//absl/container:flat_hash_map",
+   "@com_google_absl//absl/container:flat_hash_set",
  ],
  visibility = ["//visibility:public"],
 )

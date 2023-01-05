@@ -30,41 +30,9 @@ bool FindSegmentOnRectangle(Level& level,
   return false;
 }
 
-
-// Start a car in each parking lot (it can have a home parking spot)
-// Give each car a destination (e.g., another parking lot)
-// Have each car navigate to its distination
-//   It must find its way out of the parking lot
-//   To the other parking lot
-//   It can look for a spot in the parking lot once it gets there.
-//
-// Simplifications: start with no collision detection.
-
-std::vector<Stage>
-PlanTravel(Level& level,
-           const ParkingLot& src_parking_lot,
-           int parking_space,
-           const ParkingLot& dest_parking_lot,
-           int dest_parking_spot) {  
-  // Stage 0: Look for an exit point in the parking lot
-  RoadSegment* exit_segment = 0;
-  int exit_index = -1;
-  if (!FindSegmentOnRectangle(level, src_parking_lot, &exit_segment, &exit_index, 0)) {
-    LOG(ERROR) << "Unable to find exit road segment";
-    //return {};
-  }
-
-  // Stage 2: Look for an entry point into the parking lot.
-  RoadSegment* enter_segment = 0;
-  int enter_index = -1;
-  if (!FindSegmentOnRectangle(level, dest_parking_lot, &enter_segment, &enter_index, 1)) {
-    LOG(ERROR) << "Unable to find enter road segment";
-    return {};
-  }
-
+void Planner:: Init(Level& level) {
   // Build the graph
-  std::vector<nacb::Vec2d> pos;
-  std::unordered_map<nacb::Vec2d, int, PointHash, PointEqual> ipos;
+
   for (auto& road_segment : level.road_segments) {
     for (int pi = 0; pi < (int)road_segment.points.size(); ++pi) {
       const auto& p = road_segment.points[pi];
@@ -75,9 +43,9 @@ PlanTravel(Level& level,
     }
   }
   
-  std::vector<std::vector<int> > adj(pos.size());
-  std::vector<std::vector<std::pair<RoadSegment*, int> > > adj_info(pos.size());
-  
+  adj.resize(pos.size());
+  adj_info.resize(pos.size());
+             
   int num_arcs = 0;
   for (auto& road_segment : level.road_segments) {
     int last_p = -1;
@@ -92,12 +60,8 @@ PlanTravel(Level& level,
       last_p = cur_p;
     }
   }
-  LOG(INFO) << "Adjacency:" << adj.size() << " " << num_arcs;
-  // Start position:
-  const int a = ipos[exit_segment->points[exit_index]];
-  const int b = ipos[enter_segment->points[enter_index]];
-
-  LOG(INFO) << "Searching for path from:" << a << " " << b;
+}
+std::vector<Stage::Segment> Planner::Plan(int a, int b) {
   std::vector<double> dist(pos.size(), -1);
   std::vector<double> g(pos.size(), -1);
   std::vector<double> h(pos.size(), -1);
@@ -130,7 +94,6 @@ PlanTravel(Level& level,
       const double edge_speed = ai.first->GetAverageSpeed();
       if (edge_speed <= 1e-4) {
         LOG(INFO) << "Edge speed is zero";
-        
       }
       const double e = (pos[c] - pos[top]).len() / edge_speed;
       const double hval = (pos[c] - pos[a]).len() / kMaxSpeed;
@@ -150,7 +113,6 @@ PlanTravel(Level& level,
       }
     }
   }
-  LOG(INFO) << found << " " << dist[b];
   int index = b;
   RoadSegment* segment = nullptr;
   int end_index = -1;
@@ -180,16 +142,55 @@ PlanTravel(Level& level,
   if (segment != nullptr) {
     segments.push_back(Stage::Segment(segment, start_index, end_index + 1));
   }
-
+    
   std::reverse(segments.begin(), segments.end());
-
-  std::cout << "segments:\n";
-  for (const auto& s: segments) {
-    std::string name;
-    if (s.road_segment) name = s.road_segment->name;
-    std::cout << "segment:" << name << " " << s.start_index << " " << s.end_index << "\n";
-  }
+  return segments;
+}
   
+// Start a car in each parking lot (it can have a home parking spot)
+// Give each car a destination (e.g., another parking lot)
+// Have each car navigate to its distination
+//   It must find its way out of the parking lot
+//   To the other parking lot
+//   It can look for a spot in the parking lot once it gets there.
+//
+// Simplifications: start with no collision detection.
+
+std::vector<Stage>
+Planner::Plan(const ParkingLot& src_parking_lot,
+              int parking_space,
+              const ParkingLot& dest_parking_lot,
+              int dest_parking_spot) {  
+  // Stage 0: Look for an exit point in the parking lot
+  RoadSegment* exit_segment = 0;
+  int exit_index = -1;
+  if (!FindSegmentOnRectangle(level, src_parking_lot, &exit_segment, &exit_index, 0)) {
+    LOG(ERROR) << "Unable to find exit road segment";
+    //return {};
+  }
+
+  // Stage 2: Look for an entry point into the parking lot.
+  RoadSegment* enter_segment = 0;
+  int enter_index = -1;
+  if (!FindSegmentOnRectangle(level, dest_parking_lot, &enter_segment, &enter_index, 1)) {
+    LOG(ERROR) << "Unable to find enter road segment";
+    return {};
+  }
+
+  // Start position:
+  const int a = ipos[exit_segment->points[exit_index]];
+  const int b = ipos[enter_segment->points[enter_index]];
+  auto segments = Plan(a, b);
+
+
+  if (false) {
+    std::cout << "segments:\n";
+    for (const auto& s: segments) {
+      std::string name;
+      if (s.road_segment) name = s.road_segment->name;
+      std::cout << "segment:" << name << " " << s.start_index << " " << s.end_index << "\n";
+    }
+  }  
   std::vector<Stage> stages;
   stages.push_back(Stage(Stage::EXIT_PARKING_LOT));
   stages.back().point = (src_parking_lot.pos + 
@@ -206,6 +207,16 @@ PlanTravel(Level& level,
                          dest_parking_lot.parking_spots[dest_parking_spot].pos);
   
   return stages;
+}
+
+std::vector<Stage>
+PlanTravel(Level& level,
+           const ParkingLot& src_parking_lot,
+           int parking_space,
+           const ParkingLot& dest_parking_lot,
+           int dest_parking_spot) {
+  Planner planner(level);
+  return planner.Plan(src_parking_lot, parking_space, dest_parking_lot, dest_parking_spot);
 }
 
 }   // namespace plan

@@ -6,6 +6,9 @@
 #include <vector>
 #include <unordered_map>
 #include <nmath/vec2.h>
+#include "absl/container/flat_hash_map.h"
+#include "absl/container/flat_hash_set.h"
+
 
 #include "level/intersection_control.h"
 
@@ -87,8 +90,8 @@ public:
   std::string name;
   double speed_limit;
   std::vector<nacb::Vec2d> points;
-  std::unordered_map<int, IntersectionControl*> intersections;
-  std::vector<std::set<const Car*> > cars;
+  absl::flat_hash_map<int, IntersectionControl*> intersections;
+  std::vector<absl::flat_hash_set<const Car*> > cars;
 
   SpeedEstimateEntry last_updated;
   std::deque<SpeedEstimateEntry> deck;

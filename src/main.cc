@@ -30,6 +30,7 @@
 
 DEFINE_string(filename, "", "Path to input filename");
 DEFINE_string(model_dir, "", "Path to models");
+DEFINE_string(benchmark, "", "Benchmark to run (plan, render, sim)");
 
 
 class Renderer {
@@ -433,19 +434,21 @@ protected:
 
 class LevelWindow: public GLWindow {
 public:
-  LevelWindow(Level& level) : level_(level)  {
+  LevelWindow(Level& level, bool benchmark=false) : level_(level), planner_(level)  {
     cpos.z = 100;
     farPlane = 1000;
-    setRefreshRate(60);
+    if (!benchmark) {
+      setRefreshRate(60);
+    }
 
     if (false) {
       for (int i = 0; i < 7; ++i) {
-        cars_.push_back(Car(level, i, (i) % 7, ((i) + 1) % 7));
+        cars_.push_back(Car(level, planner_, i, (i) % 7, ((i) + 1) % 7));
       }
     } else {
       for (int i = 0; i < (int)level.parking_lots.size(); ++i) {
         for (int j = 0; j < (int)level.parking_lots[i].parking_spots.size(); ++j) {
-          cars_.push_back(Car(level, cars_.size(), i, (i + 1 + rand()) % level.parking_lots.size()));
+          cars_.push_back(Car(level, planner_, cars_.size(), i, (i + 1 + rand()) % level.parking_lots.size()));
         }
       }
     }
@@ -486,8 +489,28 @@ public:
         nacb::Quaternion::rod(nacb::Vec3d(0, 0, -r + M_PI/2));
       q = q.conj();
     }
-
     level_renderer_.DrawLevel(q, level_, cars_);
+  }
+  void Step(double dt) {
+    /*
+    absl::flat_hash_map<nacb::Vec2d, std::vector<Car*>, PointHash, PointEqual> cars_by_point;
+    for (auto& car: cars_) {
+      cars_by_point[car.pos()].push_back(&car);
+      cars_by_point[car.pos() - nacb::Vec2d(1, 0)].push_back(&car);
+      cars_by_point[car.pos() - nacb::Vec2d(0, 1)].push_back(&car);
+      cars_by_point[car.pos() + nacb::Vec2d(1, 0)].push_back(&car);
+      cars_by_point[car.pos() + nacb::Vec2d(0, 1)].push_back(&car);
+      cars_by_point[car.pos() + nacb::Vec2d(1, 1)].push_back(&car);
+    }
+    double cc_size = 0;
+    */
+    for (auto& car: cars_) {
+      car.Step(cars_, t_, dt);
+    }
+    for (auto& isect: level_.intersections) {
+      isect.Step(dt);
+    }
+    t_ += dt;
   }
 
   void refresh() {
@@ -495,18 +518,13 @@ public:
     double dt = (double)timer;
     timer.reset();
     if (dt > 0) {
-      for (auto& car: cars_) {
-        car.Step(cars_, t_, dt);
-      }
-      for (auto& isect: level_.intersections) {
-        isect.Step(dt);
-      }
-      t_ += dt;
+      Step(dt);
     }
     GLWindow::refresh();
   }
   double t_ = 0;
   Level& level_;
+  plan::Planner planner_;
   std::vector<Car> cars_;
   bool follow_ = false;
   SimpleMeshRenderer level_renderer_;
@@ -526,17 +544,53 @@ int main(int ac, char* av[]) {
   LOG(INFO) << level_data.DebugString();
 
   Level level(level_data);
-  for (int i = 0; i < (int)level.parking_lots.size(); ++i) {
-    for (int j = 0; j < (int)level.parking_lots.size(); ++j) {
-      if (i == j) continue;
-      auto plan = plan::PlanTravel(level, level.parking_lots[i], 0,
-                                   level.parking_lots[j], 0);
-      std::cout << plan.size();
+  if (FLAGS_benchmark == "plan") {
+    nacb::Timer timer;
+    int num_times = 0;
+    int plan_size = 0;
+    plan::Planner planner(level);
+
+    for (int i = 0; i < 100; ++i) {
+      for (int i = 0; i < (int)level.parking_lots.size(); ++i) {
+        for (int j = 0; j < (int)level.parking_lots.size(); ++j) {
+          if (i == j) continue;
+          auto plan = planner.Plan(level.parking_lots[i],
+                                   (i  + j) % level.parking_lots[i].parking_spots.size(),
+                                   level.parking_lots[j],
+                                   (i  + j) % level.parking_lots[j].parking_spots.size());
+          plan_size += plan[1].segments.size();
+          num_times++;
+        }
+      }
+      if (double(timer) > 5) break;
     }
+    LOG(INFO) << "benchmark_plan=" << double(num_times) / double(timer) << " avg_plan_size="
+              << double(plan_size) / num_times << " num_times=" << num_times;
+    return 0;
+  }
+  LevelWindow level_window(level, FLAGS_benchmark == "render");
+  glewInit();
+
+  if (FLAGS_benchmark == "render") {
+    nacb::Timer timer;
+    const int num_times = 1000;
+    for (int i = 0; i < num_times; ++i) {
+      level_window.drawScene();
+    }
+    LOG(INFO) << "benchmark_render=" << double(num_times) / double(timer);
+    return 0;
+  } else if (FLAGS_benchmark == "sim") {
+    nacb::Timer timer;
+    const int num_times = 100;
+    for (int i = 0; i < num_times; ++i) {
+      for (int j = 0; j < 60; ++j) {
+        level_window.Step(1.0 / 60.0);
+      }
+    }
+    LOG(INFO) << "sim_render=" << double(num_times) / double(timer);
+    return 0;
   }
 
-  LevelWindow level_window(level);
-  glewInit();
   
   level_window.loop(1);
   return 0;

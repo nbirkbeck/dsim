@@ -45,7 +45,8 @@ cc_library(
   srcs = ["car.h"],
   deps = [
     "//level",
-    "//plan"]
+    "//plan"
+ ]
 )
 
 
@@ -64,6 +65,8 @@ cc_binary(
   ] + DEPS,
   linkopts = [
      "-lGL -lGLU -lglut -lGLEW"
-   ]
-
+  ],
+  copts = [
+    "-mmmx -msse -msse3"
+  ]
 )

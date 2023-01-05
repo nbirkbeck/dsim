@@ -23,6 +23,7 @@ public:
       seg.SetIntersections(intersections);
     }
   }
+
   int PickRandomParkingLot() {
     double r = (double)rand() / RAND_MAX;
     int num_spots = 0;
@@ -36,6 +37,7 @@ public:
     }
     return (int)parking_lots.size() - 1;
   }
+
   TripStats stats;
   std::vector<ParkingLot> parking_lots;
   std::vector<RoadSegment> road_segments;

@@ -96,7 +96,6 @@ struct Stage {
 
   Stage(Type t = NONE, const std::vector<Segment>& segs = {}): type(t), segments(segs) {
     if (type == ROAD_TRAVEL) BuildCurveInfo();
-    LOG(INFO) << "segments_size:" << (int)(segments.size()) << " <-";
   }
 
   void BuildCurveInfo() {
