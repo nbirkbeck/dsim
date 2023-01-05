@@ -1,0 +1,13 @@
+cc_library(
+ name = "plan",
+ srcs = [
+   "intersection_control.h",
+   "parking_lot.h",
+   "road_segment.h",
+   "plan.h",
+ ],
+ deps = [
+   "//:level_proto_cc",
+ ],
+ visibility = ["//visibility:public"],
+)
