@@ -46,22 +46,103 @@ protected:
   FFont ffont_;
 };
 
+
+class VBOMesh {
+public:
+  VBOMesh() {
+
+  }
+  void Init(const nappear::Mesh& mesh) {
+    std::vector<float> vertex_data;
+    std::vector<float> uv_data;
+    std::vector<float> normal_data;
+    for (int i = 0; i < (int)mesh.faces.size(); ++i) {
+      for (int k = 0; k < 3; ++k) {
+        vertex_data.push_back(mesh.vert[mesh.faces[i].vi[k]].x);
+        vertex_data.push_back(mesh.vert[mesh.faces[i].vi[k]].y);
+        vertex_data.push_back(mesh.vert[mesh.faces[i].vi[k]].z);
+
+        normal_data.push_back(mesh.norm[mesh.faces[i].ni[k]].x);
+        normal_data.push_back(mesh.norm[mesh.faces[i].ni[k]].y);
+        normal_data.push_back(mesh.norm[mesh.faces[i].ni[k]].z);
+
+        uv_data.push_back(mesh.tvert[mesh.faces[i].tci[k]].x);
+        uv_data.push_back(mesh.tvert[mesh.faces[i].tci[k]].y);
+      }
+    }
+
+    std::vector<float> vbo_data(vertex_data.size() + uv_data.size() + normal_data.size());
+    std::copy(vertex_data.begin(), vertex_data.end(), vbo_data.begin());
+    std::copy(normal_data.begin(), normal_data.end(), &vbo_data[vertex_data.size()]);
+    std::copy(uv_data.begin(), uv_data.end(), &vbo_data[vertex_data.size()  + normal_data.size()]);
+    
+    glGenBuffers(1,&vbo);
+    glBindBuffer(GL_ARRAY_BUFFER, vbo);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float)*vbo_data.size(), &vbo_data[0], GL_STATIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+    normal_offset = sizeof(float) * (vertex_data.size());
+    uv_offset = sizeof(float) * (vertex_data.size() + normal_data.size());
+    num_faces = mesh.faces.size();
+  }
+
+  bool empty() {
+    return num_faces == 0;
+  }
+
+  void Bind(bool bind) {
+    if (bind) {
+      glEnableClientState(GL_VERTEX_ARRAY);
+      glEnableClientState(GL_NORMAL_ARRAY);
+      glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+      glBindBuffer(GL_ARRAY_BUFFER, vbo);
+      glVertexPointer(3, GL_FLOAT, 0, 0);
+      glNormalPointer(GL_FLOAT, 0,((unsigned char *)(0))+normal_offset);
+      glTexCoordPointer(2, GL_FLOAT, 0,((unsigned char *)(0))+uv_offset);
+    } else {
+      glBindBuffer(GL_ARRAY_BUFFER, 0);
+      glDisableClientState(GL_VERTEX_ARRAY);
+      glDisableClientState(GL_NORMAL_ARRAY);
+      glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+    }
+  }
+
+  void draw(bool bind=true) {
+    if (bind) Bind(true);
+    glDrawArrays(GL_TRIANGLES, 0, num_faces * 3);
+    if (bind) Bind(false);
+  }
+private:
+  GLuint vbo = 0;
+  int normal_offset = 0;
+  int uv_offset = 0;
+  int num_faces = 0;
+};
+
 class SimpleMeshRenderer: public Renderer {
 public:
   void Init() {
     Renderer::Init();
-    car_mesh_.readObj((FLAGS_model_dir + "/car.obj").c_str());
-    car_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
-    car_mesh_.initNormals(true);
 
-    wheel_mesh_.readObj((FLAGS_model_dir + "/wheel.obj").c_str());
-    wheel_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
-    wheel_mesh_.initNormals(true);
+    nappear::Mesh car_mesh;
+    car_mesh.readObj((FLAGS_model_dir + "/car.obj").c_str());
+    car_mesh.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
+    car_mesh.initNormals(true);
+    car_mesh_.Init(car_mesh);
 
-    drop_shadow_mesh_.readObj((FLAGS_model_dir + "/drop_shadow.obj").c_str());
-    drop_shadow_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
-    drop_shadow_mesh_.initNormals(true);
+    nappear::Mesh wheel_mesh;
+    wheel_mesh.readObj((FLAGS_model_dir + "/wheel.obj").c_str());
+    wheel_mesh.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
+    wheel_mesh.initNormals(true);
+    wheel_mesh_.Init(wheel_mesh);
 
+    nappear::Mesh drop_shadow_mesh;
+    drop_shadow_mesh.readObj((FLAGS_model_dir + "/drop_shadow.obj").c_str());
+    drop_shadow_mesh.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
+    drop_shadow_mesh.initNormals(true);
+    drop_shadow_mesh_.Init(drop_shadow_mesh);
+    
     stop_sign_mesh_.readObj((FLAGS_model_dir + "/stop_sign.obj").c_str());
     stop_sign_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
     stop_sign_mesh_.initNormals(true);
@@ -74,9 +155,11 @@ public:
     light_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
     light_mesh_.initNormals(true);
 
-    tail_light_mesh_.readObj((FLAGS_model_dir + "/tail_light.obj").c_str());
-    tail_light_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
-    tail_light_mesh_.initNormals(true);
+    nappear::Mesh tail_light_mesh;
+    tail_light_mesh.readObj((FLAGS_model_dir + "/tail_light.obj").c_str());
+    tail_light_mesh.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
+    tail_light_mesh.initNormals(true);
+    tail_light_mesh_.Init(tail_light_mesh);
     
     glGenTextures(1, &tex_);
     nacb::Image8 image;
@@ -291,34 +374,38 @@ public:
       tail_light_mesh_.draw();
       glEnable(GL_LIGHTING);
     }
-      
+
+    wheel_mesh_.Bind(true);
+
     glColor3f(0.2, 0.2, 0.2);
     glPushMatrix();
     glTranslatef(0.85/4, -1.0/4.0, 0.4/4);
     r = 0.39 / 4.0 * 2 * M_PI;
     glRotatef(car.wheel_rot_ * 180.0 / M_PI, 0, 0, 1);
     glRotatef(car.wheel_anim_ * 180.0 / M_PI, 0, 1, 0);
-    wheel_mesh_.draw();
+    wheel_mesh_.draw(false);
     glPopMatrix();
 
     glPushMatrix();
     glTranslatef(0.85/4,  1.0/4.0, 0.4/4);
     glRotatef(car.wheel_rot_ * 180.0 / M_PI, 0, 0, 1);
     glRotatef(car.wheel_anim_ * 180.0 / M_PI, 0, 1, 0);
-    wheel_mesh_.draw();
+    wheel_mesh_.draw(false);
     glPopMatrix();
 
     glPushMatrix();
     glTranslatef(-0.85/4,  -1.0/4.0, 0.4/4);
     glRotatef(car.wheel_anim_ * 180.0 / M_PI, 0, 1, 0);
-    wheel_mesh_.draw();
+    wheel_mesh_.draw(false);
     glPopMatrix();
 
     glPushMatrix();
     glTranslatef(-0.85/4,  1.0/4.0, 0.4/4);
     glRotatef(car.wheel_anim_ * 180.0 / M_PI, 0, 1, 0);
-    wheel_mesh_.draw();
+    wheel_mesh_.draw(false);
     glPopMatrix();
+
+    wheel_mesh_.Bind(false);
 
     glDepthMask(0);
     glEnable(GL_BLEND);
@@ -328,17 +415,8 @@ public:
     drop_shadow_mesh_.draw();
     glEnable(GL_LIGHTING);
     glDepthMask(1);
-    
-    glPopMatrix();
 
-    /*
-    glEnable(GL_FOG);
-    float white[4] = {1, 1, 1, 1};
-    glFogfv(GL_FOG_COLOR, white);
-    glFogf(GL_FOG_DENSITY, 0.001);
-    glFogi(GL_FOG_START, 0.95);
-    glFogi(GL_FOG_END, 1.0);
-    */
+    glPopMatrix();
   }
 
   void DrawLevel(const nacb::Quaternion&  cquat,
@@ -361,7 +439,7 @@ public:
       DrawRoadSegment(level.road_segments[i]);
     }
 
-    if (car_mesh_.vert.empty()) {
+    if (car_mesh_.empty()) {
       glPointSize(3);
       glBegin(GL_POINTS);
       for (const auto& car: cars) {
@@ -415,26 +493,33 @@ public:
       DrawRoadSegmentSpeed(cquat, level.road_segments[i]);
     }
     glPopMatrix();
-
     
     glDisable(GL_TEXTURE_2D);
   }
 
 protected:
-  nappear::Mesh car_mesh_;
-  nappear::Mesh wheel_mesh_;
-  nappear::Mesh drop_shadow_mesh_;
+  VBOMesh car_mesh_;
+  VBOMesh wheel_mesh_;
+  VBOMesh drop_shadow_mesh_;
   nappear::Mesh stop_sign_mesh_;
   nappear::Mesh lights_mesh_;
   nappear::Mesh light_mesh_;
-  nappear::Mesh tail_light_mesh_;
+  VBOMesh tail_light_mesh_;
   GLuint tex_ = 0;
 };
 
 
+struct PosOrder {
+  bool operator()(Car* a, Car* b) {
+    return a->pos().x + a->pos().y < b->pos().x + b->pos().y;
+  }
+};
+
 class LevelWindow: public GLWindow {
 public:
   LevelWindow(Level& level, bool benchmark=false) : level_(level), planner_(level)  {
+    glewInit();
+
     cpos.z = 100;
     farPlane = 1000;
     if (!benchmark) {
@@ -451,6 +536,9 @@ public:
           cars_.push_back(Car(level, planner_, cars_.size(), i, (i + 1 + rand()) % level.parking_lots.size()));
         }
       }
+    }
+    for (auto& car : cars_) {
+      cars_p_.push_back(&car);
     }
     glClearColor(0.5, 0.5, 0.7, 1.0);
     level_renderer_.Init();
@@ -504,8 +592,17 @@ public:
     }
     double cc_size = 0;
     */
-    for (auto& car: cars_) {
-      car.Step(cars_, t_, dt);
+    std::sort(cars_p_.begin(), cars_p_.end(), PosOrder());
+    std::vector<Car*>::iterator low = cars_p_.begin();
+    std::vector<Car*>::iterator high = cars_p_.begin();
+    double dist = sqrt(2) * 4.5;
+    for (auto& car: cars_p_) {
+      while ((*low)->pos().x + (*low)->pos().y + dist < car->pos().x + car->pos().y) {
+        low++;
+      }
+      for ( ; high != cars_p_.end() && (car->pos().x + car->pos().y > (*high)->pos().x + (*high)->pos().y - dist); ++high)
+        ;
+      car->Step(low, high, t_, dt);
     }
     for (auto& isect: level_.intersections) {
       isect.Step(dt);
@@ -526,6 +623,7 @@ public:
   Level& level_;
   plan::Planner planner_;
   std::vector<Car> cars_;
+  std::vector<Car*> cars_p_;
   bool follow_ = false;
   SimpleMeshRenderer level_renderer_;
 
@@ -569,7 +667,6 @@ int main(int ac, char* av[]) {
     return 0;
   }
   LevelWindow level_window(level, FLAGS_benchmark == "render");
-  glewInit();
 
   if (FLAGS_benchmark == "render") {
     nacb::Timer timer;

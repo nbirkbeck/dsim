@@ -140,11 +140,13 @@ public:
     }
   }
 
-  void UpdateAccelerationForCars(std::vector<Car>& cars,
+  void UpdateAccelerationForCars(const std::vector<Car*>::iterator& car_begin,
+                                 const std::vector<Car*>::iterator& car_end,
                                  const nacb::Vec2d& dpos,
                                  double dpos_len,
                                  double& accel) {
-    for (const auto& car: cars) {
+    for (auto car_p = car_begin; car_p != car_end; car_p++) {
+      const auto& car = **car_p;
       if (&car == this) continue;
       // Skip cars that are waiting on an intersection that is different than ours
       if (road_segment() && car.upcoming_intersection_ &&
@@ -166,7 +168,8 @@ public:
   }
   
   
-  void Step(std::vector<Car>& cars,
+  void Step(const std::vector<Car*>::iterator& car_begin,
+            const std::vector<Car*>::iterator& car_end,
             double t_abs,
             double dt) {
     breaking_ = std::max(0, (int)breaking_ - 1);
@@ -188,7 +191,7 @@ public:
       double accel = GetAccelerationForRoad();
       
       UpdateAccelerationForIntersection(accel);
-      UpdateAccelerationForCars(cars, dpos, dpos_len, accel);
+      UpdateAccelerationForCars(car_begin, car_end, dpos, dpos_len, accel);
       
       // TODO(birkbeck): move this into GetAccelerationForRoad()
       RoadSegment* rs = road_segment();
