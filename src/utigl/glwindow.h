@@ -78,6 +78,7 @@ class InteractiveCameraView : public CameraCommon {
   InteractiveCameraView(){
     bdown = 0;
     mpos[0] = mpos[1] = 0;
+    cquat = nacb::Quaternion::rod(nacb::Vec3d(M_PI/4.0, 0, 0));
   }
 
   virtual ~InteractiveCameraView(){ }
@@ -109,7 +110,7 @@ class InteractiveCameraView : public CameraCommon {
 	if(object){
 	  nacb::Vec3d focus(0,0,0);
 	  nacb::Vec3d wo = cquat.conj().rotate(focus-cpos);
-	  cquat = nacb::Quaternion::rod(nacb::Vec3d(0,-dx,0))* cquat * nacb::Quaternion::rod(nacb::Vec3d(-dy,0,0));
+	  cquat = nacb::Quaternion::rod(nacb::Vec3d(0,0,-dx))* cquat * nacb::Quaternion::rod(nacb::Vec3d(-dy,0,0));
 	  cpos = cquat.rotate(wo)*-1;
 	}
 	else {
@@ -177,10 +178,10 @@ class GLWindow : public InteractiveCameraView {
       glutFlags |= STENCIL_FLAG;
 
     glutInitDisplayMode(glutFlags);
+    glutInitWindowPosition(0, 0);
    
     printf("creating window.\n");
     glutCreateWindow("");
-
     printf("setting window data\n");
     w_glutSetWindowData(this);
 

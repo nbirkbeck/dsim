@@ -148,11 +148,11 @@ public:
     stop_sign_mesh_.initNormals(true);
 
     lights_mesh_.readObj((FLAGS_model_dir + "/lights.obj").c_str());
-    lights_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
+    lights_mesh_.scaleTranslate(nacb::Vec3f(0.5, 0.5, 0.5), nacb::Vec3f(0, 0, 0));
     lights_mesh_.initNormals(true);
 
     light_mesh_.readObj((FLAGS_model_dir + "/light.obj").c_str());
-    light_mesh_.scaleTranslate(nacb::Vec3f(0.25, 0.25, 0.25), nacb::Vec3f(0, 0, 0));
+    light_mesh_.scaleTranslate(nacb::Vec3f(0.5, 0.5, 0.5), nacb::Vec3f(0, 0, 0));
     light_mesh_.initNormals(true);
 
     nappear::Mesh tail_light_mesh;
@@ -166,16 +166,16 @@ public:
     image.read((FLAGS_model_dir + "/car.png").c_str());
     glBindTexture(GL_TEXTURE_2D, tex_);
     image.initTexture();
-
   }
+
   void DrawGroundPlane() {
     glColor3f(0.05, 0.1, 0.05);
     glDepthMask(0);
     glBegin(GL_QUADS);
-    glVertex2f(-100, -100);
-    glVertex2f( 100, -100);
-    glVertex2f( 100,  100);
-    glVertex2f(-100,  100);
+    glVertex2f(-200, -200);
+    glVertex2f( 200, -200);
+    glVertex2f( 200,  200);
+    glVertex2f(-200,  200);
     glEnd();
     glDepthMask(1);
   }
@@ -517,10 +517,11 @@ struct PosOrder {
 
 class LevelWindow: public GLWindow {
 public:
-  LevelWindow(Level& level, bool benchmark=false) : level_(level), planner_(level)  {
+  LevelWindow(Level& level, bool benchmark=false) : GLWindow(1280, 720), level_(level), planner_(level)  {
     glewInit();
 
-    cpos.z = 100;
+    cpos.y = -50;
+    cpos.z = 40;
     farPlane = 1000;
     if (!benchmark) {
       setRefreshRate(60);
@@ -533,7 +534,9 @@ public:
     } else {
       for (int i = 0; i < (int)level.parking_lots.size(); ++i) {
         for (int j = 0; j < (int)level.parking_lots[i].parking_spots.size(); ++j) {
-          cars_.push_back(Car(level, planner_, cars_.size(), i, (i + 1 + rand()) % level.parking_lots.size()));
+          int other_lot = (i + 1 + rand()) % level.parking_lots.size();
+          if (other_lot == i) other_lot = (i + 1) % level.parking_lots.size();
+          cars_.push_back(Car(level, planner_, cars_.size(), i, other_lot));
         }
       }
     }
@@ -545,6 +548,7 @@ public:
   }
 
   bool keyboard(unsigned char c, int x, int y) {
+    GLWindow::keyboard(c, x, y);
     if (c == 'f') {
       follow_ = !follow_;
     }

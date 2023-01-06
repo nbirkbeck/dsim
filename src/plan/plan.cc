@@ -165,8 +165,8 @@ Planner::Plan(const ParkingLot& src_parking_lot,
   RoadSegment* exit_segment = 0;
   int exit_index = -1;
   if (!FindSegmentOnRectangle(level, src_parking_lot, &exit_segment, &exit_index, 0)) {
-    LOG(ERROR) << "Unable to find exit road segment";
-    //return {};
+    LOG(ERROR) << "Unable to find exit road segment for " << src_parking_lot.name;
+    return {};
   }
 
   // Stage 2: Look for an entry point into the parking lot.

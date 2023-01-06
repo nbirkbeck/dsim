@@ -115,9 +115,10 @@ public:
          !upcoming_intersection_->IsGreen(road_segment()));
 
       if (should_slow_down) {
-        if (d < 0.5) accel = -8;
-        else if (d < 1) accel = -4;
+        if (d < 0.5) accel = 1; // At this point, just run it...
+        else if (d < 1) accel = -8;
         else if (d < 2) accel = -2;
+        else if (d < 3) accel = -1;
         if (speed_ <= 1 && d >= 1.0) {
           accel = 1.0;
         }
