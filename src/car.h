@@ -68,7 +68,7 @@ public:
     if (rs) {
       plan::Stage& stage = plan_[stage_index_];      
       auto* segment = &stage.segments[segment_index_];
-      nacb::Vec2d p1, p2, p3;
+      nacb::Vec2f p1, p2, p3;
       segment->GetPoints(sub_index_, &p1, &p2);
       
       plan::Stage::Segment* next_segment = nullptr;
@@ -77,8 +77,8 @@ public:
         if (next_segment) {
           max_upcoming_speed = next_segment->road_segment->speed_limit;
         }
-        nacb::Vec2d d1 = (p2 - p1);
-        nacb::Vec2d d2 = (p3 - p2);
+        nacb::Vec2f d1 = (p2 - p1);
+        nacb::Vec2f d2 = (p3 - p2);
         d1.normalize();
         d2.normalize();
 
@@ -143,7 +143,7 @@ public:
 
   void UpdateAccelerationForCars(const std::vector<Car*>::iterator& car_begin,
                                  const std::vector<Car*>::iterator& car_end,
-                                 const nacb::Vec2d& dpos,
+                                 const nacb::Vec2f& dpos,
                                  double dpos_len,
                                  double& accel) {
     for (auto car_p = car_begin; car_p != car_end; car_p++) {
@@ -243,12 +243,12 @@ public:
     if (plan_[stage_index_].type == plan::Stage::EXIT_PARKING_LOT) {
       const auto* segment = &plan_[stage_index_].segments[0];
       const auto& p1 = segment->road_segment->points[segment->start_index];
-      nacb::Vec2d dir = p1 - plan_[stage_index_].point;
+      nacb::Vec2f dir = p1 - plan_[stage_index_].point;
       const double d = dir.normalize();
 
-      nacb::Vec2d e1, e2;
+      nacb::Vec2f e1, e2;
       plan_[(stage_index_ + 1)].segments[0].GetPoints(0, &e1, &e2);
-      nacb::Vec2d offset = e2 - e1;
+      nacb::Vec2f offset = e2 - e1;
       offset.normalize();
       offset *= std::max(0.3, dir.dot(offset) / 8.0);
 
@@ -265,13 +265,13 @@ public:
     } else if (plan_[stage_index_].type == plan::Stage::FIND_PARKING_SPOT) {
       const auto* segment = &plan_[stage_index_].segments[0];
       const auto& p1 = segment->road_segment->points[segment->start_index];
-      nacb::Vec2d dir = plan_[stage_index_].point - p1;
+      nacb::Vec2f dir = plan_[stage_index_].point - p1;
       const double d = dir.normalize();
 
-      nacb::Vec2d e1, e2;
+      nacb::Vec2f e1, e2;
       const auto& prev_segments = plan_[stage_index_ - 1].segments;
       prev_segments.back().GetPoints(prev_segments.back().end_index - prev_segments.back().start_index - 1 , &e1, &e2);
-      nacb::Vec2d offset = e2 - e1;
+      nacb::Vec2f offset = e2 - e1;
       offset.normalize();
       offset *= std::max(0.3, dir.dot(offset) / 8.0);
 
@@ -304,7 +304,7 @@ public:
                segment_index_ < (int)stage.segments.size()) {
           int i1, i2;
           segment->GetPoint(sub_index_, &i1);
-          nacb::Vec2d p2 = segment->GetPoint(sub_index_ + 1, &i2);
+          nacb::Vec2f p2 = segment->GetPoint(sub_index_ + 1, &i2);
           if (segment->road_segment->intersections[i2]) {
             if (!ignore_intersections_.count(segment->road_segment->intersections[i2])) {
               upcoming_intersection_ = segment->road_segment->intersections[i2];
@@ -345,7 +345,7 @@ public:
     wheel_anim_ += speed_ / (2 * M_PI * kWheelSize) * dt;
   }
 
-  const nacb::Vec2d& pos() const {
+  const nacb::Vec2f& pos() const {
     return pos_;
   }
   Level& level_;
@@ -361,7 +361,7 @@ public:
   int sub_index_ = 0;
   
   // State
-  nacb::Vec2d pos_;
+  nacb::Vec2f pos_;
   double speed_ = 0;  
   double max_speed_ = 0;
 
@@ -379,7 +379,7 @@ public:
 
 
   // Implied fields, used for rendering only
-  nacb::Vec2d last_pos_;
+  nacb::Vec2f last_pos_;
   float angle_ = 0;
   float wheel_rot_ = 0;
   float wheel_anim_ = 0;  

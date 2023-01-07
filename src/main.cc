@@ -198,9 +198,9 @@ public:
 
       for (const auto& segment : intersection.incoming_segments) {
         const auto& points = segment.first->points;
-        const nacb::Vec2d& p1 = points[segment.second];
-        const nacb::Vec2d& p2 = points[(segment.second + 1) % points.size()];
-        const nacb::Vec2d dir = p2 - p1;
+        const nacb::Vec2f& p1 = points[segment.second];
+        const nacb::Vec2f& p2 = points[(segment.second + 1) % points.size()];
+        const nacb::Vec2f dir = p2 - p1;
         const double r = atan2(dir.y, dir.x);
         glPushMatrix();
         glRotatef(180 * r / M_PI, 0, 0, 1);
@@ -254,15 +254,15 @@ public:
     glPopMatrix();
   }
 
-  std::vector<nacb::Vec2d> GetRoadSegmentNormals(RoadSegment& segment) {
-    std::vector<nacb::Vec2d> dirs(segment.points.size(), nacb::Vec2d(0, 0));
+  std::vector<nacb::Vec2f> GetRoadSegmentNormals(RoadSegment& segment) {
+    std::vector<nacb::Vec2f> dirs(segment.points.size(), nacb::Vec2f(0, 0));
 
     for (int i = 0; i < int(segment.points.size()) - 1; ++i) {
-      const nacb::Vec2d& p1 = segment.points[i];
-      const nacb::Vec2d& p2 = segment.points[i + 1];
-      nacb::Vec2d d = (p2 - p1);
+      const nacb::Vec2f& p1 = segment.points[i];
+      const nacb::Vec2f& p2 = segment.points[i + 1];
+      nacb::Vec2f d = (p2 - p1);
       d.normalize();
-      d = nacb::Vec2d(-d.y, d.x);
+      d = nacb::Vec2f(-d.y, d.x);
       dirs[i] += d;
       if (i > 0) {
         dirs[i].normalize();
@@ -274,7 +274,7 @@ public:
   }
 
   void DrawRoadSegmentBorder(RoadSegment& segment) {
-    std::vector<nacb::Vec2d> dirs = GetRoadSegmentNormals(segment);
+    std::vector<nacb::Vec2f> dirs = GetRoadSegmentNormals(segment);
     
     glLineWidth(2);
     glColor3f(1, 1, 1);
@@ -282,14 +282,14 @@ public:
     
     glBegin(GL_LINE_STRIP);
     for (int i = 0; i < int(segment.points.size()); ++i) {
-      const nacb::Vec2d& p1 = segment.points[i];
+      const nacb::Vec2f& p1 = segment.points[i];
       glVertex3f(p1.x - dirs[i].x * 0.45, p1.y - dirs[i].y * 0.45, -0.025);
     }
     glEnd();
 
     glBegin(GL_LINE_STRIP);
     for (int i = 0; i < int(segment.points.size()); ++i) {
-      const nacb::Vec2d& p1 = segment.points[i];
+      const nacb::Vec2f& p1 = segment.points[i];
       glVertex3f(p1.x + dirs[i].x * 0.45, p1.y + dirs[i].y * 0.45, -0.025);
     }
     glEnd();
@@ -309,13 +309,13 @@ public:
       glEnd();
     }
 
-    std::vector<nacb::Vec2d> dirs = GetRoadSegmentNormals(segment);
+    std::vector<nacb::Vec2f> dirs = GetRoadSegmentNormals(segment);
 
     glColor3f(0.7, 0.7, 0.7);
     glDepthMask(0);    
     glBegin(GL_QUAD_STRIP);
     for (int i = 0; i < int(segment.points.size()); ++i) {
-      const nacb::Vec2d& p1 = segment.points[i];
+      const nacb::Vec2f& p1 = segment.points[i];
       glVertex2f(p1.x - dirs[i].x * 0.45, p1.y - dirs[i].y * 0.45);
       glVertex2f(p1.x + dirs[i].x * 0.45, p1.y + dirs[i].y * 0.45);
     }
@@ -327,7 +327,7 @@ public:
   void DrawRoadSegmentSpeed(const nacb::Quaternion& cquat,
                             RoadSegment& segment) {
     const double speed = segment.GetAverageSpeed();
-    const nacb::Vec2d co = (segment.points[0] + segment.points[1]) * 0.5;
+    const nacb::Vec2f co = (segment.points[0] + segment.points[1]) * 0.5;
     char str[1024];
     snprintf(str, sizeof(str), "%3.2f", speed);
 
@@ -585,14 +585,14 @@ public:
   }
   void Step(double dt) {
     /*
-    absl::flat_hash_map<nacb::Vec2d, std::vector<Car*>, PointHash, PointEqual> cars_by_point;
+    absl::flat_hash_map<nacb::Vec2f, std::vector<Car*>, PointHash, PointEqual> cars_by_point;
     for (auto& car: cars_) {
       cars_by_point[car.pos()].push_back(&car);
-      cars_by_point[car.pos() - nacb::Vec2d(1, 0)].push_back(&car);
-      cars_by_point[car.pos() - nacb::Vec2d(0, 1)].push_back(&car);
-      cars_by_point[car.pos() + nacb::Vec2d(1, 0)].push_back(&car);
-      cars_by_point[car.pos() + nacb::Vec2d(0, 1)].push_back(&car);
-      cars_by_point[car.pos() + nacb::Vec2d(1, 1)].push_back(&car);
+      cars_by_point[car.pos() - nacb::Vec2f(1, 0)].push_back(&car);
+      cars_by_point[car.pos() - nacb::Vec2f(0, 1)].push_back(&car);
+      cars_by_point[car.pos() + nacb::Vec2f(1, 0)].push_back(&car);
+      cars_by_point[car.pos() + nacb::Vec2f(0, 1)].push_back(&car);
+      cars_by_point[car.pos() + nacb::Vec2f(1, 1)].push_back(&car);
     }
     double cc_size = 0;
     */

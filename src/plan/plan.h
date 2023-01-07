@@ -25,8 +25,8 @@ public:
 
 private:
   Level& level;
-  std::vector<nacb::Vec2d> pos;
-  absl::flat_hash_map<nacb::Vec2d, int, PointHash, PointEqual> ipos;
+  std::vector<nacb::Vec2f> pos;
+  absl::flat_hash_map<nacb::Vec2f, int, PointHash, PointEqual> ipos;
   std::vector<std::vector<int> > adj;
   std::vector<std::vector<std::pair<RoadSegment*, int> > > adj_info;
 

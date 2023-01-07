@@ -34,7 +34,7 @@ public:
     name(seg.name()),
     speed_limit(seg.speed_limit()) {
     for (const auto& p: seg.points()) {
-      points.push_back(nacb::Vec2d(p.x(), p.y()));
+      points.push_back(nacb::Vec2f(p.x(), p.y()));
     }
     cars.resize(seg.points().size());
     
@@ -89,7 +89,7 @@ public:
   
   std::string name;
   double speed_limit;
-  std::vector<nacb::Vec2d> points;
+  std::vector<nacb::Vec2f> points;
   absl::flat_hash_map<int, IntersectionControl*> intersections;
   std::vector<absl::flat_hash_set<const Car*> > cars;
 

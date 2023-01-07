@@ -20,7 +20,7 @@ public:
     if (type == dsim::IntersectionControl::YIELD) return true;
     return false;
   }
-  bool IsEnforcedDirection(const nacb::Vec2d& test) const {
+  bool IsEnforcedDirection(const nacb::Vec2f& test) const {
     return dir.dot(test) >= 0.999 * test.len();
   }
   bool IsStopSign() const {
@@ -49,8 +49,8 @@ public:
   
   dsim::IntersectionControl::Type type;
   std::string name;
-  nacb::Vec2d pos;
-  nacb::Vec2d dir;
+  nacb::Vec2f pos;
+  nacb::Vec2f dir;
   double time;
   int parity = false;
   double elapsed = 0;

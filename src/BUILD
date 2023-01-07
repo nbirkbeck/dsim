@@ -64,7 +64,7 @@ cc_binary(
      "//utigl:ffont",
   ] + DEPS,
   linkopts = [
-     "-lGL -lGLU -lglut -lGLEW"
+     "-lGL -lGLU -lglut -lGLEW -lprofiler"
   ],
   copts = [
     "-mmmx -msse -msse3"

@@ -37,20 +37,28 @@ inline bool IsNear(const double x, const double y) {
   return abs(x - y) < 1e-5;
 }
 
-inline nacb::Vec2d CubicBezier(const nacb::Vec2d& p1, const nacb::Vec2d& p2,
-                               const nacb::Vec2d& p3, const nacb::Vec2d& p4,
+inline nacb::Vec2f CubicBezier(const nacb::Vec2f& p1, const nacb::Vec2f& p2,
+                               const nacb::Vec2f& p3, const nacb::Vec2f& p4,
                                double t) {
-  const double t1 = (1.0 - t);
+  const float t1 = (1.0f - t);
   return p1 * (t1 * t1 * t1) + p2 * (3 * (t1 * t1 * t)) + p3 * (3 * t1 * t * t) + p4 * (t * t * t);
 }
 
-inline nacb::Vec2d Interpolate(const nacb::Vec2d& p1, const nacb::Vec2d& p2, double t) {
-  return p1 * (1.0 - t) + p2 * t;
+inline nacb::Vec2f QuadraticBezier(const nacb::Vec2f& p1, const nacb::Vec2f& p2,
+                                   const nacb::Vec2f& p3, 
+                                   double t) {
+  const float t1 = (1.0 - t);
+  return p1 * (t1 * t1) + p2 * (2.f * (t1 * t)) + p3 * (t * t);
 }
 
-inline bool IsOnRectangle(const nacb::Vec2d& rect_center,
+inline nacb::Vec2f Interpolate(const nacb::Vec2f& p1, const nacb::Vec2f& p2, double t) {
+  return nacb::Vec2f(p1.x * (1.0 - t) + p2.x * t,
+                     p1.y * (1.0 - t) + p2.y * t);
+}
+
+inline bool IsOnRectangle(const nacb::Vec2f& rect_center,
                           double width, double height,
-                          const nacb::Vec2d& pos) {
+                          const nacb::Vec2f& pos) {
   const float x0 = rect_center.x - width / 2;
   const float x1 = rect_center.x + width / 2;
   const float y0 = rect_center.y - height / 2;
@@ -63,14 +71,14 @@ inline bool IsOnRectangle(const nacb::Vec2d& rect_center,
      (x0 <= pos.x && pos.x <= x1));
 }
 
-inline double EstimateCurveLength(const nacb::Vec2d& a,
-                                  const nacb::Vec2d& b,
-                                  const nacb::Vec2d& c) {
-  nacb::Vec2d prev;
+inline double EstimateCurveLength(const nacb::Vec2f& a,
+                                  const nacb::Vec2f& b,
+                                  const nacb::Vec2f& c) {
+  nacb::Vec2f prev;
   double len = 0;
-  for (int i = 0; i <= 10; ++i) {
-    double t = double(i) / 10;
-    nacb::Vec2d point = Interpolate(Interpolate(a, b, t), Interpolate(b, c, t), t);
+  for (int i = 0; i <= 6; ++i) {
+    double t = double(i) / 6;
+    nacb::Vec2f point = QuadraticBezier(a, b, c, t);
     if (i) {
       len += (point - prev).len();
     }
@@ -85,7 +93,7 @@ inline uint64_t Hash(const dsim::Point& pos) {
   return (((uint64_t)x) << 32) | ((uint64_t)y);
 }
 
-inline uint64_t Hash(const nacb::Vec2d& pos) {
+inline uint64_t Hash(const nacb::Vec2f& pos) {
   int32_t x = (int32_t)pos.x;
   int32_t y = (int32_t)pos.y;
   return (((uint64_t)x) << 32) | ((uint64_t)y);
@@ -95,7 +103,7 @@ struct PointEqual {
   bool operator()(const dsim::Point& p1, const dsim::Point& p2) const {
     return p1.x() == p2.x() && p1.y() == p2.y();
   }
-  bool operator()(const nacb::Vec2d& p1, const nacb::Vec2d& p2) const {
+  bool operator()(const nacb::Vec2f& p1, const nacb::Vec2f& p2) const {
     return p1.x == p2.x && p1.y == p2.y;
   }
 };
@@ -104,7 +112,7 @@ struct PointHash {
   size_t operator()(const dsim::Point& pos) const {
     return Hash(pos);
   }
-  size_t operator()(const nacb::Vec2d& pos) const {
+  size_t operator()(const nacb::Vec2f& pos) const {
     return Hash(pos);
   }
 };

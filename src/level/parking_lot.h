@@ -9,7 +9,7 @@
 class ParkingSpot {
 public:
   ParkingSpot(double x, double y): pos(x, y) {}
-  nacb::Vec2d pos;
+  nacb::Vec2f pos;
 };
 
 class ParkingLot {
@@ -28,7 +28,7 @@ public:
   const double height() const { return height_; }
   
   std::string name;
-  nacb::Vec2d pos;
+  nacb::Vec2f pos;
   double width_, height_;
   std::vector<ParkingSpot> parking_spots;
 };

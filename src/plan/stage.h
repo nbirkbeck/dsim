@@ -25,8 +25,8 @@ struct Stage {
     struct Info {
       bool smooth_start = false;
       bool smooth_end = false;
-      nacb::Vec2d modified_start;
-      nacb::Vec2d anchors[2];
+      nacb::Vec2f modified_start;
+      nacb::Vec2f anchors[2];
       double segment_length = 0;
       double curve_length = 0;
     };
@@ -50,14 +50,14 @@ struct Stage {
     }
       
     void GetPoints(int index,
-                   nacb::Vec2d* p1,
-                   nacb::Vec2d* p2) const {
+                   nacb::Vec2f* p1,
+                   nacb::Vec2f* p2) const {
       const int i1 = (start_index + index) % (int)road_segment->points.size();
       const int i2 = (start_index + index + 1) % (int)road_segment->points.size();
       *p1 = road_segment->points[i1];
       *p2 = road_segment->points[i2];
     }
-    const nacb::Vec2d& GetPoint(int index, int* point_index = nullptr) const {
+    const nacb::Vec2f& GetPoint(int index, int* point_index = nullptr) const {
       const int i = (start_index + index) % (int)road_segment->points.size();
       if (point_index) *point_index = i;
       return road_segment->points[i];
@@ -68,13 +68,13 @@ struct Stage {
 
     bool GetInterpolatedPoint(int index,
                               double* distance_to_travel,
-                              nacb::Vec2d* pos) {
+                              nacb::Vec2f* pos) {
       const double total_curve_length = GetTotalLength(index);
       if (*distance_to_travel > total_curve_length) {
         *distance_to_travel -= total_curve_length;
         return false;
       }
-      nacb::Vec2d p1, p2;
+      nacb::Vec2f p1, p2;
       GetPoints(index, &p1, &p2);
       
       const double rounding_start = info[index].segment_length - kRoundingDist;
@@ -84,9 +84,10 @@ struct Stage {
         p1 = info[index].modified_start;
       }
       if (info[index].smooth_end && rounding_t >= 0) {
-        const nacb::Vec2d a = Interpolate(info[index].anchors[0], p2,  rounding_t); // (d - rounding_dist + rounding_t * rounding_dist) / d);
-        const nacb::Vec2d b = Interpolate(p2, info[index].anchors[1],  rounding_t); // (d - rounding_dist + rounding_t * rounding_dist) / d);
-        *pos = Interpolate(a, b, rounding_t);
+        //const nacb::Vec2f a = Interpolate(info[index].anchors[0], p2,  rounding_t);
+        //const nacb::Vec2f b = Interpolate(p2, info[index].anchors[1],  rounding_t);
+        //*pos = Interpolate(a, b, rounding_t);
+        *pos = QuadraticBezier(info[index].anchors[0], p2, info[index].anchors[1], rounding_t);
       } else {
         *pos = Interpolate(p1, p2, *distance_to_travel / info[index].segment_length);
       }
@@ -101,11 +102,11 @@ struct Stage {
   void BuildCurveInfo() {
     const double kSmoothThreshold = 0.95;
     bool prev_smooth = false;
-    nacb::Vec2d last_end;
+    nacb::Vec2f last_end;
     for (int i = 0; i < (int)segments.size(); ++i) {
       for (int j = 0; !segments[i].IsLastIndex(j); ++j) {
         
-        nacb::Vec2d p1, p2, d1;
+        nacb::Vec2f p1, p2, d1;
         segments[i].GetPoints(j, &p1, &p2);
         d1 = (p2 - p1);
         double d1_len = d1.normalize();
@@ -118,9 +119,9 @@ struct Stage {
         
         prev_smooth = false;
         Segment* next_segment = nullptr;
-        nacb::Vec2d p3;
+        nacb::Vec2f p3;
         if (GetUpcomingPoint(i, j, &next_segment, &p3)) {
-          nacb::Vec2d d2 = p3 - p2;
+          nacb::Vec2f d2 = p3 - p2;
           const double d2_len = d2.normalize();
           if (d2_len >= 1 &&
               d1_len >= 1 &&
@@ -139,7 +140,7 @@ struct Stage {
     }
   }
 
-  bool GetPreviousPoint(int segment_index, int sub_index, nacb::Vec2d* p0) {
+  bool GetPreviousPoint(int segment_index, int sub_index, nacb::Vec2f* p0) {
     if (segment_index == 0 && sub_index == 0) return false;
     if (sub_index == 0) {
       const Segment& prev_segment = segments[segment_index - 1];
@@ -151,7 +152,7 @@ struct Stage {
     return true;
   }
     
-  bool GetUpcomingPoint(int segment_index, int sub_index, Segment** next_segment, nacb::Vec2d* p3) {
+  bool GetUpcomingPoint(int segment_index, int sub_index, Segment** next_segment, nacb::Vec2f* p3) {
     if (type != ROAD_TRAVEL) return false;
     *next_segment = nullptr;
 
@@ -171,7 +172,7 @@ struct Stage {
   }
   
   Type type;
-  nacb::Vec2d point;
+  nacb::Vec2f point;
   std::vector<Segment> segments;
   const ParkingLot* parking_lot;
 };
