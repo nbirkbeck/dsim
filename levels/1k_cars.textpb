@@ -1,0 +1,1672 @@
+road_segment { name:"NurbsPath.000" points { x:40.0 y:0.0 }  points { x:35.0 y:0.0 }  points { x:30.0 y:0.0 }  points { x:20.0 y:0.0 }  points { x:15.0 y:0.0 }  points { x:10.0 y:0.0 }  points { x:0.0 y:0.0 }  points { x:-5.0 y:0.0 }  points { x:-10.0 y:0.0 }  points { x:-20.0 y:0.0 }  points { x:-25.0 y:0.0 }  points { x:-30.0 y:0.0 }  points { x:-40.0 y:0.0 }  points { x:-50.0 y:0.0 }  points { x:-50.0 y:-10.0 }  points { x:-40.0 y:-10.0 }  points { x:-30.0 y:-10.0 }  points { x:-25.0 y:-10.0 }  points { x:-20.0 y:-10.0 }  points { x:-10.0 y:-10.0 }  points { x:-5.0 y:-10.0 }  points { x:0.0 y:-10.0 }  points { x:10.0 y:-10.0 }  points { x:15.0 y:-10.0 }  points { x:20.0 y:-10.0 }  points { x:30.0 y:-10.0 }  points { x:35.0 y:-10.0 }  points { x:40.0 y:-10.0 }  points { x:50.0 y:-10.0 }  points { x:50.0 y:0.0 }  points { x:40.0 y:0.0 }  }
+road_segment { name:"NurbsPath.001" points { x:40.0 y:10.0 }  points { x:35.0 y:10.0 }  points { x:30.0 y:10.0 }  points { x:20.0 y:10.0 }  points { x:15.0 y:10.0 }  points { x:10.0 y:10.0 }  points { x:0.0 y:10.0 }  points { x:-5.0 y:10.0 }  points { x:-10.0 y:10.0 }  points { x:-20.0 y:10.0 }  points { x:-25.0 y:10.0 }  points { x:-30.0 y:10.0 }  points { x:-40.0 y:10.0 }  points { x:-50.0 y:10.0 }  points { x:-50.0 y:0.0 }  }
+road_segment { name:"NurbsPath.002" points { x:50.0 y:0.0 }  points { x:50.0 y:10.0 }  points { x:40.0 y:10.0 }  }
+road_segment { name:"NurbsPath.003" points { x:40.0 y:20.0 }  points { x:35.0 y:20.0 }  points { x:30.0 y:20.0 }  points { x:20.0 y:20.0 }  points { x:15.0 y:20.0 }  points { x:10.0 y:20.0 }  points { x:0.0 y:20.0 }  points { x:-5.0 y:20.0 }  points { x:-10.0 y:20.0 }  points { x:-20.0 y:20.0 }  points { x:-25.0 y:20.0 }  points { x:-30.0 y:20.0 }  points { x:-40.0 y:20.0 }  points { x:-50.0 y:20.0 }  points { x:-50.0 y:10.0 }  }
+road_segment { name:"NurbsPath.004" points { x:50.0 y:10.0 }  points { x:50.0 y:20.0 }  points { x:40.0 y:20.0 }  }
+road_segment { name:"NurbsPath.005" points { x:40.0 y:30.0 }  points { x:35.0 y:30.0 }  points { x:30.0 y:30.0 }  points { x:20.0 y:30.0 }  points { x:15.0 y:30.0 }  points { x:10.0 y:30.0 }  points { x:0.0 y:30.0 }  points { x:-5.0 y:30.0 }  points { x:-10.0 y:30.0 }  points { x:-20.0 y:30.0 }  points { x:-25.0 y:30.0 }  points { x:-30.0 y:30.0 }  points { x:-40.0 y:30.0 }  points { x:-50.0 y:30.0 }  points { x:-50.0 y:20.0 }  }
+road_segment { name:"NurbsPath.006" points { x:50.0 y:20.0 }  points { x:50.0 y:30.0 }  points { x:40.0 y:30.0 }  }
+road_segment { name:"NurbsPath.007" points { x:40.0 y:40.0 }  points { x:35.0 y:40.0 }  points { x:30.0 y:40.0 }  points { x:20.0 y:40.0 }  points { x:15.0 y:40.0 }  points { x:10.0 y:40.0 }  points { x:0.0 y:40.0 }  points { x:-5.0 y:40.0 }  points { x:-10.0 y:40.0 }  points { x:-20.0 y:40.0 }  points { x:-25.0 y:40.0 }  points { x:-30.0 y:40.0 }  points { x:-40.0 y:40.0 }  points { x:-50.0 y:40.0 }  points { x:-50.0 y:30.0 }  }
+road_segment { name:"NurbsPath.008" points { x:50.0 y:30.0 }  points { x:50.0 y:40.0 }  points { x:40.0 y:40.0 }  }
+road_segment { name:"NurbsPath.009" points { x:40.0 y:50.0 }  points { x:35.0 y:50.0 }  points { x:30.0 y:50.0 }  points { x:20.0 y:50.0 }  points { x:15.0 y:50.0 }  points { x:10.0 y:50.0 }  points { x:0.0 y:50.0 }  points { x:-5.0 y:50.0 }  points { x:-10.0 y:50.0 }  points { x:-20.0 y:50.0 }  points { x:-25.0 y:50.0 }  points { x:-30.0 y:50.0 }  points { x:-40.0 y:50.0 }  points { x:-50.0 y:50.0 }  points { x:-50.0 y:40.0 }  }
+road_segment { name:"NurbsPath.010" points { x:50.0 y:40.0 }  points { x:50.0 y:50.0 }  points { x:40.0 y:50.0 }  }
+road_segment { name:"NurbsPath.011" points { x:40.0 y:60.0 }  points { x:35.0 y:60.0 }  points { x:30.0 y:60.0 }  points { x:20.0 y:60.0 }  points { x:15.0 y:60.0 }  points { x:10.0 y:60.0 }  points { x:0.0 y:60.0 }  points { x:-5.0 y:60.0 }  points { x:-10.0 y:60.0 }  points { x:-20.0 y:60.0 }  points { x:-25.0 y:60.0 }  points { x:-30.0 y:60.0 }  points { x:-40.0 y:60.0 }  points { x:-50.0 y:60.0 }  points { x:-50.0 y:50.0 }  }
+road_segment { name:"NurbsPath.012" points { x:50.0 y:50.0 }  points { x:50.0 y:60.0 }  points { x:40.0 y:60.0 }  }
+road_segment { name:"NurbsPath.013" points { x:40.0 y:70.0 }  points { x:35.0 y:70.0 }  points { x:30.0 y:70.0 }  points { x:20.0 y:70.0 }  points { x:15.0 y:70.0 }  points { x:10.0 y:70.0 }  points { x:0.0 y:70.0 }  points { x:-5.0 y:70.0 }  points { x:-10.0 y:70.0 }  points { x:-20.0 y:70.0 }  points { x:-25.0 y:70.0 }  points { x:-30.0 y:70.0 }  points { x:-40.0 y:70.0 }  points { x:-50.0 y:70.0 }  points { x:-50.0 y:60.0 }  }
+road_segment { name:"NurbsPath.014" points { x:50.0 y:60.0 }  points { x:50.0 y:70.0 }  points { x:40.0 y:70.0 }  }
+road_segment { name:"NurbsPath.015" points { x:40.0 y:80.0 }  points { x:35.0 y:80.0 }  points { x:30.0 y:80.0 }  points { x:20.0 y:80.0 }  points { x:15.0 y:80.0 }  points { x:10.0 y:80.0 }  points { x:0.0 y:80.0 }  points { x:-5.0 y:80.0 }  points { x:-10.0 y:80.0 }  points { x:-20.0 y:80.0 }  points { x:-25.0 y:80.0 }  points { x:-30.0 y:80.0 }  points { x:-40.0 y:80.0 }  points { x:-50.0 y:80.0 }  points { x:-50.0 y:70.0 }  }
+road_segment { name:"NurbsPath.016" points { x:50.0 y:70.0 }  points { x:50.0 y:80.0 }  points { x:40.0 y:80.0 }  }
+road_segment { name:"NurbsPath.017" points { x:40.0 y:90.0 }  points { x:35.0 y:90.0 }  points { x:30.0 y:90.0 }  points { x:20.0 y:90.0 }  points { x:15.0 y:90.0 }  points { x:10.0 y:90.0 }  points { x:0.0 y:90.0 }  points { x:-5.0 y:90.0 }  points { x:-10.0 y:90.0 }  points { x:-20.0 y:90.0 }  points { x:-25.0 y:90.0 }  points { x:-30.0 y:90.0 }  points { x:-40.0 y:90.0 }  points { x:-50.0 y:90.0 }  points { x:-50.0 y:80.0 }  }
+road_segment { name:"NurbsPath.018" points { x:50.0 y:80.0 }  points { x:50.0 y:90.0 }  points { x:40.0 y:90.0 }  }
+road_segment { name:"NurbsPath.019" points { x:-50.0 y:-10.0 }  points { x:-50.0 y:-20.0 }  points { x:-40.0 y:-20.0 }  points { x:-30.0 y:-20.0 }  points { x:-25.0 y:-20.0 }  points { x:-20.0 y:-20.0 }  points { x:-10.0 y:-20.0 }  points { x:-5.0 y:-20.0 }  points { x:0.0 y:-20.0 }  points { x:10.0 y:-20.0 }  points { x:15.0 y:-20.0 }  points { x:20.0 y:-20.0 }  points { x:30.0 y:-20.0 }  points { x:35.0 y:-20.0 }  points { x:40.0 y:-20.0 }  points { x:50.0 y:-20.0 }  points { x:50.0 y:-10.0 }  }
+road_segment { name:"NurbsPath.020" points { x:-50.0 y:-10.0 }  }
+road_segment { name:"NurbsPath.021" points { x:50.0 y:-10.0 }  }
+road_segment { name:"NurbsPath.022" points { x:-50.0 y:-20.0 }  points { x:-50.0 y:-30.0 }  points { x:-40.0 y:-30.0 }  points { x:-30.0 y:-30.0 }  points { x:-25.0 y:-30.0 }  points { x:-20.0 y:-30.0 }  points { x:-10.0 y:-30.0 }  points { x:-5.0 y:-30.0 }  points { x:0.0 y:-30.0 }  points { x:10.0 y:-30.0 }  points { x:15.0 y:-30.0 }  points { x:20.0 y:-30.0 }  points { x:30.0 y:-30.0 }  points { x:35.0 y:-30.0 }  points { x:40.0 y:-30.0 }  points { x:50.0 y:-30.0 }  points { x:50.0 y:-20.0 }  }
+road_segment { name:"NurbsPath.023" points { x:-50.0 y:-20.0 }  }
+road_segment { name:"NurbsPath.024" points { x:50.0 y:-20.0 }  }
+road_segment { name:"NurbsPath.025" points { x:-50.0 y:-30.0 }  points { x:-50.0 y:-40.0 }  points { x:-40.0 y:-40.0 }  points { x:-30.0 y:-40.0 }  points { x:-25.0 y:-40.0 }  points { x:-20.0 y:-40.0 }  points { x:-10.0 y:-40.0 }  points { x:-5.0 y:-40.0 }  points { x:0.0 y:-40.0 }  points { x:10.0 y:-40.0 }  points { x:15.0 y:-40.0 }  points { x:20.0 y:-40.0 }  points { x:30.0 y:-40.0 }  points { x:35.0 y:-40.0 }  points { x:40.0 y:-40.0 }  points { x:50.0 y:-40.0 }  points { x:50.0 y:-30.0 }  }
+road_segment { name:"NurbsPath.026" points { x:-50.0 y:-30.0 }  }
+road_segment { name:"NurbsPath.027" points { x:50.0 y:-30.0 }  }
+road_segment { name:"NurbsPath.028" points { x:-50.0 y:-40.0 }  points { x:-50.0 y:-50.0 }  points { x:-40.0 y:-50.0 }  points { x:-30.0 y:-50.0 }  points { x:-25.0 y:-50.0 }  points { x:-20.0 y:-50.0 }  points { x:-10.0 y:-50.0 }  points { x:-5.0 y:-50.0 }  points { x:0.0 y:-50.0 }  points { x:10.0 y:-50.0 }  points { x:15.0 y:-50.0 }  points { x:20.0 y:-50.0 }  points { x:30.0 y:-50.0 }  points { x:35.0 y:-50.0 }  points { x:40.0 y:-50.0 }  points { x:50.0 y:-50.0 }  points { x:50.0 y:-40.0 }  }
+road_segment { name:"NurbsPath.029" points { x:-50.0 y:-40.0 }  }
+road_segment { name:"NurbsPath.030" points { x:50.0 y:-40.0 }  }
+road_segment { name:"NurbsPath.031" points { x:-50.0 y:-50.0 }  points { x:-50.0 y:-60.0 }  points { x:-40.0 y:-60.0 }  points { x:-30.0 y:-60.0 }  points { x:-25.0 y:-60.0 }  points { x:-20.0 y:-60.0 }  points { x:-10.0 y:-60.0 }  points { x:-5.0 y:-60.0 }  points { x:0.0 y:-60.0 }  points { x:10.0 y:-60.0 }  points { x:15.0 y:-60.0 }  points { x:20.0 y:-60.0 }  points { x:30.0 y:-60.0 }  points { x:35.0 y:-60.0 }  points { x:40.0 y:-60.0 }  points { x:50.0 y:-60.0 }  points { x:50.0 y:-50.0 }  }
+road_segment { name:"NurbsPath.032" points { x:-50.0 y:-50.0 }  }
+road_segment { name:"NurbsPath.033" points { x:50.0 y:-50.0 }  }
+road_segment { name:"NurbsPath.034" points { x:-50.0 y:-60.0 }  points { x:-50.0 y:-70.0 }  points { x:-40.0 y:-70.0 }  points { x:-30.0 y:-70.0 }  points { x:-25.0 y:-70.0 }  points { x:-20.0 y:-70.0 }  points { x:-10.0 y:-70.0 }  points { x:-5.0 y:-70.0 }  points { x:0.0 y:-70.0 }  points { x:10.0 y:-70.0 }  points { x:15.0 y:-70.0 }  points { x:20.0 y:-70.0 }  points { x:30.0 y:-70.0 }  points { x:35.0 y:-70.0 }  points { x:40.0 y:-70.0 }  points { x:50.0 y:-70.0 }  points { x:50.0 y:-60.0 }  }
+road_segment { name:"NurbsPath.035" points { x:-50.0 y:-60.0 }  }
+road_segment { name:"NurbsPath.036" points { x:50.0 y:-60.0 }  }
+road_segment { name:"NurbsPath.037" points { x:-50.0 y:-70.0 }  points { x:-50.0 y:-80.0 }  points { x:-40.0 y:-80.0 }  points { x:-30.0 y:-80.0 }  points { x:-25.0 y:-80.0 }  points { x:-20.0 y:-80.0 }  points { x:-10.0 y:-80.0 }  points { x:-5.0 y:-80.0 }  points { x:0.0 y:-80.0 }  points { x:10.0 y:-80.0 }  points { x:15.0 y:-80.0 }  points { x:20.0 y:-80.0 }  points { x:30.0 y:-80.0 }  points { x:35.0 y:-80.0 }  points { x:40.0 y:-80.0 }  points { x:50.0 y:-80.0 }  points { x:50.0 y:-70.0 }  }
+road_segment { name:"NurbsPath.038" points { x:-50.0 y:-70.0 }  }
+road_segment { name:"NurbsPath.039" points { x:50.0 y:-70.0 }  }
+road_segment { name:"NurbsPath.040" points { x:-50.0 y:-80.0 }  points { x:-50.0 y:-90.0 }  points { x:-40.0 y:-90.0 }  points { x:-30.0 y:-90.0 }  points { x:-25.0 y:-90.0 }  points { x:-20.0 y:-90.0 }  points { x:-10.0 y:-90.0 }  points { x:-5.0 y:-90.0 }  points { x:0.0 y:-90.0 }  points { x:10.0 y:-90.0 }  points { x:15.0 y:-90.0 }  points { x:20.0 y:-90.0 }  points { x:30.0 y:-90.0 }  points { x:35.0 y:-90.0 }  points { x:40.0 y:-90.0 }  points { x:50.0 y:-90.0 }  points { x:50.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.041" points { x:-50.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.042" points { x:50.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.043" points { x:-50.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.044" points { x:50.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.045" points { x:-50.0 y:-90.0 }  points { x:-50.0 y:-100.0 }  points { x:-40.0 y:-100.0 }  points { x:-30.0 y:-100.0 }  points { x:-25.0 y:-100.0 }  points { x:-20.0 y:-100.0 }  points { x:-10.0 y:-100.0 }  points { x:-5.0 y:-100.0 }  points { x:0.0 y:-100.0 }  points { x:10.0 y:-100.0 }  points { x:15.0 y:-100.0 }  points { x:20.0 y:-100.0 }  points { x:30.0 y:-100.0 }  points { x:35.0 y:-100.0 }  points { x:40.0 y:-100.0 }  points { x:50.0 y:-100.0 }  points { x:50.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.046" points { x:-50.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.047" points { x:50.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.048" points { x:-50.0 y:-100.0 }  }
+road_segment { name:"NurbsPath.049" points { x:50.0 y:-100.0 }  }
+road_segment { name:"NurbsPath.050" points { x:-50.0 y:-100.0 }  points { x:-50.0 y:-110.0 }  points { x:-40.0 y:-110.0 }  points { x:-30.0 y:-110.0 }  points { x:-25.0 y:-110.0 }  points { x:-20.0 y:-110.0 }  points { x:-10.0 y:-110.0 }  points { x:-5.0 y:-110.0 }  points { x:0.0 y:-110.0 }  points { x:10.0 y:-110.0 }  points { x:15.0 y:-110.0 }  points { x:20.0 y:-110.0 }  points { x:30.0 y:-110.0 }  points { x:35.0 y:-110.0 }  points { x:40.0 y:-110.0 }  points { x:50.0 y:-110.0 }  points { x:50.0 y:-100.0 }  }
+road_segment { name:"NurbsPath.051" points { x:-50.0 y:-100.0 }  }
+road_segment { name:"NurbsPath.052" points { x:50.0 y:-100.0 }  }
+road_segment { name:"NurbsPath.053" points { x:-50.0 y:-110.0 }  }
+road_segment { name:"NurbsPath.054" points { x:50.0 y:-110.0 }  }
+road_segment { name:"NurbsPath.055" points { x:-50.0 y:-110.0 }  points { x:-50.0 y:-120.0 }  points { x:-40.0 y:-120.0 }  points { x:-30.0 y:-120.0 }  points { x:-25.0 y:-120.0 }  points { x:-20.0 y:-120.0 }  points { x:-10.0 y:-120.0 }  points { x:-5.0 y:-120.0 }  points { x:0.0 y:-120.0 }  points { x:10.0 y:-120.0 }  points { x:15.0 y:-120.0 }  points { x:20.0 y:-120.0 }  points { x:30.0 y:-120.0 }  points { x:35.0 y:-120.0 }  points { x:40.0 y:-120.0 }  points { x:50.0 y:-120.0 }  points { x:50.0 y:-110.0 }  }
+road_segment { name:"NurbsPath.056" points { x:-50.0 y:-110.0 }  }
+road_segment { name:"NurbsPath.057" points { x:50.0 y:-110.0 }  }
+road_segment { name:"NurbsPath.058" points { x:15.0 y:-30.0 }  }
+road_segment { name:"NurbsPath.059" points { x:15.0 y:-40.0 }  points { x:15.0 y:-30.0 }  }
+road_segment { name:"NurbsPath.060" points { x:15.0 y:-30.0 }  }
+road_segment { name:"NurbsPath.061" points { x:15.0 y:-40.0 }  }
+road_segment { name:"NurbsPath.062" points { x:15.0 y:-40.0 }  }
+road_segment { name:"NurbsPath.063" points { x:-5.0 y:-20.0 }  }
+road_segment { name:"NurbsPath.064" points { x:-5.0 y:-30.0 }  points { x:-5.0 y:-20.0 }  }
+road_segment { name:"NurbsPath.065" points { x:-5.0 y:-20.0 }  }
+road_segment { name:"NurbsPath.066" points { x:-5.0 y:-30.0 }  }
+road_segment { name:"NurbsPath.067" points { x:-5.0 y:-30.0 }  }
+road_segment { name:"NurbsPath.068" points { x:15.0 y:-10.0 }  }
+road_segment { name:"NurbsPath.069" points { x:15.0 y:-20.0 }  points { x:15.0 y:-10.0 }  }
+road_segment { name:"NurbsPath.070" points { x:15.0 y:-10.0 }  }
+road_segment { name:"NurbsPath.071" points { x:15.0 y:-20.0 }  }
+road_segment { name:"NurbsPath.072" points { x:15.0 y:-20.0 }  }
+road_segment { name:"NurbsPath.073" points { x:-5.0 y:0.0 }  }
+road_segment { name:"NurbsPath.074" points { x:-5.0 y:-10.0 }  points { x:-5.0 y:0.0 }  }
+road_segment { name:"NurbsPath.075" points { x:-5.0 y:0.0 }  }
+road_segment { name:"NurbsPath.076" points { x:-5.0 y:-10.0 }  }
+road_segment { name:"NurbsPath.077" points { x:-5.0 y:-10.0 }  }
+road_segment { name:"NurbsPath.078" points { x:15.0 y:10.0 }  }
+road_segment { name:"NurbsPath.079" points { x:15.0 y:0.0 }  points { x:15.0 y:10.0 }  }
+road_segment { name:"NurbsPath.080" points { x:15.0 y:10.0 }  }
+road_segment { name:"NurbsPath.081" points { x:15.0 y:0.0 }  }
+road_segment { name:"NurbsPath.082" points { x:15.0 y:0.0 }  }
+road_segment { name:"NurbsPath.083" points { x:-5.0 y:20.0 }  }
+road_segment { name:"NurbsPath.084" points { x:-5.0 y:10.0 }  points { x:-5.0 y:20.0 }  }
+road_segment { name:"NurbsPath.085" points { x:-5.0 y:20.0 }  }
+road_segment { name:"NurbsPath.086" points { x:-5.0 y:10.0 }  }
+road_segment { name:"NurbsPath.087" points { x:-5.0 y:10.0 }  }
+road_segment { name:"NurbsPath.088" points { x:15.0 y:30.0 }  }
+road_segment { name:"NurbsPath.089" points { x:15.0 y:20.0 }  points { x:15.0 y:30.0 }  }
+road_segment { name:"NurbsPath.090" points { x:15.0 y:30.0 }  }
+road_segment { name:"NurbsPath.091" points { x:15.0 y:20.0 }  }
+road_segment { name:"NurbsPath.092" points { x:15.0 y:20.0 }  }
+road_segment { name:"NurbsPath.093" points { x:-5.0 y:40.0 }  }
+road_segment { name:"NurbsPath.094" points { x:-5.0 y:30.0 }  points { x:-5.0 y:40.0 }  }
+road_segment { name:"NurbsPath.095" points { x:-5.0 y:40.0 }  }
+road_segment { name:"NurbsPath.096" points { x:-5.0 y:30.0 }  }
+road_segment { name:"NurbsPath.097" points { x:-5.0 y:30.0 }  }
+road_segment { name:"NurbsPath.098" points { x:15.0 y:50.0 }  }
+road_segment { name:"NurbsPath.099" points { x:15.0 y:40.0 }  points { x:15.0 y:50.0 }  }
+road_segment { name:"NurbsPath.100" points { x:15.0 y:50.0 }  }
+road_segment { name:"NurbsPath.101" points { x:15.0 y:40.0 }  }
+road_segment { name:"NurbsPath.102" points { x:15.0 y:40.0 }  }
+road_segment { name:"NurbsPath.103" points { x:-5.0 y:60.0 }  }
+road_segment { name:"NurbsPath.104" points { x:-5.0 y:50.0 }  points { x:-5.0 y:60.0 }  }
+road_segment { name:"NurbsPath.105" points { x:-5.0 y:60.0 }  }
+road_segment { name:"NurbsPath.106" points { x:-5.0 y:50.0 }  }
+road_segment { name:"NurbsPath.107" points { x:-5.0 y:50.0 }  }
+road_segment { name:"NurbsPath.108" points { x:15.0 y:70.0 }  }
+road_segment { name:"NurbsPath.109" points { x:15.0 y:60.0 }  points { x:15.0 y:70.0 }  }
+road_segment { name:"NurbsPath.110" points { x:15.0 y:70.0 }  }
+road_segment { name:"NurbsPath.111" points { x:15.0 y:60.0 }  }
+road_segment { name:"NurbsPath.112" points { x:15.0 y:60.0 }  }
+road_segment { name:"NurbsPath.113" points { x:-5.0 y:80.0 }  }
+road_segment { name:"NurbsPath.114" points { x:-5.0 y:70.0 }  points { x:-5.0 y:80.0 }  }
+road_segment { name:"NurbsPath.115" points { x:-5.0 y:80.0 }  }
+road_segment { name:"NurbsPath.116" points { x:-5.0 y:70.0 }  }
+road_segment { name:"NurbsPath.117" points { x:-5.0 y:70.0 }  }
+road_segment { name:"NurbsPath.118" points { x:15.0 y:90.0 }  }
+road_segment { name:"NurbsPath.119" points { x:15.0 y:80.0 }  points { x:15.0 y:90.0 }  }
+road_segment { name:"NurbsPath.120" points { x:15.0 y:90.0 }  }
+road_segment { name:"NurbsPath.121" points { x:15.0 y:80.0 }  }
+road_segment { name:"NurbsPath.122" points { x:15.0 y:80.0 }  }
+road_segment { name:"NurbsPath.123" points { x:-5.0 y:-40.0 }  }
+road_segment { name:"NurbsPath.124" points { x:-5.0 y:-50.0 }  points { x:-5.0 y:-40.0 }  }
+road_segment { name:"NurbsPath.125" points { x:-5.0 y:-40.0 }  }
+road_segment { name:"NurbsPath.126" points { x:-5.0 y:-50.0 }  }
+road_segment { name:"NurbsPath.127" points { x:-5.0 y:-50.0 }  }
+road_segment { name:"NurbsPath.128" points { x:15.0 y:-50.0 }  }
+road_segment { name:"NurbsPath.129" points { x:15.0 y:-60.0 }  points { x:15.0 y:-50.0 }  }
+road_segment { name:"NurbsPath.130" points { x:15.0 y:-50.0 }  }
+road_segment { name:"NurbsPath.131" points { x:15.0 y:-60.0 }  }
+road_segment { name:"NurbsPath.132" points { x:15.0 y:-60.0 }  }
+road_segment { name:"NurbsPath.133" points { x:-5.0 y:-60.0 }  }
+road_segment { name:"NurbsPath.134" points { x:-5.0 y:-70.0 }  points { x:-5.0 y:-60.0 }  }
+road_segment { name:"NurbsPath.135" points { x:-5.0 y:-60.0 }  }
+road_segment { name:"NurbsPath.136" points { x:-5.0 y:-70.0 }  }
+road_segment { name:"NurbsPath.137" points { x:-5.0 y:-70.0 }  }
+road_segment { name:"NurbsPath.138" points { x:15.0 y:-70.0 }  }
+road_segment { name:"NurbsPath.139" points { x:15.0 y:-80.0 }  points { x:15.0 y:-70.0 }  }
+road_segment { name:"NurbsPath.140" points { x:15.0 y:-70.0 }  }
+road_segment { name:"NurbsPath.141" points { x:15.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.142" points { x:15.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.143" points { x:-5.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.144" points { x:-5.0 y:-90.0 }  points { x:-5.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.145" points { x:-5.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.146" points { x:-5.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.147" points { x:-5.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.148" points { x:15.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.149" points { x:15.0 y:-100.0 }  points { x:15.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.150" points { x:15.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.151" points { x:15.0 y:-100.0 }  }
+road_segment { name:"NurbsPath.152" points { x:15.0 y:-100.0 }  }
+road_segment { name:"NurbsPath.153" points { x:-25.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.154" points { x:-25.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.155" points { x:-25.0 y:-90.0 }  points { x:-25.0 y:-100.0 }  }
+road_segment { name:"NurbsPath.156" points { x:-25.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.157" points { x:-25.0 y:-100.0 }  }
+road_segment { name:"NurbsPath.158" points { x:-25.0 y:-100.0 }  }
+road_segment { name:"NurbsPath.159" points { x:-25.0 y:-100.0 }  }
+road_segment { name:"NurbsPath.160" points { x:35.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.161" points { x:35.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.162" points { x:35.0 y:-80.0 }  points { x:35.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.163" points { x:35.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.164" points { x:35.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.165" points { x:35.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.166" points { x:35.0 y:-90.0 }  }
+road_segment { name:"NurbsPath.167" points { x:-25.0 y:-70.0 }  }
+road_segment { name:"NurbsPath.168" points { x:-25.0 y:-70.0 }  }
+road_segment { name:"NurbsPath.169" points { x:-25.0 y:-70.0 }  points { x:-25.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.170" points { x:-25.0 y:-70.0 }  }
+road_segment { name:"NurbsPath.171" points { x:-25.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.172" points { x:-25.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.173" points { x:-25.0 y:-80.0 }  }
+road_segment { name:"NurbsPath.174" points { x:-25.0 y:-50.0 }  }
+road_segment { name:"NurbsPath.175" points { x:-25.0 y:-50.0 }  }
+road_segment { name:"NurbsPath.176" points { x:-25.0 y:-50.0 }  points { x:-25.0 y:-60.0 }  }
+road_segment { name:"NurbsPath.177" points { x:-25.0 y:-50.0 }  }
+road_segment { name:"NurbsPath.178" points { x:-25.0 y:-60.0 }  }
+road_segment { name:"NurbsPath.179" points { x:-25.0 y:-60.0 }  }
+road_segment { name:"NurbsPath.180" points { x:-25.0 y:-60.0 }  }
+road_segment { name:"NurbsPath.181" points { x:-25.0 y:-30.0 }  }
+road_segment { name:"NurbsPath.182" points { x:-25.0 y:-30.0 }  }
+road_segment { name:"NurbsPath.183" points { x:-25.0 y:-30.0 }  points { x:-25.0 y:-40.0 }  }
+road_segment { name:"NurbsPath.184" points { x:-25.0 y:-30.0 }  }
+road_segment { name:"NurbsPath.185" points { x:-25.0 y:-40.0 }  }
+road_segment { name:"NurbsPath.186" points { x:-25.0 y:-40.0 }  }
+road_segment { name:"NurbsPath.187" points { x:-25.0 y:-40.0 }  }
+road_segment { name:"NurbsPath.188" points { x:-25.0 y:-10.0 }  }
+road_segment { name:"NurbsPath.189" points { x:-25.0 y:-10.0 }  }
+road_segment { name:"NurbsPath.190" points { x:-25.0 y:-10.0 }  points { x:-25.0 y:-20.0 }  }
+road_segment { name:"NurbsPath.191" points { x:-25.0 y:-10.0 }  }
+road_segment { name:"NurbsPath.192" points { x:-25.0 y:-20.0 }  }
+road_segment { name:"NurbsPath.193" points { x:-25.0 y:-20.0 }  }
+road_segment { name:"NurbsPath.194" points { x:-25.0 y:-20.0 }  }
+road_segment { name:"NurbsPath.195" points { x:-25.0 y:10.0 }  }
+road_segment { name:"NurbsPath.196" points { x:-25.0 y:10.0 }  }
+road_segment { name:"NurbsPath.197" points { x:-25.0 y:10.0 }  points { x:-25.0 y:0.0 }  }
+road_segment { name:"NurbsPath.198" points { x:-25.0 y:10.0 }  }
+road_segment { name:"NurbsPath.199" points { x:-25.0 y:0.0 }  }
+road_segment { name:"NurbsPath.200" points { x:-25.0 y:0.0 }  }
+road_segment { name:"NurbsPath.201" points { x:-25.0 y:0.0 }  }
+road_segment { name:"NurbsPath.202" points { x:-25.0 y:30.0 }  }
+road_segment { name:"NurbsPath.203" points { x:-25.0 y:30.0 }  }
+road_segment { name:"NurbsPath.204" points { x:-25.0 y:30.0 }  points { x:-25.0 y:20.0 }  }
+road_segment { name:"NurbsPath.205" points { x:-25.0 y:30.0 }  }
+road_segment { name:"NurbsPath.206" points { x:-25.0 y:20.0 }  }
+road_segment { name:"NurbsPath.207" points { x:-25.0 y:20.0 }  }
+road_segment { name:"NurbsPath.208" points { x:-25.0 y:20.0 }  }
+road_segment { name:"NurbsPath.209" points { x:-25.0 y:50.0 }  }
+road_segment { name:"NurbsPath.210" points { x:-25.0 y:50.0 }  }
+road_segment { name:"NurbsPath.211" points { x:-25.0 y:50.0 }  points { x:-25.0 y:40.0 }  }
+road_segment { name:"NurbsPath.212" points { x:-25.0 y:50.0 }  }
+road_segment { name:"NurbsPath.213" points { x:-25.0 y:40.0 }  }
+road_segment { name:"NurbsPath.214" points { x:-25.0 y:40.0 }  }
+road_segment { name:"NurbsPath.215" points { x:-25.0 y:40.0 }  }
+road_segment { name:"NurbsPath.216" points { x:-25.0 y:70.0 }  }
+road_segment { name:"NurbsPath.217" points { x:-25.0 y:70.0 }  }
+road_segment { name:"NurbsPath.218" points { x:-25.0 y:70.0 }  points { x:-25.0 y:60.0 }  }
+road_segment { name:"NurbsPath.219" points { x:-25.0 y:70.0 }  }
+road_segment { name:"NurbsPath.220" points { x:-25.0 y:60.0 }  }
+road_segment { name:"NurbsPath.221" points { x:-25.0 y:60.0 }  }
+road_segment { name:"NurbsPath.222" points { x:-25.0 y:60.0 }  }
+road_segment { name:"NurbsPath.223" points { x:-25.0 y:90.0 }  }
+road_segment { name:"NurbsPath.224" points { x:-25.0 y:90.0 }  }
+road_segment { name:"NurbsPath.225" points { x:-25.0 y:90.0 }  points { x:-25.0 y:80.0 }  }
+road_segment { name:"NurbsPath.226" points { x:-25.0 y:90.0 }  }
+road_segment { name:"NurbsPath.227" points { x:-25.0 y:80.0 }  }
+road_segment { name:"NurbsPath.228" points { x:-25.0 y:80.0 }  }
+road_segment { name:"NurbsPath.229" points { x:-25.0 y:80.0 }  }
+parking_lot {
+ name:"Plane.002" position { x:25.0 y:5.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.001.000" points { x:30.0 y:0.0 }  points { x:30.0 y:2.0 }  }
+road_segment { name:"Connectors.001.001" points { x:20.0 y:2.0 }  points { x:20.0 y:0.0 }  }
+road_segment { name:"NurbsPath.001.000" points { x:30.0 y:0.0 }  }
+parking_lot {
+ name:"Plane.001" position { x:5.0 y:5.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.002.000" points { x:10.0 y:0.0 }  points { x:10.0 y:2.0 }  }
+road_segment { name:"Connectors.002.001" points { x:0.0 y:2.0 }  points { x:0.0 y:0.0 }  }
+parking_lot {
+ name:"Plane.003" position { x:-15.0 y:5.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.003.000" points { x:-10.0 y:0.0 }  points { x:-10.0 y:2.0 }  }
+road_segment { name:"Connectors.003.001" points { x:-20.0 y:2.0 }  points { x:-20.0 y:0.0 }  }
+road_segment { name:"Connectors.004.000" points { x:-30.0 y:0.0 }  points { x:-30.0 y:2.0 }  }
+road_segment { name:"Connectors.004.001" points { x:-40.0 y:2.0 }  points { x:-40.0 y:0.0 }  }
+parking_lot {
+ name:"Plane.004" position { x:-35.0 y:5.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+parking_lot {
+ name:"Plane.005" position { x:25.0 y:15.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.005.000" points { x:30.0 y:10.0 }  points { x:30.0 y:12.0 }  }
+road_segment { name:"Connectors.005.001" points { x:20.0 y:12.0 }  points { x:20.0 y:10.0 }  }
+parking_lot {
+ name:"Plane.006" position { x:5.0 y:15.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.006.000" points { x:10.0 y:10.0 }  points { x:10.0 y:12.0 }  }
+road_segment { name:"Connectors.006.001" points { x:0.0 y:12.0 }  points { x:0.0 y:10.0 }  }
+parking_lot {
+ name:"Plane.007" position { x:-15.0 y:15.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.007.000" points { x:-10.0 y:10.0 }  points { x:-10.0 y:12.0 }  }
+road_segment { name:"Connectors.007.001" points { x:-20.0 y:12.0 }  points { x:-20.0 y:10.0 }  }
+parking_lot {
+ name:"Plane.008" position { x:-35.0 y:15.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.008.000" points { x:-30.0 y:10.0 }  points { x:-30.0 y:12.0 }  }
+road_segment { name:"Connectors.008.001" points { x:-40.0 y:12.0 }  points { x:-40.0 y:10.0 }  }
+parking_lot {
+ name:"Plane.009" position { x:-35.0 y:25.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.009.000" points { x:-30.0 y:20.0 }  points { x:-30.0 y:22.0 }  }
+road_segment { name:"Connectors.009.001" points { x:-40.0 y:22.0 }  points { x:-40.0 y:20.0 }  }
+parking_lot {
+ name:"Plane.010" position { x:-15.0 y:25.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.010.000" points { x:-10.0 y:20.0 }  points { x:-10.0 y:22.0 }  }
+road_segment { name:"Connectors.010.001" points { x:-20.0 y:22.0 }  points { x:-20.0 y:20.0 }  }
+parking_lot {
+ name:"Plane.011" position { x:5.0 y:25.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.011.000" points { x:10.0 y:20.0 }  points { x:10.0 y:22.0 }  }
+road_segment { name:"Connectors.011.001" points { x:0.0 y:22.0 }  points { x:0.0 y:20.0 }  }
+parking_lot {
+ name:"Plane.012" position { x:25.0 y:25.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.012.000" points { x:30.0 y:20.0 }  points { x:30.0 y:22.0 }  }
+road_segment { name:"Connectors.012.001" points { x:20.0 y:22.0 }  points { x:20.0 y:20.0 }  }
+parking_lot {
+ name:"Plane.013" position { x:-35.0 y:35.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.013.000" points { x:-30.0 y:30.0 }  points { x:-30.0 y:32.0 }  }
+road_segment { name:"Connectors.013.001" points { x:-40.0 y:32.0 }  points { x:-40.0 y:30.0 }  }
+parking_lot {
+ name:"Plane.014" position { x:-15.0 y:35.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.014.000" points { x:-10.0 y:30.0 }  points { x:-10.0 y:32.0 }  }
+road_segment { name:"Connectors.014.001" points { x:-20.0 y:32.0 }  points { x:-20.0 y:30.0 }  }
+parking_lot {
+ name:"Plane.015" position { x:5.0 y:35.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.015.000" points { x:10.0 y:30.0 }  points { x:10.0 y:32.0 }  }
+road_segment { name:"Connectors.015.001" points { x:0.0 y:32.0 }  points { x:0.0 y:30.0 }  }
+parking_lot {
+ name:"Plane.016" position { x:25.0 y:35.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.016.000" points { x:30.0 y:30.0 }  points { x:30.0 y:32.0 }  }
+road_segment { name:"Connectors.016.001" points { x:20.0 y:32.0 }  points { x:20.0 y:30.0 }  }
+parking_lot {
+ name:"Plane.017" position { x:-35.0 y:45.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.017.000" points { x:-30.0 y:40.0 }  points { x:-30.0 y:42.0 }  }
+road_segment { name:"Connectors.017.001" points { x:-40.0 y:42.0 }  points { x:-40.0 y:40.0 }  }
+parking_lot {
+ name:"Plane.018" position { x:-15.0 y:45.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.018.000" points { x:-10.0 y:40.0 }  points { x:-10.0 y:42.0 }  }
+road_segment { name:"Connectors.018.001" points { x:-20.0 y:42.0 }  points { x:-20.0 y:40.0 }  }
+parking_lot {
+ name:"Plane.019" position { x:5.0 y:45.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.019.000" points { x:10.0 y:40.0 }  points { x:10.0 y:42.0 }  }
+road_segment { name:"Connectors.019.001" points { x:0.0 y:42.0 }  points { x:0.0 y:40.0 }  }
+parking_lot {
+ name:"Plane.020" position { x:25.0 y:45.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.020.000" points { x:30.0 y:40.0 }  points { x:30.0 y:42.0 }  }
+road_segment { name:"Connectors.020.001" points { x:20.0 y:42.0 }  points { x:20.0 y:40.0 }  }
+parking_lot {
+ name:"Plane.021" position { x:-35.0 y:55.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.021.000" points { x:-30.0 y:50.0 }  points { x:-30.0 y:52.0 }  }
+road_segment { name:"Connectors.021.001" points { x:-40.0 y:52.0 }  points { x:-40.0 y:50.0 }  }
+parking_lot {
+ name:"Plane.022" position { x:-15.0 y:55.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.022.000" points { x:-10.0 y:50.0 }  points { x:-10.0 y:52.0 }  }
+road_segment { name:"Connectors.022.001" points { x:-20.0 y:52.0 }  points { x:-20.0 y:50.0 }  }
+parking_lot {
+ name:"Plane.023" position { x:5.0 y:55.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.023.000" points { x:10.0 y:50.0 }  points { x:10.0 y:52.0 }  }
+road_segment { name:"Connectors.023.001" points { x:0.0 y:52.0 }  points { x:0.0 y:50.0 }  }
+parking_lot {
+ name:"Plane.024" position { x:25.0 y:55.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.024.000" points { x:30.0 y:50.0 }  points { x:30.0 y:52.0 }  }
+road_segment { name:"Connectors.024.001" points { x:20.0 y:52.0 }  points { x:20.0 y:50.0 }  }
+parking_lot {
+ name:"Plane.025" position { x:-35.0 y:65.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.025.000" points { x:-30.0 y:60.0 }  points { x:-30.0 y:62.0 }  }
+road_segment { name:"Connectors.025.001" points { x:-40.0 y:62.0 }  points { x:-40.0 y:60.0 }  }
+parking_lot {
+ name:"Plane.026" position { x:-15.0 y:65.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.026.000" points { x:-10.0 y:60.0 }  points { x:-10.0 y:62.0 }  }
+road_segment { name:"Connectors.026.001" points { x:-20.0 y:62.0 }  points { x:-20.0 y:60.0 }  }
+parking_lot {
+ name:"Plane.027" position { x:5.0 y:65.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.027.000" points { x:10.0 y:60.0 }  points { x:10.0 y:62.0 }  }
+road_segment { name:"Connectors.027.001" points { x:0.0 y:62.0 }  points { x:0.0 y:60.0 }  }
+parking_lot {
+ name:"Plane.028" position { x:25.0 y:65.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.028.000" points { x:30.0 y:60.0 }  points { x:30.0 y:62.0 }  }
+road_segment { name:"Connectors.028.001" points { x:20.0 y:62.0 }  points { x:20.0 y:60.0 }  }
+parking_lot {
+ name:"Plane.029" position { x:-35.0 y:75.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.029.000" points { x:-30.0 y:70.0 }  points { x:-30.0 y:72.0 }  }
+road_segment { name:"Connectors.029.001" points { x:-40.0 y:72.0 }  points { x:-40.0 y:70.0 }  }
+parking_lot {
+ name:"Plane.030" position { x:-15.0 y:75.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.030.000" points { x:-10.0 y:70.0 }  points { x:-10.0 y:72.0 }  }
+road_segment { name:"Connectors.030.001" points { x:-20.0 y:72.0 }  points { x:-20.0 y:70.0 }  }
+parking_lot {
+ name:"Plane.031" position { x:5.0 y:75.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.031.000" points { x:10.0 y:70.0 }  points { x:10.0 y:72.0 }  }
+road_segment { name:"Connectors.031.001" points { x:0.0 y:72.0 }  points { x:0.0 y:70.0 }  }
+parking_lot {
+ name:"Plane.032" position { x:25.0 y:75.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.032.000" points { x:30.0 y:70.0 }  points { x:30.0 y:72.0 }  }
+road_segment { name:"Connectors.032.001" points { x:20.0 y:72.0 }  points { x:20.0 y:70.0 }  }
+parking_lot {
+ name:"Plane.033" position { x:-35.0 y:85.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.033.000" points { x:-30.0 y:80.0 }  points { x:-30.0 y:82.0 }  }
+road_segment { name:"Connectors.033.001" points { x:-40.0 y:82.0 }  points { x:-40.0 y:80.0 }  }
+parking_lot {
+ name:"Plane.034" position { x:-15.0 y:85.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.034.000" points { x:-10.0 y:80.0 }  points { x:-10.0 y:82.0 }  }
+road_segment { name:"Connectors.034.001" points { x:-20.0 y:82.0 }  points { x:-20.0 y:80.0 }  }
+parking_lot {
+ name:"Plane.035" position { x:5.0 y:85.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.035.000" points { x:10.0 y:80.0 }  points { x:10.0 y:82.0 }  }
+road_segment { name:"Connectors.035.001" points { x:0.0 y:82.0 }  points { x:0.0 y:80.0 }  }
+parking_lot {
+ name:"Plane.036" position { x:25.0 y:85.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.036.000" points { x:30.0 y:80.0 }  points { x:30.0 y:82.0 }  }
+road_segment { name:"Connectors.036.001" points { x:20.0 y:82.0 }  points { x:20.0 y:80.0 }  }
+parking_lot {
+ name:"Plane.037" position { x:-35.0 y:95.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.037.000" points { x:-30.0 y:90.0 }  points { x:-30.0 y:92.0 }  }
+road_segment { name:"Connectors.037.001" points { x:-40.0 y:92.0 }  points { x:-40.0 y:90.0 }  }
+parking_lot {
+ name:"Plane.038" position { x:-15.0 y:95.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.038.000" points { x:-10.0 y:90.0 }  points { x:-10.0 y:92.0 }  }
+road_segment { name:"Connectors.038.001" points { x:-20.0 y:92.0 }  points { x:-20.0 y:90.0 }  }
+parking_lot {
+ name:"Plane.039" position { x:5.0 y:95.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.039.000" points { x:10.0 y:90.0 }  points { x:10.0 y:92.0 }  }
+road_segment { name:"Connectors.039.001" points { x:0.0 y:92.0 }  points { x:0.0 y:90.0 }  }
+parking_lot {
+ name:"Plane.040" position { x:25.0 y:95.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.040.000" points { x:30.0 y:90.0 }  points { x:30.0 y:92.0 }  }
+road_segment { name:"Connectors.040.001" points { x:20.0 y:92.0 }  points { x:20.0 y:90.0 }  }
+parking_lot {
+ name:"Plane.041" position { x:-35.0 y:-5.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.041.000" points { x:-30.0 y:-10.0 }  points { x:-30.0 y:-8.0 }  }
+road_segment { name:"Connectors.041.001" points { x:-40.0 y:-8.0 }  points { x:-40.0 y:-10.0 }  }
+parking_lot {
+ name:"Plane.042" position { x:-15.0 y:-5.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.042.000" points { x:-10.0 y:-10.0 }  points { x:-10.0 y:-8.0 }  }
+road_segment { name:"Connectors.042.001" points { x:-20.0 y:-8.0 }  points { x:-20.0 y:-10.0 }  }
+parking_lot {
+ name:"Plane.043" position { x:5.0 y:-5.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.043.000" points { x:10.0 y:-10.0 }  points { x:10.0 y:-8.0 }  }
+road_segment { name:"Connectors.043.001" points { x:0.0 y:-8.0 }  points { x:0.0 y:-10.0 }  }
+parking_lot {
+ name:"Plane.044" position { x:25.0 y:-5.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.044.000" points { x:30.0 y:-10.0 }  points { x:30.0 y:-8.0 }  }
+road_segment { name:"Connectors.044.001" points { x:20.0 y:-8.0 }  points { x:20.0 y:-10.0 }  }
+parking_lot {
+ name:"Plane.045" position { x:25.0 y:-15.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.045.000" points { x:30.0 y:-20.0 }  points { x:30.0 y:-18.0 }  }
+road_segment { name:"Connectors.045.001" points { x:20.0 y:-18.0 }  points { x:20.0 y:-20.0 }  }
+parking_lot {
+ name:"Plane.046" position { x:5.0 y:-15.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.046.000" points { x:10.0 y:-20.0 }  points { x:10.0 y:-18.0 }  }
+road_segment { name:"Connectors.046.001" points { x:0.0 y:-18.0 }  points { x:0.0 y:-20.0 }  }
+parking_lot {
+ name:"Plane.047" position { x:-15.0 y:-15.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.047.000" points { x:-10.0 y:-20.0 }  points { x:-10.0 y:-18.0 }  }
+road_segment { name:"Connectors.047.001" points { x:-20.0 y:-18.0 }  points { x:-20.0 y:-20.0 }  }
+road_segment { name:"Connectors.048.000" points { x:-30.0 y:-20.0 }  points { x:-30.0 y:-18.0 }  }
+road_segment { name:"Connectors.048.001" points { x:-40.0 y:-18.0 }  points { x:-40.0 y:-20.0 }  }
+parking_lot {
+ name:"Plane.048" position { x:-35.0 y:-15.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+parking_lot {
+ name:"Plane.049" position { x:25.0 y:-25.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.049.000" points { x:30.0 y:-30.0 }  points { x:30.0 y:-28.0 }  }
+road_segment { name:"Connectors.049.001" points { x:20.0 y:-28.0 }  points { x:20.0 y:-30.0 }  }
+parking_lot {
+ name:"Plane.050" position { x:5.0 y:-25.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.050.000" points { x:10.0 y:-30.0 }  points { x:10.0 y:-28.0 }  }
+road_segment { name:"Connectors.050.001" points { x:0.0 y:-28.0 }  points { x:0.0 y:-30.0 }  }
+parking_lot {
+ name:"Plane.051" position { x:-15.0 y:-25.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.051.000" points { x:-10.0 y:-30.0 }  points { x:-10.0 y:-28.0 }  }
+road_segment { name:"Connectors.051.001" points { x:-20.0 y:-28.0 }  points { x:-20.0 y:-30.0 }  }
+road_segment { name:"Connectors.052.000" points { x:-30.0 y:-30.0 }  points { x:-30.0 y:-28.0 }  }
+road_segment { name:"Connectors.052.001" points { x:-40.0 y:-28.0 }  points { x:-40.0 y:-30.0 }  }
+parking_lot {
+ name:"Plane.052" position { x:-35.0 y:-25.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+parking_lot {
+ name:"Plane.053" position { x:25.0 y:-35.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.053.000" points { x:30.0 y:-40.0 }  points { x:30.0 y:-38.0 }  }
+road_segment { name:"Connectors.053.001" points { x:20.0 y:-38.0 }  points { x:20.0 y:-40.0 }  }
+parking_lot {
+ name:"Plane.054" position { x:5.0 y:-35.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.054.000" points { x:10.0 y:-40.0 }  points { x:10.0 y:-38.0 }  }
+road_segment { name:"Connectors.054.001" points { x:0.0 y:-38.0 }  points { x:0.0 y:-40.0 }  }
+parking_lot {
+ name:"Plane.055" position { x:-15.0 y:-35.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.055.000" points { x:-10.0 y:-40.0 }  points { x:-10.0 y:-38.0 }  }
+road_segment { name:"Connectors.055.001" points { x:-20.0 y:-38.0 }  points { x:-20.0 y:-40.0 }  }
+road_segment { name:"Connectors.056.000" points { x:-30.0 y:-40.0 }  points { x:-30.0 y:-38.0 }  }
+road_segment { name:"Connectors.056.001" points { x:-40.0 y:-38.0 }  points { x:-40.0 y:-40.0 }  }
+parking_lot {
+ name:"Plane.056" position { x:-35.0 y:-35.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+parking_lot {
+ name:"Plane.057" position { x:25.0 y:-45.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.057.000" points { x:30.0 y:-50.0 }  points { x:30.0 y:-48.0 }  }
+road_segment { name:"Connectors.057.001" points { x:20.0 y:-48.0 }  points { x:20.0 y:-50.0 }  }
+parking_lot {
+ name:"Plane.058" position { x:5.0 y:-45.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.058.000" points { x:10.0 y:-50.0 }  points { x:10.0 y:-48.0 }  }
+road_segment { name:"Connectors.058.001" points { x:0.0 y:-48.0 }  points { x:0.0 y:-50.0 }  }
+parking_lot {
+ name:"Plane.059" position { x:-15.0 y:-45.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.059.000" points { x:-10.0 y:-50.0 }  points { x:-10.0 y:-48.0 }  }
+road_segment { name:"Connectors.059.001" points { x:-20.0 y:-48.0 }  points { x:-20.0 y:-50.0 }  }
+road_segment { name:"Connectors.060.000" points { x:-30.0 y:-50.0 }  points { x:-30.0 y:-48.0 }  }
+road_segment { name:"Connectors.060.001" points { x:-40.0 y:-48.0 }  points { x:-40.0 y:-50.0 }  }
+parking_lot {
+ name:"Plane.060" position { x:-35.0 y:-45.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+parking_lot {
+ name:"Plane.061" position { x:25.0 y:-55.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.061.000" points { x:30.0 y:-60.0 }  points { x:30.0 y:-58.0 }  }
+road_segment { name:"Connectors.061.001" points { x:20.0 y:-58.0 }  points { x:20.0 y:-60.0 }  }
+parking_lot {
+ name:"Plane.062" position { x:5.0 y:-55.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.062.000" points { x:10.0 y:-60.0 }  points { x:10.0 y:-58.0 }  }
+road_segment { name:"Connectors.062.001" points { x:0.0 y:-58.0 }  points { x:0.0 y:-60.0 }  }
+parking_lot {
+ name:"Plane.063" position { x:-15.0 y:-55.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.063.000" points { x:-10.0 y:-60.0 }  points { x:-10.0 y:-58.0 }  }
+road_segment { name:"Connectors.063.001" points { x:-20.0 y:-58.0 }  points { x:-20.0 y:-60.0 }  }
+road_segment { name:"Connectors.064.000" points { x:-30.0 y:-60.0 }  points { x:-30.0 y:-58.0 }  }
+road_segment { name:"Connectors.064.001" points { x:-40.0 y:-58.0 }  points { x:-40.0 y:-60.0 }  }
+parking_lot {
+ name:"Plane.064" position { x:-35.0 y:-55.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+parking_lot {
+ name:"Plane.065" position { x:25.0 y:-65.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:3.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:1.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:1.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.065.000" points { x:30.0 y:-70.0 }  points { x:30.0 y:-68.0 }  }
+road_segment { name:"Connectors.065.001" points { x:20.0 y:-68.0 }  points { x:20.0 y:-70.0 }  }
+parking_lot {
+ name:"Plane.066" position { x:5.0 y:-65.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.066.000" points { x:10.0 y:-70.0 }  points { x:10.0 y:-68.0 }  }
+road_segment { name:"Connectors.066.001" points { x:0.0 y:-68.0 }  points { x:0.0 y:-70.0 }  }
+parking_lot {
+ name:"Plane.067" position { x:-15.0 y:-65.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.067.000" points { x:-10.0 y:-70.0 }  points { x:-10.0 y:-68.0 }  }
+road_segment { name:"Connectors.067.001" points { x:-20.0 y:-68.0 }  points { x:-20.0 y:-70.0 }  }
+road_segment { name:"Connectors.068.000" points { x:-30.0 y:-70.0 }  points { x:-30.0 y:-68.0 }  }
+road_segment { name:"Connectors.068.001" points { x:-40.0 y:-68.0 }  points { x:-40.0 y:-70.0 }  }
+parking_lot {
+ name:"Plane.068" position { x:-35.0 y:-65.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+parking_lot {
+ name:"Plane.069" position { x:25.0 y:-75.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:3.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:1.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:1.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.069.000" points { x:30.0 y:-80.0 }  points { x:30.0 y:-78.0 }  }
+road_segment { name:"Connectors.069.001" points { x:20.0 y:-78.0 }  points { x:20.0 y:-80.0 }  }
+parking_lot {
+ name:"Plane.070" position { x:5.0 y:-75.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.070.000" points { x:10.0 y:-80.0 }  points { x:10.0 y:-78.0 }  }
+road_segment { name:"Connectors.070.001" points { x:0.0 y:-78.0 }  points { x:0.0 y:-80.0 }  }
+parking_lot {
+ name:"Plane.071" position { x:-15.0 y:-75.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.071.000" points { x:-10.0 y:-80.0 }  points { x:-10.0 y:-78.0 }  }
+road_segment { name:"Connectors.071.001" points { x:-20.0 y:-78.0 }  points { x:-20.0 y:-80.0 }  }
+road_segment { name:"Connectors.072.000" points { x:-30.0 y:-80.0 }  points { x:-30.0 y:-78.0 }  }
+road_segment { name:"Connectors.072.001" points { x:-40.0 y:-78.0 }  points { x:-40.0 y:-80.0 }  }
+parking_lot {
+ name:"Plane.072" position { x:-35.0 y:-75.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+parking_lot {
+ name:"Plane.073" position { x:25.0 y:-85.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:3.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:1.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:1.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.073.000" points { x:30.0 y:-90.0 }  points { x:30.0 y:-88.0 }  }
+road_segment { name:"Connectors.073.001" points { x:20.0 y:-88.0 }  points { x:20.0 y:-90.0 }  }
+parking_lot {
+ name:"Plane.074" position { x:5.0 y:-85.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.074.000" points { x:10.0 y:-90.0 }  points { x:10.0 y:-88.0 }  }
+road_segment { name:"Connectors.074.001" points { x:0.0 y:-88.0 }  points { x:0.0 y:-90.0 }  }
+parking_lot {
+ name:"Plane.075" position { x:-15.0 y:-85.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.075.000" points { x:-10.0 y:-90.0 }  points { x:-10.0 y:-88.0 }  }
+road_segment { name:"Connectors.075.001" points { x:-20.0 y:-88.0 }  points { x:-20.0 y:-90.0 }  }
+road_segment { name:"Connectors.076.000" points { x:-30.0 y:-90.0 }  points { x:-30.0 y:-88.0 }  }
+road_segment { name:"Connectors.076.001" points { x:-40.0 y:-88.0 }  points { x:-40.0 y:-90.0 }  }
+parking_lot {
+ name:"Plane.076" position { x:-35.0 y:-85.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+}
+parking_lot {
+ name:"Plane.077" position { x:25.0 y:-95.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:1.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:1.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.077.000" points { x:30.0 y:-100.0 }  points { x:30.0 y:-98.0 }  }
+road_segment { name:"Connectors.077.001" points { x:20.0 y:-98.0 }  points { x:20.0 y:-100.0 }  }
+parking_lot {
+ name:"Plane.078" position { x:5.0 y:-95.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.078.000" points { x:10.0 y:-100.0 }  points { x:10.0 y:-98.0 }  }
+road_segment { name:"Connectors.078.001" points { x:0.0 y:-98.0 }  points { x:0.0 y:-100.0 }  }
+parking_lot {
+ name:"Plane.079" position { x:-15.0 y:-95.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.079.000" points { x:-10.0 y:-100.0 }  points { x:-10.0 y:-98.0 }  }
+road_segment { name:"Connectors.079.001" points { x:-20.0 y:-98.0 }  points { x:-20.0 y:-100.0 }  }
+road_segment { name:"Connectors.080.000" points { x:-30.0 y:-100.0 }  points { x:-30.0 y:-98.0 }  }
+road_segment { name:"Connectors.080.001" points { x:-40.0 y:-98.0 }  points { x:-40.0 y:-100.0 }  }
+parking_lot {
+ name:"Plane.080" position { x:-35.0 y:-95.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+parking_lot {
+ name:"Plane.081" position { x:25.0 y:-105.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:1.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:1.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.081.000" points { x:30.0 y:-110.0 }  points { x:30.0 y:-108.0 }  }
+road_segment { name:"Connectors.081.001" points { x:20.0 y:-108.0 }  points { x:20.0 y:-110.0 }  }
+parking_lot {
+ name:"Plane.082" position { x:5.0 y:-105.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.082.000" points { x:10.0 y:-110.0 }  points { x:10.0 y:-108.0 }  }
+road_segment { name:"Connectors.082.001" points { x:0.0 y:-108.0 }  points { x:0.0 y:-110.0 }  }
+parking_lot {
+ name:"Plane.083" position { x:-15.0 y:-105.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.083.000" points { x:-10.0 y:-110.0 }  points { x:-10.0 y:-108.0 }  }
+road_segment { name:"Connectors.083.001" points { x:-20.0 y:-108.0 }  points { x:-20.0 y:-110.0 }  }
+road_segment { name:"Connectors.084.000" points { x:-30.0 y:-110.0 }  points { x:-30.0 y:-108.0 }  }
+road_segment { name:"Connectors.084.001" points { x:-40.0 y:-108.0 }  points { x:-40.0 y:-110.0 }  }
+parking_lot {
+ name:"Plane.084" position { x:-35.0 y:-105.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+parking_lot {
+ name:"Plane.085" position { x:25.0 y:-115.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:1.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:1.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.085.000" points { x:30.0 y:-120.0 }  points { x:30.0 y:-118.0 }  }
+road_segment { name:"Connectors.085.001" points { x:20.0 y:-118.0 }  points { x:20.0 y:-120.0 }  }
+parking_lot {
+ name:"Plane.086" position { x:5.0 y:-115.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.086.000" points { x:10.0 y:-120.0 }  points { x:10.0 y:-118.0 }  }
+road_segment { name:"Connectors.086.001" points { x:0.0 y:-118.0 }  points { x:0.0 y:-120.0 }  }
+parking_lot {
+ name:"Plane.087" position { x:-15.0 y:-115.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.087.000" points { x:-10.0 y:-120.0 }  points { x:-10.0 y:-118.0 }  }
+road_segment { name:"Connectors.087.001" points { x:-20.0 y:-118.0 }  points { x:-20.0 y:-120.0 }  }
+road_segment { name:"Connectors.088.000" points { x:-30.0 y:-120.0 }  points { x:-30.0 y:-118.0 }  }
+road_segment { name:"Connectors.088.001" points { x:-40.0 y:-118.0 }  points { x:-40.0 y:-120.0 }  }
+parking_lot {
+ name:"Plane.088" position { x:-35.0 y:-115.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}

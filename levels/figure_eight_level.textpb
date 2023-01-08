@@ -1,0 +1,42 @@
+parking_lot {
+ name:"Plane.002" position { x:25.0 y:5.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"Connectors.001.000" points { x:30.0 y:0.0 }  points { x:30.0 y:2.0 }  }
+road_segment { name:"Connectors.001.001" points { x:20.0 y:2.0 }  points { x:20.0 y:0.0 }  }
+road_segment { name:"NurbsPath.001.000" points { x:30.0 y:0.0 }  }
+road_segment { name:"Connectors.004.000" points { x:-20.0 y:0.0 }  points { x:-20.0 y:2.0 }  }
+road_segment { name:"Connectors.004.001" points { x:-10.0 y:2.0 }  points { x:-10.0 y:0.0 }  }
+parking_lot {
+ name:"Plane.004" position { x:-15.0 y:5.0 } width:12.0 height:6.0 
+  parking_spots { position { x:-1.0 y:2.0 } }
+  parking_spots { position { x:1.0 y:2.0 } }
+  parking_spots { position { x:3.0 y:2.0 } }
+  parking_spots { position { x:5.0 y:2.0 } }
+  parking_spots { position { x:-5.0 y:2.0 } }
+  parking_spots { position { x:-3.0 y:2.0 } }
+  parking_spots { position { x:-1.0 y:0.0 } }
+  parking_spots { position { x:1.0 y:0.0 } }
+  parking_spots { position { x:3.0 y:0.0 } }
+  parking_spots { position { x:5.0 y:0.0 } }
+  parking_spots { position { x:-5.0 y:0.0 } }
+  parking_spots { position { x:-3.0 y:0.0 } }
+}
+road_segment { name:"NurbsPath.000" points { x:-20.0 y:-15.0 }  points { x:-24.0 y:-14.0 }  points { x:-28.0 y:-12.0 }  points { x:-29.0 y:-7.0 }  points { x:-27.0 y:-3.0 }  points { x:-24.0 y:-1.0 }  points { x:-20.0 y:0.0 }  points { x:-10.0 y:0.0 }  points { x:-4.0 y:-2.0 }  points { x:0.0 y:-7.0 }  points { x:0.0 y:-15.0 }  points { x:1.0 y:-19.5 }  points { x:4.0 y:-22.0 }  points { x:7.0 y:-23.0 }  points { x:11.0 y:-23.0 }  points { x:19.0 y:-20.0 }  points { x:29.0 y:-14.0 }  points { x:34.0 y:-7.0 }  points { x:34.0 y:-5.0 }  }
+road_segment { name:"NurbsPath.002.000" points { x:0.0 y:-15.0 }  points { x:-8.0 y:-15.0 }  points { x:-16.0 y:-15.0 }  points { x:-20.0 y:-15.0 }  }
+road_segment { name:"NurbsPath.002.001" points { x:0.0 y:-15.0 }  }
+road_segment { name:"NurbsPath.002.002" points { x:0.0 y:-15.0 }  }
+road_segment { name:"NurbsPath.003.000" points { x:0.0 y:-15.0 }  }
+road_segment { name:"NurbsPath.003.001" points { x:34.0 y:-5.0 }  points { x:34.0 y:0.0 }  points { x:30.0 y:0.0 }  points { x:20.0 y:0.0 }  points { x:15.0 y:-1.0 }  points { x:11.0 y:-4.0 }  points { x:10.0 y:-10.0 }  points { x:7.0 y:-14.0 }  points { x:0.0 y:-15.0 }  }
+intersection_control { type:LIGHTS name:"Lights" position { x:0.0 y:-15.0 } dir { x:0.0 y:1.0 } time:8 }

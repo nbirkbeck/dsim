@@ -1,19 +1,29 @@
 # DSim - a simple traffic simulator
 
-Dependencies:
-
- * Bazel
- * GLog
- * Proto
- * https://github.com/nbirkbeck/nimage
- * And a few of my other internal libraries: nmisc (for updateable heap), nmath 
-(for 2d vector math), and nappear for mesh/rendering.
+DSIM was a quick christmas project to create a very simple traffic simulator.
+Mostly, I was just interested in visualizing the effect a slow-down has on future
+traffic, etc.
 
 ## Simulator Overview
 
 The simulator has a simple level representation and cars that randomly drive in the
 map.
- 
+
+A simple rendering is given below:
+
+![overview](media/overview-annotations.png)
+
+Best understood by looking at the following video: https://www.youtube.com/watch?v=Wc3W8RjP2IQ,
+which shows how the cars in the simulator interact
+with the road/intersections, as well as various levels and a few rendering modes.
+
+[![thumbnail](https://img.youtube.com/vi/Wc3W8RjP2IQ/0.jpg)](https://www.youtube.com/watch?v=Wc3W8RjP2IQ)
+
+
+Here's a simple heatmap rendering of a level that looks like a figure eight with
+a set of traffic lights in the center:
+
+![figure-eight-level](media/figure_eight_level.gif)
 
 ### Level representation
 
@@ -102,4 +112,56 @@ The [python/export_level.py](python/export_level.py) script can be used to expor
 [proto representation](src/level.proto) of the level.
 
 
+# Building & Running
 
+## Dependencies
+
+ * Bazel
+ * GLog
+ * Proto
+ * https://github.com/nbirkbeck/nimage
+ * And a few of my other internal libraries: nmisc (for updateable heap), nmath 
+(for 2d vector math), and nappear for mesh/rendering.
+
+## Run
+
+
+From the src directory you can run a level (in the [levels](levels)) directory with the 
+default opengl visualization using:
+
+```
+bazel run -c opt :main -- 
+   --filename $(pwd)/../levels/big_level.textpb \
+   --model_dir $(pwd)/../models --logtostder
+```
+
+Press 'f' to enter a first  person view mode.
+
+Roads are annotated with the average speed of cars travelling on them (or their 
+default max speed limit). And there is a "ATT:" (average trip time) tracker in the bottom
+left of the screen.
+
+### Other arguments:
+
+
+The ```--benchmark=``` argument can be one of ```sim```, ```render```, or ```plan```. And can be used to benchmark
+the simulation, the rendering, or planning. On my machine the 1k_cars.textpb can
+run about 50x realtime (suggesting a limit of 50K cars).
+
+
+The ```--heatmap``` argument can be used to render heatmap visualizations (results stored in 
+/tmp/im-*png)
+
+## Scripts
+
+Run timed benchmarks of the simulator on large levels:
+
+```
+sh scripts/benchmark_sim.sh
+```
+
+Generate videos and gifs:
+
+```
+sh scripts/generate_videos.sh
+```
