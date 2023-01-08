@@ -31,7 +31,7 @@
 DEFINE_string(filename, "", "Path to input filename");
 DEFINE_string(model_dir, "", "Path to models");
 DEFINE_string(benchmark, "", "Benchmark to run (plan, render, sim)");
-
+DEFINE_bool(heatmap, false, "Draw a heatmap");
 
 class Renderer {
 public:
@@ -584,22 +584,10 @@ public:
     level_renderer_.DrawLevel(q, level_, cars_);
   }
   void Step(double dt) {
-    /*
-    absl::flat_hash_map<nacb::Vec2f, std::vector<Car*>, PointHash, PointEqual> cars_by_point;
-    for (auto& car: cars_) {
-      cars_by_point[car.pos()].push_back(&car);
-      cars_by_point[car.pos() - nacb::Vec2f(1, 0)].push_back(&car);
-      cars_by_point[car.pos() - nacb::Vec2f(0, 1)].push_back(&car);
-      cars_by_point[car.pos() + nacb::Vec2f(1, 0)].push_back(&car);
-      cars_by_point[car.pos() + nacb::Vec2f(0, 1)].push_back(&car);
-      cars_by_point[car.pos() + nacb::Vec2f(1, 1)].push_back(&car);
-    }
-    double cc_size = 0;
-    */
     std::sort(cars_p_.begin(), cars_p_.end(), PosOrder());
     std::vector<Car*>::iterator low = cars_p_.begin();
     std::vector<Car*>::iterator high = cars_p_.begin();
-    double dist = sqrt(2) * 4.5;
+    double dist = sqrt(2) * 4.0;
     for (auto& car: cars_p_) {
       while ((*low)->pos().x + (*low)->pos().y + dist < car->pos().x + car->pos().y) {
         low++;
@@ -657,9 +645,9 @@ int main(int ac, char* av[]) {
         for (int j = 0; j < (int)level.parking_lots.size(); ++j) {
           if (i == j) continue;
           auto plan = planner.Plan(level.parking_lots[i],
-                                   (i  + j) % level.parking_lots[i].parking_spots.size(),
+                                   (i + j) % level.parking_lots[i].parking_spots.size(),
                                    level.parking_lots[j],
-                                   (i  + j) % level.parking_lots[j].parking_spots.size());
+                                   (i + j) % level.parking_lots[j].parking_spots.size());
           plan_size += plan[1].segments.size();
           num_times++;
         }
@@ -688,10 +676,45 @@ int main(int ac, char* av[]) {
         level_window.Step(1.0 / 60.0);
       }
     }
-    LOG(INFO) << "sim_render=" << double(num_times) / double(timer);
+    LOG(INFO) << "benchmark_sim=" << double(num_times) / double(timer);
     return 0;
   }
-
+  if (FLAGS_heatmap) {
+    const double kDecay = 0.95;
+    const int kNumTimes = 10000;
+    nacb::Vec2f min_point(1e4, 1e4), max_point(-1e4, -1e4);
+    level.GetBounds(&min_point, &max_point);
+    min_point -= nacb::Vec2f(5, 5);
+    max_point += nacb::Vec2f(5, 5);
+    const int kScale = 4;
+    nacb::Imagef image(kScale * int(max_point.x - min_point.x),
+                       kScale * int(max_point.y - min_point.y), 3);
+    image = 0;
+    for (int i = 0; i < kNumTimes; ++i) {
+      for (int j = 0; j < 5; ++j) {
+        level_window.Step(1.0 / 60.0);
+      }
+      image = image * kDecay;
+      for (const auto& car : level_window.cars_) {
+        int x = int(kScale * (car.pos().x - min_point.x));
+        int y = int(kScale * (car.pos().y - min_point.y));
+        if (x < 1 || y < 1 || x >= image.w - 1 || y >= image.h - 1) continue;
+        for (int yi = -1; yi <= 1; ++yi) {
+          for (int xi = -1; xi <= 1; ++xi) {
+            for (int k = 0; k < (car.breaking_ ? 1 : 3); ++k) {
+              image(x + xi, y + yi, k) = 1;
+            }
+          }
+        }
+      }
+      if (i % 1000 == 0)
+        std::cout << i << "\n";
+      char fname[128];
+      snprintf(fname, sizeof(fname), "/tmp/im-%04d.jpg",  i);
+      image.write(fname);
+    }
+    return 0;
+  }
   
   level_window.loop(1);
   return 0;

@@ -33,6 +33,11 @@ inline dsim::Point Interpolate(const dsim::Point& p1, const dsim::Point p2, doub
   return p;
 }
 
+inline float FastLength(const nacb::Vec2f& v) {
+  // Old call-sites did return v.len(), which uses sqrt
+  return sqrtf(v.x * v.x + v.y * v.y);
+}
+
 inline bool IsNear(const double x, const double y) {
   return abs(x - y) < 1e-5;
 }
@@ -80,7 +85,7 @@ inline double EstimateCurveLength(const nacb::Vec2f& a,
     double t = double(i) / 6;
     nacb::Vec2f point = QuadraticBezier(a, b, c, t);
     if (i) {
-      len += (point - prev).len();
+      len += FastLength(point - prev);
     }
     prev = point;
   }

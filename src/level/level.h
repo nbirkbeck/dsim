@@ -24,6 +24,22 @@ public:
     }
   }
 
+  void GetBounds(nacb::Vec2f* min_point,
+                 nacb::Vec2f* max_point) {
+    for (const auto& seg : road_segments) {
+      for (const auto& p : seg.points) {
+        *min_point = min_point->min(p);
+        *max_point = max_point->max(p);
+      }
+    }
+    for (const auto& lot: parking_lots) {
+      for (const auto& spot: lot.parking_spots) {
+        *min_point = min_point->min(spot.pos + lot.pos);
+        *max_point = max_point->max(spot.pos + lot.pos);
+      }
+    }
+  }
+
   int PickRandomParkingLot() {
     double r = (double)rand() / RAND_MAX;
     int num_spots = 0;

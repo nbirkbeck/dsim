@@ -31,8 +31,6 @@ bool FindSegmentOnRectangle(Level& level,
 }
 
 void Planner:: Init(Level& level) {
-  // Build the graph
-
   for (auto& road_segment : level.road_segments) {
     for (int pi = 0; pi < (int)road_segment.points.size(); ++pi) {
       const auto& p = road_segment.points[pi];
@@ -72,7 +70,6 @@ std::vector<Stage::Segment> Planner::Plan(int a, int b) {
   heap.insert(a, 0.0);
   g[a] = 0;
   h[a] = 0;
-  bool found = false;
   const double kMaxSpeed = 8;
   
   while (heap.peek() >= 0) {
@@ -82,7 +79,6 @@ std::vector<Stage::Segment> Planner::Plan(int a, int b) {
     dist[top] = f;
     g[top] = f - h[top];
     if (top == b) {
-      found = true;
       break;
     }
     for (int i = 0;  i < (int)adj[top].size(); ++i) {
@@ -128,8 +124,6 @@ std::vector<Stage::Segment> Planner::Plan(int a, int b) {
       start_index = prev_info[index].second;
     } else if (segment) {
       start_index = prev_info[index].second;
-      // std::min(start_index, prev_info[index].second);
-      //end_index = std::max(end_index, prev_info[index].second);
     } else {
       segment = prev_info[index].first;
       end_index = prev_info[index].second;

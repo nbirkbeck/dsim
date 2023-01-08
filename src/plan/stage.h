@@ -112,7 +112,7 @@ struct Stage {
         double d1_len = d1.normalize();
         segments[i].info[j].segment_length = d1_len;
         if (prev_smooth) {
-          segments[i].info[j].segment_length = (p2 - last_end).len();
+          segments[i].info[j].segment_length = FastLength(p2 - last_end);
           segments[i].info[j].smooth_start = prev_smooth;
           segments[i].info[j].modified_start = last_end;
         }

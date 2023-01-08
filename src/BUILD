@@ -42,7 +42,7 @@ cc_library(
 
 cc_library(
   name = "car",
-  srcs = ["car.h"],
+  srcs = ["car.h", "car.cc"],
   deps = [
     "//level",
     "//plan"
@@ -64,9 +64,9 @@ cc_binary(
      "//utigl:ffont",
   ] + DEPS,
   linkopts = [
-     "-lGL -lGLU -lglut -lGLEW -lprofiler"
+     "-lGL -lGLU -lglut -lGLEW"
   ],
   copts = [
-    "-mmmx -msse -msse3"
+    "-mmmx -msse -msse2 -msse3"
   ]
 )
