@@ -15,7 +15,8 @@ A simple rendering is given below:
 
 Best understood by looking at the following video: https://www.youtube.com/watch?v=Wc3W8RjP2IQ,
 which shows how the cars in the simulator interact
-with the road/intersections, as well as various levels and a few rendering modes.
+with the road/intersections, as well as various levels and a few rendering modes. Use
+the chapters in the video to navigate.
 
 [![thumbnail](https://img.youtube.com/vi/Wc3W8RjP2IQ/0.jpg)](https://www.youtube.com/watch?v=Wc3W8RjP2IQ)
 
