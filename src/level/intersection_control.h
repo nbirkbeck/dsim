@@ -8,27 +8,22 @@ class RoadSegment;
 
 class IntersectionControl {
 public:
-  IntersectionControl(const dsim::IntersectionControl& control) :
-    type(control.type()),
-    name(control.name()),
-    pos(control.position().x(), control.position().y()),
-    dir(control.dir().x(), control.dir().y()),
-    time(control.time()) {
-  }
+  IntersectionControl(const dsim::IntersectionControl& control)
+      : type(control.type()), name(control.name()),
+        pos(control.position().x(), control.position().y()),
+        dir(control.dir().x(), control.dir().y()), time(control.time()) {}
   bool IsDirectional() const {
-    if (type == dsim::IntersectionControl::STOP) return true;
-    if (type == dsim::IntersectionControl::YIELD) return true;
+    if (type == dsim::IntersectionControl::STOP)
+      return true;
+    if (type == dsim::IntersectionControl::YIELD)
+      return true;
     return false;
   }
   bool IsEnforcedDirection(const nacb::Vec2f& test) const {
     return dir.dot(test) >= 0.999 * test.len();
   }
-  bool IsStopSign() const {
-    return type == dsim::IntersectionControl::STOP;
-  }
-  bool IsLight() const {
-    return type == dsim::IntersectionControl::LIGHTS;
-  }
+  bool IsStopSign() const { return type == dsim::IntersectionControl::STOP; }
+  bool IsLight() const { return type == dsim::IntersectionControl::LIGHTS; }
   bool IsGreen(RoadSegment* segment) const {
     for (int j = 0; j < (int)incoming_segments.size(); ++j) {
       if (segment == incoming_segments[j].first) {
@@ -46,7 +41,7 @@ public:
   }
 
   std::vector<std::pair<RoadSegment*, int>> incoming_segments;
-  
+
   dsim::IntersectionControl::Type type;
   std::string name;
   nacb::Vec2f pos;

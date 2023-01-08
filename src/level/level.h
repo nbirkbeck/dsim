@@ -1,11 +1,11 @@
 #ifndef DSIM_LEVEL_H_
 #define DSIM_LEVEL_H_ 1
 
-#include <vector>
-#include "level/trip_stats.h"
+#include "level.pb.h"
 #include "level/parking_lot.h"
 #include "level/road_segment.h"
-#include "level.pb.h"
+#include "level/trip_stats.h"
+#include <vector>
 
 class Level {
 public:
@@ -24,16 +24,15 @@ public:
     }
   }
 
-  void GetBounds(nacb::Vec2f* min_point,
-                 nacb::Vec2f* max_point) {
+  void GetBounds(nacb::Vec2f* min_point, nacb::Vec2f* max_point) {
     for (const auto& seg : road_segments) {
       for (const auto& p : seg.points) {
         *min_point = min_point->min(p);
         *max_point = max_point->max(p);
       }
     }
-    for (const auto& lot: parking_lots) {
-      for (const auto& spot: lot.parking_spots) {
+    for (const auto& lot : parking_lots) {
+      for (const auto& spot : lot.parking_spots) {
         *min_point = min_point->min(spot.pos + lot.pos);
         *max_point = max_point->max(spot.pos + lot.pos);
       }
@@ -49,7 +48,8 @@ public:
     double val = 0;
     for (int i = 0; i < (int)parking_lots.size(); ++i) {
       val += (double)parking_lots[i].parking_spots.size() / num_spots;
-      if (val > r) return i;
+      if (val > r)
+        return i;
     }
     return (int)parking_lots.size() - 1;
   }
@@ -60,5 +60,4 @@ public:
   std::vector<IntersectionControl> intersections;
 };
 
-
-#endif  // DSIM_LEVEL_H_
+#endif // DSIM_LEVEL_H_

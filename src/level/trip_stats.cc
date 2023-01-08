@@ -13,9 +13,10 @@ void TripStats::AddObservation(const std::string& src_name,
 double TripStats::GetAverageTripTime() {
   double average_time = 0;
   int num_pairs = 0;
-  for (const auto& src: data_) {
-    for (const auto& dest: src.second) {
-      const double estimate = dest.second.total_time / std::max(1, dest.second.num_observations);
+  for (const auto& src : data_) {
+    for (const auto& dest : src.second) {
+      const double estimate =
+          dest.second.total_time / std::max(1, dest.second.num_observations);
       average_time += estimate;
       num_pairs++;
     }
@@ -27,10 +28,12 @@ void TripStats::Print() {
   double average_time = 0;
   int num_pairs = 0;
   std::cout << "------------------------------------------------------------\n";
-  for (const auto& src: data_) {
-    for (const auto& dest: src.second) {
-      const double estimate = dest.second.total_time / std::max(1, dest.second.num_observations);
-      std::cout << src.first << " " << dest.first << " " << estimate << std::endl;
+  for (const auto& src : data_) {
+    for (const auto& dest : src.second) {
+      const double estimate =
+          dest.second.total_time / std::max(1, dest.second.num_observations);
+      std::cout << src.first << " " << dest.first << " " << estimate
+                << std::endl;
       average_time += estimate;
       num_pairs++;
     }

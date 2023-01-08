@@ -2,7 +2,7 @@
 
 // Old implementations (slightly slower, but more readable)
 //#define CAR_ACCELERATION_FOR_CARS_READABLE
-//#define CAR_ATAN_WHEEL_INTERP
+#define CAR_ATAN_WHEEL_INTERP
 
 double Car::GetAccelerationForRoad() {
   double accel = 1;
@@ -28,7 +28,7 @@ double Car::GetAccelerationForRoad() {
         d1_dot_d2 = d1.dot(d2);
         rhs = 1e-4 * (FastLength(d1) * FastLength(d2));
       }
-      
+
       if (d1_dot_d2 <= rhs) {
         const double kMaxCornerSpeed = 2.5;
         max_upcoming_speed = std::min(max_upcoming_speed, kMaxCornerSpeed);
@@ -130,9 +130,11 @@ void Car::UpdateAccelerationForCars(
 #else
     const double d2 = d_car.dot(d_car);
     const double denom = std::min(std::max(speed_, 1.0), 4.0);
-    if (d2 > denom * denom) continue;
+    if (d2 > denom * denom)
+      continue;
     const double dot = d_car.dot(dpos);
-    if (dot <= 0) continue;
+    if (dot <= 0)
+      continue;
     const double rhs2 = 0.70 * dpos_len;
     if (dot * dot > rhs2 * rhs2 * d2) {
       if (d2 < 1) {
@@ -149,26 +151,26 @@ void Car::UpdateAccelerationForCars(
 }
 
 void Car::HandleStepExitParkingLot() {
-   const auto* segment = &plan_[stage_index_].segments[0];
-   const auto& p1 = segment->road_segment->points[segment->start_index];
-   nacb::Vec2f dir = p1 - plan_[stage_index_].point;
-   const double d = dir.normalize();
+  const auto* segment = &plan_[stage_index_].segments[0];
+  const auto& p1 = segment->road_segment->points[segment->start_index];
+  nacb::Vec2f dir = p1 - plan_[stage_index_].point;
+  const double d = dir.normalize();
 
-   nacb::Vec2f e1, e2;
-   plan_[(stage_index_ + 1)].segments[0].GetPoints(0, &e1, &e2);
-   nacb::Vec2f offset = e2 - e1;
-   offset.normalize();
-   offset *= std::max(0.3, dir.dot(offset) / 8.0);
+  nacb::Vec2f e1, e2;
+  plan_[(stage_index_ + 1)].segments[0].GetPoints(0, &e1, &e2);
+  nacb::Vec2f offset = e2 - e1;
+  offset.normalize();
+  offset *= std::max(0.3, dir.dot(offset) / 8.0);
 
-   const double t = std::min(d, distance_to_travel) / d;
-   pos_ = CubicBezier(plan_[stage_index_].point,
-                      plan_[stage_index_].point + offset, p1 - offset, p1, t);
+  const double t = std::min(d, distance_to_travel) / d;
+  pos_ = CubicBezier(plan_[stage_index_].point,
+                     plan_[stage_index_].point + offset, p1 - offset, p1, t);
 
-   if (distance_to_travel >= d) {
-     distance_travelled_so_far_ = 0;
-     distance_to_travel = 0;
-     stage_index_++;
-   }
+  if (distance_to_travel >= d) {
+    distance_travelled_so_far_ = 0;
+    distance_to_travel = 0;
+    stage_index_++;
+  }
 }
 
 void Car::HandleStepFindParkingSpot() {
@@ -180,7 +182,7 @@ void Car::HandleStepFindParkingSpot() {
   nacb::Vec2f e1, e2;
   const auto& prev_segments = plan_[stage_index_ - 1].segments;
   prev_segments.back().GetPoints(prev_segments.back().end_index -
-                                 prev_segments.back().start_index - 1,
+                                     prev_segments.back().start_index - 1,
                                  &e1, &e2);
   nacb::Vec2f offset = e2 - e1;
   offset.normalize();
@@ -210,20 +212,20 @@ void Car::HandleStepDriveRoad(double t_abs, double dt) {
 
     upcoming_intersection_ = nullptr;
     segment->road_segment
-      ->cars[(segment->start_index + sub_index_) %
-             segment->road_segment->points.size()]
-      .erase(this);
+        ->cars[(segment->start_index + sub_index_) %
+               segment->road_segment->points.size()]
+        .erase(this);
 
     while ((sub_index_ + segment->start_index) %
-           (int)segment->road_segment->points.size() !=
-           segment->end_index &&
+                   (int)segment->road_segment->points.size() !=
+               segment->end_index &&
            segment_index_ < (int)stage.segments.size()) {
       int i1, i2;
       segment->GetPoint(sub_index_, &i1);
       nacb::Vec2f p2 = segment->GetPoint(sub_index_ + 1, &i2);
       if (segment->road_segment->intersections[i2]) {
         if (!ignore_intersections_.count(
-                                         segment->road_segment->intersections[i2])) {
+                segment->road_segment->intersections[i2])) {
           upcoming_intersection_ = segment->road_segment->intersections[i2];
         }
       }
@@ -231,11 +233,10 @@ void Car::HandleStepDriveRoad(double t_abs, double dt) {
                                         &pos_)) {
         segment->road_segment->cars[i1].insert(this);
         segment->road_segment->AddSpeedEstimate(
-                                                t_abs, FastLength(pos_ - last_pos_) / dt);
+            t_abs, FastLength(pos_ - last_pos_) / dt);
         break;
       }
-      const bool zero_length =
-        (segment->info[sub_index_].segment_length == 0);
+      const bool zero_length = (segment->info[sub_index_].segment_length == 0);
       pos_ = p2;
       ignore_intersections_.clear();
       sub_index_++;
@@ -247,7 +248,7 @@ void Car::HandleStepDriveRoad(double t_abs, double dt) {
 
       // Advance iterator
       if ((sub_index_ + segment->start_index) %
-          (int)segment->road_segment->points.size() ==
+              (int)segment->road_segment->points.size() ==
           segment->end_index) {
         sub_index_ = 0;
         segment_index_++;
@@ -282,8 +283,8 @@ void Car::Step(const std::vector<Car*>::iterator& car_begin,
   const double dpos_len = FastLength(dpos);
 
   // Update Acceleration / deceleration
-  // E.g., need to decelerate when approaching a stop (or when getting too close to
-  // another)
+  // E.g., need to decelerate when approaching a stop (or when getting too close
+  // to another)
   {
     double accel = GetAccelerationForRoad();
 
@@ -327,16 +328,21 @@ void Car::Step(const std::vector<Car*>::iterator& car_begin,
     // Fudge angle interpolation so we don't just snap orientation.
     angle_ = atan2f(sinf(angle_) * 0.4f + 0.6f * dpos.y / dpos_len,
                     cosf(angle_) * 0.4f + 0.6f * dpos.x / dpos_len);
-    wheel_rot_ = 4 * atan2f(sinf(angle_ - angle_before), cosf(angle_ - angle_before));
+    wheel_rot_ =
+        4 * atan2f(sinf(angle_ - angle_before), cosf(angle_ - angle_before));
 #else
     float new_angle = atan2f(dpos.y, dpos.x);
     float angle_diff = new_angle - angle_;
-    if (angle_diff > M_PI) new_angle -= 2 * M_PI;
-    if (angle_diff <- M_PI) new_angle += 2 * M_PI;
-    angle_ = angle_ * 0.4  + new_angle * 0.6;
-    if (angle_ < 0) angle_ += M_PI;
-    if (angle_ > 2 * M_PI) angle_ -= 2 * M_PI;
-    
+    if (angle_diff > M_PI)
+      new_angle -= 2 * M_PI;
+    if (angle_diff < -M_PI)
+      new_angle += 2 * M_PI;
+    angle_ = angle_ * 0.4 + new_angle * 0.6;
+    if (angle_ < 0)
+      angle_ += M_PI;
+    if (angle_ > 2 * M_PI)
+      angle_ -= 2 * M_PI;
+
     // This is a total hack to get the wheel "turn" angle to look "right"
     float diff = angle_ - angle_before;
     if (diff > M_PI) {

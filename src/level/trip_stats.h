@@ -11,14 +11,13 @@ public:
     int num_observations = 0;
   };
 
-  void AddObservation(const std::string& src_name,
-                      const std::string& dest_name,
+  void AddObservation(const std::string& src_name, const std::string& dest_name,
                       double elapsed_time);
   double GetAverageTripTime();
   void Print();
 
- private:
-  std::unordered_map<std::string, std::unordered_map<std::string, Info> > data_;
+private:
+  std::unordered_map<std::string, std::unordered_map<std::string, Info>> data_;
 };
 
 #endif
